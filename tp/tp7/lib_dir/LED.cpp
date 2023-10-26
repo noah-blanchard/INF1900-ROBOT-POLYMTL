@@ -4,7 +4,7 @@
 
 constexpr uint8_t DELAY_AMBER_COLOR = 10;
 
-LED::Led(Register port, Register mode, uint8_t greenLed, uint8_t redLed)
+LED::LED(Register port, Register mode, uint8_t greenLed, uint8_t redLed)
     : pPort(port), pMode(mode), pGreenLed(greenLed), pRedLed(redLed)
 {
     *mode |= (1 << greenLed) | (1 << redLed);
