@@ -1,7 +1,7 @@
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include "Navigation.h"
+#include "LED.h"
 
 // constexpr uint8_t DEBOUNCE_TIME = 10;
 
@@ -19,29 +19,14 @@
 
 int main()
 {
-    // Led led(&PORTA, &DDRA, PA0, PA1);
-
-    DDRD |= (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
-
-    DDRA = (1 << DDA0) | (1 << DDA1);
-    PORTA |= (1 << PA0); // Green quand on avance
-    // while(true)
-    // {
-    //     //  led.turnLedGreen();
-    //     // _delay_ms(3000);
-    //     led.turnLedAmber();
-    //     // _delay_ms(3000);
-    //     // led.turnLedRed();
-    //     // _delay_ms(6000);
-    // }
-
-    Navigation nav;
-    uint16_t speed = 255;
+    LED a0a1LED(&PORTA, &DDRA, PA0, PA1);
 
     while (true)
     {
-            nav.spin();
-        nav.go(speed);
+        a0a1LED.turnLedRed();
+        _delay_ms(1000);
+        a0a1LED.turnLedGreen();
+        _delay_ms(1000);
     }
 
     return 0;
