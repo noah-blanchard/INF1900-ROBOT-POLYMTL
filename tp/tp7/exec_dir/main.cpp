@@ -23,7 +23,7 @@ int main()
 
     while (true)
     {
-        a0a1LED.turnLedRed();
+        a0a1LED.turnLedGreen();
     }
 
     return 0;
