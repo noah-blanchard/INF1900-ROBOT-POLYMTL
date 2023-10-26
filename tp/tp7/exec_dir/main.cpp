@@ -24,9 +24,6 @@ int main()
     while (true)
     {
         a0a1LED.turnLedRed();
-        _delay_ms(1000);
-        a0a1LED.turnLedGreen();
-        _delay_ms(1000);
     }
 
     return 0;
