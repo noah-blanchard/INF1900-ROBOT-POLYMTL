@@ -13,13 +13,14 @@ Communication::~Communication()
 {
 }
 
-Communication::send(uint8_t data)
+void Communication::send(uint8_t data)
 {
-    while (!(UCSR0A & (1 << UDRE0)));
+    while (!(UCSR0A & (1 << UDRE0)))
+        ;
     UDR0 = data;
 }
 
-Communication::sendString(const char *data)
+void Communication::sendString(const char *data)
 {
     while (*data)
     {
@@ -27,8 +28,9 @@ Communication::sendString(const char *data)
     }
 }
 
-Communication::receive()
+uint8_t Communication::receive()
 {
-    while (!(UCSR0A & (1 << RXC0)));
+    while (!(UCSR0A & (1 << RXC0)))
+        ;
     return UDR0;
 }

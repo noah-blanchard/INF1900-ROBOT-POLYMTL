@@ -1,7 +1,7 @@
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include "LED.h"
+#include "Communication.h"
 
 // constexpr uint8_t DEBOUNCE_TIME = 10;
 
@@ -19,11 +19,13 @@
 
 int main()
 {
-    LED a0a1LED(&PORTA, &DDRA, PA0, PA1);
+    Communication comm;
+    const char *message = "Hello World!";
 
     while (true)
     {
-        a0a1LED.turnLedGreen();
+        comm.sendString(message);
+        _delay_ms(1000);
     }
 
     return 0;
