@@ -4,39 +4,33 @@
 
 constexpr uint8_t DELAY_AMBER_COLOR = 10;
 
-Led::Led(Register port, Register mode, uint8_t greenLed, uint8_t redLed)
-    :pPort(port), pMode(mode), pGreenLed(greenLed), pRedLed(redLed){
-        *mode |= (1<< greenLed) | (1 << redLed);
-    }
-
-
-void Led::turnOffLed()
+LED::Led(Register port, Register mode, uint8_t greenLed, uint8_t redLed)
+    : pPort(port), pMode(mode), pGreenLed(greenLed), pRedLed(redLed)
 {
-    *pPort &= ~ ((1<< pGreenLed) | (1 << pRedLed));
+    *mode |= (1 << greenLed) | (1 << redLed);
 }
 
-void Led::turnLedRed()
+void LED::turnOffLed()
 {
-    turnOffLed();
-    *pPort |=  (1<< pRedLed);
+    *pPort &= ~((1 << pGreenLed) | (1 << pRedLed));
 }
 
-void Led::turnLedGreen()
+void LED::turnLedRed()
 {
     turnOffLed();
-    *pPort |= (1<< pGreenLed);
+    *pPort |= (1 << pRedLed);
 }
 
-void Led::turnLedAmber()
+void LED::turnLedGreen()
+{
+    turnOffLed();
+    *pPort |= (1 << pGreenLed);
+}
+
+void LED::turnLedAmber()
 {
     turnLedGreen();
-    _delay_ms(DELAY_AMBER_COLOR); 
-   turnLedRed();
-    _delay_ms(DELAY_AMBER_COLOR); 
-
+    _delay_ms(DELAY_AMBER_COLOR);
+    turnLedRed();
+    _delay_ms(DELAY_AMBER_COLOR);
 }
-
-
-
-
-
