@@ -37,13 +37,7 @@ public:
    // Donc, ne pas le refaire a moins de changements en cours
    // d’utilisation.
    void init();
-   void initialiseMemoire();
-
-   void ecrireCharMemoire(char str, uint8_t address);
-
-   void ecrireStringMemoire(char str[], uint8_t address);
-   bool comparaisonString(char[] str, uint8_t address);
-
+   
    // la procedure init() initialize a zero le "memory bank". 
    // appeler cette methode uniquement si l'adresse doit changer
    static uint8_t choisir_banc(const uint8_t banc);

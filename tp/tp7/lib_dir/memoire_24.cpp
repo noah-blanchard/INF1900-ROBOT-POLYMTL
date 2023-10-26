@@ -36,51 +36,6 @@
 
 uint8_t Memoire24CXXX::m_adresse_peripherique = 0xA0;
 
-
-void Memoire24CXXX::initialiseMemoire(){
-    Memoire24CXXX meme;
-}
-
-void Memoire24CXXX::ecrireCharMemoire(char str, uint8_t address){
-   meme.ecriture(address, str[i]);
-}
-
-void Memoire24CXXX::ecrireStringMemoire(char str[], uint8_t address){
-    for (uint16_t i = 0; i < strlen(str); i++) {
-
-        meme.ecriture(address + i, str[i]);
-
-        _delay_ms(5);
-
-    }
-}
-
-bool Memoire24CXXX::comparaisonString(char[] str, uint8_t address){
-    for (uint16_t i = 0; i < strlen(str); i++) {
-
-        //char c = eeprom_read_byte((uint8_t*) (address + i));
-
-        uint8_t c;
-
-        meme.lecture(address+i, &c);
-
-        if (c = (uint8_t) str1[i]) {
-
-            return true;
-
-            while (1);
-
-        }
-
-        _delay_ms(5);
-
-    }
-
-    return false;
-
-}
-
-
 /******************************************************************************/
 /* void Memoire24CXXX::Memoire24CXXX()                                        */
 /*                                                                            */
@@ -95,8 +50,6 @@ Memoire24CXXX::Memoire24CXXX()
 {
    init();
 }
-
-
 
 
 /******************************************************************************/
