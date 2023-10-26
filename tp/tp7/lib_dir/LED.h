@@ -8,7 +8,7 @@ typedef volatile uint8_t *Register;
 class LED
 {
 public:
-    Led(Register port, Register mode, uint8_t greenLed, uint8_t redLed);
+    LED(Register port, Register mode, uint8_t greenLed, uint8_t redLed);
 
     void turnOffLed();
     void turnLedRed();
