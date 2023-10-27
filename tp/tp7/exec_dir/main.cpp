@@ -2,14 +2,16 @@
 #include <avr/io.h>
 #include "Debug.h"
 
+
 int main()
 {
-    Communication comm;
-    const char *message = "Hello World! THIS IS DEBUG MESSAGE !\n";
 
+    Communication comm;
+    const char *message = "hello";
+    //Communication com;
     while (true)
     {
-        DEBUG(message);
+      DEBUG("matei la merde\n", comm);
     }
 
     return 0;

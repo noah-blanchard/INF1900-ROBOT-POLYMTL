@@ -9,4 +9,5 @@ public:
     void send(uint8_t data);
     void sendString(const char *data);
     uint8_t receive();
+    void reinitialize();
 };

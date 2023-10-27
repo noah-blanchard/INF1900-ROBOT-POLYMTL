@@ -34,3 +34,12 @@ uint8_t Communication::receive()
         ;
     return UDR0;
 }
+
+void Communication::reinitialize() 
+{
+    UBRR0H = 0;
+    UBRR0L = 0xCF;
+
+    UCSR0A = 0;
+    UCSR0B |= (RXEN0 << 1) | (TXEN0 << 1);
+}

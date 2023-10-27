@@ -9,6 +9,9 @@ exec: lib
 install: lib
 	$(MAKE) -C exec_dir install
 
+debug: lib
+	$(MAKE) -C exec_dir debug
+
 clean:
 	$(MAKE) -C lib_dir clean
 	$(MAKE) -C exec_dir clean

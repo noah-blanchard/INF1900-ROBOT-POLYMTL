@@ -1,7 +1,6 @@
 #include "Debug.h"
 
-void debug_uart(const char *message)
+void debug_uart(const char *message, Communication comm)
 {
-    Communication comm;
     comm.sendString(message);
 }
