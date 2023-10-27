@@ -52,7 +52,7 @@ void Bouton::setAnyEdge()
  */
 void Bouton::enableInterrupt()
 {
-    EIMSK |= (1 << int_N);
+    EIMSK |= (1 << _int_N);
 }
 
 /**
@@ -61,7 +61,7 @@ void Bouton::enableInterrupt()
  */
 void Bouton::disableInterrupt()
 {
-    EIMSK &= ~(1 << int_N);
+    EIMSK &= ~(1 << _int_N);
 }
 
 /**
