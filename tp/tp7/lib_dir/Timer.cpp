@@ -1,6 +1,13 @@
-
 #include "Timer.h"
 
+
+/**
+ * @brief Finds the prescaler bits for a given prescaler value and timer number.
+ * 
+ * @param prescaler The prescaler value to find the bits for.
+ * @param timer The timer number to find the bits for.
+ * @return uint8_t The prescaler bits for the given prescaler value and timer number.
+ */
 uint8_t Timer::findPrescalerBits(uint16_t prescaler, uint8_t timer){
     switch (timer) {
         case 0:
@@ -55,16 +62,21 @@ uint8_t Timer::findPrescalerBits(uint16_t prescaler, uint8_t timer){
     }
 }
 
-Timer::Timer(TimerConfig config_p) : config(config_p)
+/**
+ * @brief Constructor for the Timer class. Initializes the timer with the provided configuration.
+ * 
+ * @param config TimerConfig structure containing the timer's configuration parameters.
+ */
+Timer::Timer(TimerConfig config) : _config(config)
 {
 
     TCCR1A = 0;
     TCCR1B = 0;
-    timer_freq = BASE_FREQ / config.prescaler;
+    this->_timer_freq = BASE_FREQ / config.prescaler;
 
-    uint8_t prescaler_bits = Timer::findPrescalerBits(config.prescaler, config.timer);
+    uint8_t prescaler_bits = Timer::findPrescalerBits(_config.prescaler, _config.timer);
 
-    switch (config.timer)
+    switch (_config.timer)
     {
     case 0:
         if (prescaler_bits)
@@ -72,7 +84,7 @@ Timer::Timer(TimerConfig config_p) : config(config_p)
             TCCR0A = 0;
             TCCR0B |= (1 << WGM12) | prescaler_bits; // prescaler 256 and CTC mode
             TCNT0 = 0;
-            OCR0A = timer_freq * config.delay_ms / 1000;
+            OCR0A = timer_freq * _config.delay_ms / 1000;
         }
         break;
     case 1:
@@ -81,7 +93,7 @@ Timer::Timer(TimerConfig config_p) : config(config_p)
             TCCR1A |= 0;
             TCCR1B |= (1 << WGM12) | prescaler_bits; // prescaler 1024 and CTC mode
             TCNT1 = 0;
-            OCR1A = timer_freq * config.delay_ms / 1000;
+            OCR1A = timer_freq * _config.delay_ms / 1000;
         }
         break;
     case 2:
@@ -90,21 +102,28 @@ Timer::Timer(TimerConfig config_p) : config(config_p)
             TCCR2A = 0;
             TCCR2B |= (1 << WGM12) | prescaler_bits; // prescaler 256 and CTC mode
             TCNT2 = 0;
-            OCR2A = timer_freq * config.delay_ms / 1000;
+            OCR2A = timer_freq * _config.delay_ms / 1000;
         }
         break;
     }
 }
 
+/**
+ * @brief Destructor for the Timer class. Handles any necessary cleanup.
+ */
 Timer::~Timer()
 {
 }
 
+/**
+ * @brief Enables the timer interrupts based on the timer number specified in the configuration.
+ * 
+ * This function sets the appropriate interrupt mask register bit to enable timer interrupts.
+ */
 void Timer::enable()
 {
-    // Start timer
     this->reset();
-    switch (config.timer)
+    switch (_config.timer)
     {
     case 0:
         TIMSK0 |= (1 << OCIE0A);
@@ -116,15 +135,18 @@ void Timer::enable()
         TIMSK2 |= (1 << OCIE2A);
         break;
     default:
-        // Throw error
         break;
     }
 }
 
+/**
+ * @brief Disables the timer interrupts based on the timer number specified in the configuration.
+ * 
+ * This function clears the appropriate interrupt mask register bit to disable timer interrupts.
+ */
 void Timer::disable()
 {
-    // Stop timer
-    switch (config.timer)
+    switch (_config.timer)
     {
     case 0:
         TIMSK0 &= ~(1 << OCIE0A);
@@ -136,15 +158,16 @@ void Timer::disable()
         TIMSK2 &= ~(1 << OCIE2A);
         break;
     default:
-        // Throw error
         break;
     }
 }
 
+/**
+ * @brief Resets the timer counter value to 0 based on the timer number specified in the configuration.
+ */
 void Timer::reset()
 {
-    // Reset timer
-    switch (config.timer)
+    switch (_config.timer)
     {
     case 0:
         TCNT0 = 0;
@@ -156,7 +179,6 @@ void Timer::reset()
         TCNT2 = 0;
         break;
     default:
-        // Throw error
         break;
     }
 }

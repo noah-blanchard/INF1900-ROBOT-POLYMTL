@@ -44,6 +44,6 @@ public:
     static const uint32_t PRESCALER_16BITS = 1024;
 
 private:
-    TimerConfig config;
-    uint16_t timer_freq;
+    TimerConfig _config;
+    uint16_t _timerFreq;
 };

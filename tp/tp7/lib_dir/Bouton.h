@@ -13,5 +13,5 @@
     void reset();
 
     private:
-        uint8_t int_N;
+        uint8_t _int_N;
   };

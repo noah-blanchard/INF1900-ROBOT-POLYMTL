@@ -6,7 +6,7 @@ typedef volatile uint16_t *Register;
 class Wheel
 {
 public:
-    Wheel(uint8_t wheelNp);
+    Wheel(uint8_t wheelN);
 
     void setCompareValue(uint16_t value);
     void setForward();
@@ -15,6 +15,6 @@ public:
     static const uint16_t MAX_COMPARE_VALUE = 0xFF;
 
 private:
-    Register pOutput;
-    uint8_t wheelN;
+    Register _output;
+    uint8_t _wheelNumber;
 };

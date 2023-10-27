@@ -1,23 +1,14 @@
 #include "Bouton.h"
 
-/*
-volatile uint8_t btnState = false;
-    ISR(INT0_vect)
-{ // action quand l'event d'interruption int1 a lieu
-
-    _delay_ms(30);
-
-    btnState = true;
-
-    EIFR |= (1 << INTF1); // oublier toutes les requetes en cours
-}
-*/
-
-Bouton::Bouton(uint8_t int_N_p) : int_N(int_N_p)
+Bouton::Bouton(uint8_t int_N) : _int_N(int_N)
 {}
 
 Bouton::~Bouton(){ }
 
+/**
+ * @brief Sets the interrupt to trigger on a rising edge.
+ * 
+ */
 void Bouton::setRisingEdge()
 {
     reset();
@@ -26,6 +17,11 @@ void Bouton::setRisingEdge()
 
     EICRA = (1 << ISC01);
 }
+
+/**
+ * @brief Sets the interrupt to trigger on a falling edge.
+ * 
+ */
 void Bouton::setFallingEdge()
 {
     reset();
@@ -35,6 +31,11 @@ void Bouton::setFallingEdge()
     EICRA = (1 << ISC01);
 
 }
+
+/**
+ * @brief Sets the interrupt to trigger on any edge.
+ * 
+ */
 void Bouton::setAnyEdge()
 {
     reset();
@@ -45,16 +46,28 @@ void Bouton::setAnyEdge()
 
 }
 
+/**
+ * @brief Enables the interrupt.
+ * 
+ */
 void Bouton::enableInterrupt()
 {
-    EIMSK |= (1 << int_N); // on active l'interruption sur int_N
+    EIMSK |= (1 << int_N);
 }
 
+/**
+ * @brief Disables the interrupt.
+ * 
+ */
 void Bouton::disableInterrupt()
 {
-    EIMSK &= ~(1 << int_N); // on desactive l'interruption sur int_
+    EIMSK &= ~(1 << int_N);
 }
 
+/**
+ * @brief Resets the interrupt.
+ * 
+ */
 void Bouton::reset(){
     EICRA &= ~(1 << ISC00);
 

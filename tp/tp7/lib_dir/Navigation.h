@@ -17,8 +17,8 @@ public:
     void spin();
 
 private:
-    Wheel leftWheel;
-    Wheel rightWheel;
+    Wheel _leftWheel;
+    Wheel _rightWheel;
 
-    static uint16_t validateSpeed(uint16_t speed);
+    static uint16_t _validateSpeed(uint16_t speed);
 };

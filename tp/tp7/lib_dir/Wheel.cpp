@@ -1,14 +1,23 @@
+/**
+ * @file Wheel.cpp
+ * @brief Implementation of the Wheel class
+*/
 #include "Wheel.h"
 
-Wheel::Wheel(uint8_t wheelNp) : wheelN(wheelNp)
+/**
+ * @brief Constructor for Wheel class
+ * 
+ * @param wheelN The wheel number (0 or 1)
+ */
+Wheel::Wheel(uint8_t wheelN) : _wheelN(wheelN)
 {
-    switch (wheelN)
+    switch (_wheelN)
     {
     case 0:
-        pOutput = &OCR1B;
+        _pOutput = &OCR1B;
         break;
     case 1:
-        pOutput = &OCR1A;
+        _pOutput = &OCR1A;
         break;
     }
 
@@ -19,7 +28,12 @@ Wheel::Wheel(uint8_t wheelNp) : wheelN(wheelNp)
     TCCR1C = 0;
 }
 
+/**
+ * @brief Set the compare value for the wheel
+ * 
+ * @param value The compare value to set
+ */
 void Wheel::setCompareValue(uint16_t value)
 {
-    *pOutput = value;
+    *_pOutput = value;
 }
