@@ -72,7 +72,7 @@ Timer::Timer(TimerConfig config) : _config(config)
 
     TCCR1A = 0;
     TCCR1B = 0;
-    this->_timer_freq = BASE_FREQ / config.prescaler;
+    _timerFreq = BASE_FREQ / _config.prescaler;
 
     uint8_t prescaler_bits = Timer::findPrescalerBits(_config.prescaler, _config.timer);
 
@@ -84,7 +84,7 @@ Timer::Timer(TimerConfig config) : _config(config)
             TCCR0A = 0;
             TCCR0B |= (1 << WGM12) | prescaler_bits; // prescaler 256 and CTC mode
             TCNT0 = 0;
-            OCR0A = timer_freq * _config.delay_ms / 1000;
+            OCR0A = _timerFreq * _config.delay_ms / 1000;
         }
         break;
     case 1:
@@ -93,7 +93,7 @@ Timer::Timer(TimerConfig config) : _config(config)
             TCCR1A |= 0;
             TCCR1B |= (1 << WGM12) | prescaler_bits; // prescaler 1024 and CTC mode
             TCNT1 = 0;
-            OCR1A = timer_freq * _config.delay_ms / 1000;
+            OCR1A = _timerFreq * _config.delay_ms / 1000;
         }
         break;
     case 2:
@@ -102,7 +102,7 @@ Timer::Timer(TimerConfig config) : _config(config)
             TCCR2A = 0;
             TCCR2B |= (1 << WGM12) | prescaler_bits; // prescaler 256 and CTC mode
             TCNT2 = 0;
-            OCR2A = timer_freq * _config.delay_ms / 1000;
+            OCR2A = _timerFreq * _config.delay_ms / 1000;
         }
         break;
     }
