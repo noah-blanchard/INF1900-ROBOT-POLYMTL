@@ -11,7 +11,7 @@ int main()
     //Communication com;
     while (true)
     {
-      DEBUG("matei la merde\n", comm);
+      DEBUG("debug\n", comm);
     }
 
     return 0;
