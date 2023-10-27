@@ -9,7 +9,7 @@
  * 
  * @param wheelN The wheel number (0 or 1)
  */
-Wheel::Wheel(uint8_t wheelN) : _wheelN(wheelN)
+Wheel::Wheel(uint8_t wheelN) : _wheelNumber(wheelN)
 {
     switch (_wheelN)
     {

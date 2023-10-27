@@ -6,7 +6,7 @@ typedef volatile uint16_t *Register;
 class Wheel
 {
 public:
-    Wheel(uint8_t wheelN);
+    Wheel(uint8_t wheelNumber);
 
     void setCompareValue(uint16_t value);
     void setForward();
