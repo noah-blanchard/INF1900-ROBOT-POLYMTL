@@ -11,7 +11,7 @@
  */
 Wheel::Wheel(uint8_t wheelN) : _wheelNumber(wheelN)
 {
-    switch (_wheelN)
+    switch (_wheelNumber)
     {
     case 0:
         _output = &OCR1B;
