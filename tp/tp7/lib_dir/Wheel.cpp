@@ -14,10 +14,10 @@ Wheel::Wheel(uint8_t wheelN) : _wheelN(wheelN)
     switch (_wheelN)
     {
     case 0:
-        _pOutput = &OCR1B;
+        _output = &OCR1B;
         break;
     case 1:
-        _pOutput = &OCR1A;
+        _output = &OCR1A;
         break;
     }
 
@@ -35,5 +35,5 @@ Wheel::Wheel(uint8_t wheelN) : _wheelN(wheelN)
  */
 void Wheel::setCompareValue(uint16_t value)
 {
-    *_pOutput = value;
+    *_output = value;
 }
