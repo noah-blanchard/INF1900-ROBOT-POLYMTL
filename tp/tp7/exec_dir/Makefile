@@ -167,6 +167,9 @@ install: $(HEXROMTRG)
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) \
 	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
+debug: CFLAGS += -DACTIVE_DEBUG
+debug: install
+
 # Make clean permet d'effacer tout les fichiers generes
 # lors de la compilation
 clean:
