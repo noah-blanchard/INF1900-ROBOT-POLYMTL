@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 
-typedef volatile uint16_t *Register;
+typedef volatile uint16_t *Reg;
 
 class Wheel
 {
@@ -15,6 +15,6 @@ public:
     static const uint16_t MAX_COMPARE_VALUE = 0xFF;
 
 private:
-    Register _output;
+    Reg _output;
     uint8_t _wheelNumber;
 };
