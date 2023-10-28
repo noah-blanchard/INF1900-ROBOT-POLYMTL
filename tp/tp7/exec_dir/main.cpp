@@ -13,7 +13,7 @@ int main()
   const uint16_t speed = 230;
   while (true)
   {
-    nav.go(speed);
+    nav.go(speed, false);
     laLed.turnLedGreen();
     _delay_ms(1000);
     laLed.turnOffLed();
@@ -25,7 +25,7 @@ int main()
     laLed.turnOffLed();
     nav.stop();
     _delay_ms(1000);
-    nav.goLeftWheel(speed);
+    nav.goLeftWheel(speed, false);
     laLed.turnLedGreen();
     _delay_ms(1000);
     laLed.turnOffLed();
@@ -37,7 +37,7 @@ int main()
     laLed.turnOffLed();
     nav.stopLeft();
     _delay_ms(1000);
-    nav.goRightWheel(speed);
+    nav.goRightWheel(speed, false);
     laLed.turnLedGreen();
     _delay_ms(1000);
     laLed.turnOffLed();
@@ -50,7 +50,7 @@ int main()
     nav.stopRight();
     _delay_ms(1000);
     nav.goRightWheel(speed, true);
-    nav.goLeftWheel(speed);
+    nav.goLeftWheel(speed, false);
     laLed.turnLedGreen();
     _delay_ms(5000);
   }

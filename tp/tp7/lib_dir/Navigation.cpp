@@ -51,7 +51,7 @@ void Navigation::backward()
     this->rightBackward();
 }
 
-void Navigation::go(uint16_t speed, bool backward = false)
+void Navigation::go(uint16_t speed, bool backward)
 {
     speed = _validateSpeed(speed);
 
@@ -68,7 +68,7 @@ void Navigation::go(uint16_t speed, bool backward = false)
     _rightWheel.setCompareValue(speed);
 }
 
-void Navigation::goLeftWheel(uint16_t speed, bool backward = false)
+void Navigation::goLeftWheel(uint16_t speed, bool backward)
 {
     speed = _validateSpeed(speed);
 
@@ -84,7 +84,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward = false)
     _leftWheel.setCompareValue(speed);
 }
 
-void Navigation::goRightWheel(uint16_t speed, bool backward = false)
+void Navigation::goRightWheel(uint16_t speed, bool backward)
 {
     speed = _validateSpeed(speed);
 
