@@ -13,37 +13,46 @@ int main()
   const uint16_t speed = 230;
   while (true)
   {
-    nav.forward();
     nav.go(speed);
-    laLed.turnLedRed();
-    _delay_ms(1000);
-    nav.stop();
-    _delay_ms(1000);
     laLed.turnLedGreen();
-    nav.backward();
-    nav.go(speed);
     _delay_ms(1000);
+    laLed.turnOffLed();
     nav.stop();
     _delay_ms(1000);
     laLed.turnLedRed();
-    nav.leftForward();
-    nav.go(speed);
+    nav.go(speed, true);
     _delay_ms(1000);
+    laLed.turnOffLed();
     nav.stop();
     _delay_ms(1000);
+    nav.goLeftWheel(speed);
     laLed.turnLedGreen();
+    _delay_ms(1000);
+    laLed.turnOffLed();
     nav.stopLeft();
-    nav.rightForward();
-    nav.go(speed);
     _delay_ms(1000);
-    nav.stop();
+    laLed.turnLedRed();
+    nav.goLeftWheel(speed, true);
     _delay_ms(1000);
-     laLed.turnLedRed();
-    nav.rightForward();
-    nav.leftBackward();
-    nav.go(speed);
+    laLed.turnOffLed();
+    nav.stopLeft();
+    _delay_ms(1000);
+    nav.goRightWheel(speed);
+    laLed.turnLedGreen();
+    _delay_ms(1000);
+    laLed.turnOffLed();
+    nav.stopRight();
+    _delay_ms(1000);
+    laLed.turnLedRed();
+    nav.goRightWheel(speed, true);
+    _delay_ms(1000);
+    laLed.turnOffLed();
+    nav.stopRight();
+    _delay_ms(1000);
+    nav.goRightWheel(speed, true);
+    nav.goLeftWheel(speed);
+    laLed.turnLedGreen();
     _delay_ms(5000);
-
   }
   return 0;
 }
