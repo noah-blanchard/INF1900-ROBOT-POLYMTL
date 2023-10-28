@@ -12,9 +12,11 @@ public:
     void backward();
     void go(uint16_t speed);
     void stop();
-    void turnLeftWheel(uint16_t speed);
-    void turnRightWheel(uint16_t speed);
     void spin();
+    void leftForward();
+    void rightForward();
+    void leftBackward();
+    void rightBackward();
 
 private:
     Wheel _leftWheel;
