@@ -8,9 +8,9 @@ class Navigation
 public:
     Navigation();
 
-    void go(uint16_t speed, bool backward = false);
-    void goLeftWheel(uint16_t speed, bool backward = false);
-    void goRightWheel(uint16_t speed, bool backward = false);
+    void go(uint16_t speed, bool backward);
+    void goLeftWheel(uint16_t speed, bool backward);
+    void goRightWheel(uint16_t speed, bool backward);
     void stop();
     void stopLeft();
     void stopRight();
