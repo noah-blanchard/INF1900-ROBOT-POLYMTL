@@ -1,3 +1,4 @@
+#pragma once
 #include "Communication.h"
 
 #ifdef ACTIVE_DEBUG

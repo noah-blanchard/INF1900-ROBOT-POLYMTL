@@ -12,11 +12,10 @@
 Communication::Communication()
 {
     UBRR0H = 0;
-    
     UBRR0L = 0xCF;
 
     UCSR0A = 0;
-    UCSR0B |= (RXEN0 << 1) | (TXEN0 << 1);
+    UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
 }
 
 /**
@@ -74,5 +73,5 @@ void Communication::reinitialize()
     UBRR0L = 0xCF;
 
     UCSR0A = 0;
-    UCSR0B |= (RXEN0 << 1) | (TXEN0 << 1);
+    UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
 }

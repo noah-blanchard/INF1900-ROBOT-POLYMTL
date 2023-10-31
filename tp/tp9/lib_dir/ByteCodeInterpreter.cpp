@@ -42,7 +42,7 @@ fin: 1111 1111
  */
 bool ByteCodeInterpreter::receiveByteCode()
 {
-    uint8_t byteCode;
+    uint8_t byteCode = 0x00;
     uint16_t address = 0x00;
     while (byteCode != 0xFF)
     {

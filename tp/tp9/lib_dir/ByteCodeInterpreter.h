@@ -6,8 +6,8 @@
 class ByteCodeInterpreter
 {
 public:
-    ByteCode();
-    ~ByteCode();
+    ByteCodeInterpreter();
+    ~ByteCodeInterpreter();
     bool receiveByteCode();
 
 private:
