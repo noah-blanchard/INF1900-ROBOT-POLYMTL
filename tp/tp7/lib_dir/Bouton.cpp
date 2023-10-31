@@ -1,5 +1,18 @@
+/**
+ * @file Bouton.cpp
+ * @brief Implementation of the Bouton class.
+ * 
+ * This file contains the implementation of the Bouton class, which provides methods to set up and control an interrupt triggered by a button press.
+ * The class provides methods to set the interrupt trigger to rising, falling or any edge, enable or disable the interrupt, and reset the interrupt.
+ */
 #include "Bouton.h"
 
+
+/**
+ * @brief Constructor for the Bouton class.
+ * 
+ * @param int_N The interrupt number associated with the button.
+ */
 Bouton::Bouton(uint8_t int_N) : _int_N(int_N)
 {}
 

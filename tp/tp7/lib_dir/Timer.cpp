@@ -1,5 +1,9 @@
-#include "Timer.h"
+/**
+ * @file Timer.cpp
+ * @brief Implementation of the Timer class.
+*/
 
+#include "Timer.h"
 
 /**
  * @brief Finds the prescaler bits for a given prescaler value and timer number.
