@@ -63,8 +63,9 @@ void ByteCodeInterpreter::run()
     uint8_t byteCode = 0x00;
     while (byteCode != FIN)
     {
-        byteCode = memory.lecture(currentAddress);
-        this->interpreteByteCode(byteCode, currentAddress);
+        DEBUG("wsh", com);
+        memory.lecture(currentAddress, &byteCode);
+        this->interpreteByteCode(byteCode);
         ++currentAddress;
     }
 }
@@ -99,9 +100,12 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
         break;
     case TRG:
         break;
-    case DBC:
-        this->executeDBC(memory.lecture(++currentAddress), ++currentAddress);
+    case DBC: {
+        uint16_t iterationAddress = ++currentAddress;
+        uint16_t loopStartAddress = ++currentAddress;
+        this->executeDBC(iterationAddress, loopStartAddress);
         break;
+    }
     case FBC:
         break;
     case FIN:
@@ -115,13 +119,17 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
  * @brief Routine for executing a DBC instruction
  *
  */
-void ByteCodeInterpreter::executeDBC(uint8_t iterations, uint16_t startAdress)
+void ByteCodeInterpreter::executeDBC(uint16_t iterationAddress, uint16_t startAdress)
 {
+
+    uint8_t iterations = 0;
+    memory.lecture(iterationAddress, &iterations);
+
     // go back to current address when FBC is met, go back to interpreteByteCode when fbc is met and iterations is 0
     uint8_t byteCode = 0x00;
     while (iterations != 0)
     {
-        byteCode = memory.lecture(currentAddress);
+        memory.lecture(currentAddress, &byteCode);
         this->interpreteByteCode(byteCode);
         ++currentAddress;
 

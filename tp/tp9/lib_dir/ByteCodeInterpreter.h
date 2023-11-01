@@ -3,6 +3,7 @@
 #include "Communication.h"
 #include "memoire_24.h"
 #include "LED.h"
+#include "Debug.h"
 
 class ByteCodeInterpreter
 {
@@ -34,7 +35,7 @@ public:
 
 private:
     void interpreteByteCode(uint8_t byteCode);
-    void executeDBC(uint8_t iterations, uint16_t startAdress);
+    void executeDBC(uint16_t iterationAddress, uint16_t startAdress);
     void executeATT(uint8_t delay);
     void executeDAL(uint8_t color);
     void customDelay(uint16_t delay);
@@ -42,5 +43,5 @@ private:
     Communication com;
     Memoire24CXXX memory;
     LED led;
-    uint8_t currentAddress = 0x00;
+    uint16_t currentAddress = 0x00;
 };
