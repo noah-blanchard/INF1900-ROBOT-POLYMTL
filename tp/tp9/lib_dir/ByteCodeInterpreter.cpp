@@ -1,5 +1,12 @@
 #include "ByteCodeInterpreter.h"
 
+volatile bool timerHasElapsed = false;
+
+ISR(TIMER0_COMPA_vect)
+{
+    timerHasElapsed = true;
+}
+
 /**
  * @brief Construct a new Byte Code Interpreter object
  *
@@ -7,6 +14,11 @@
 
 ByteCodeInterpreter::ByteCodeInterpreter() : led(&PORTA, &DDRA, PA0, PA1)
 {
+    TimerConfig timerConfig;
+    timerConfig.timer = 0;
+    timerConfig.prescaler = 256;
+    timerConfig.delay_ms = 1;
+    timer = Timer(timerConfig);
 }
 
 /**
@@ -211,8 +223,14 @@ void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
 // do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5
 void ByteCodeInterpreter::customDelay(uint16_t delay)
 {
-    for (uint16_t i = 0; i < delay; i++)
+    timer.reset();
+    // use timer0 to wait for the delay
+    for (int i = 0; i < delay; ++i)
     {
-        _delay_ms(1);
+        timer.enable();
+        while (!timerHasElapsed)
+            ;
+        timerHasElapsed = false;
+        timer.disable();
     }
 }

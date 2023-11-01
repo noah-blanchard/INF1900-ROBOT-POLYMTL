@@ -2,10 +2,12 @@
 #include <util/delay.h>
 #include <stdio.h>
 // interruptions
+#include <avr/interrupt.h>
 #include "Communication.h"
 #include "memoire_24.h"
 #include "LED.h"
 #include "Debug.h"
+#include "Timer.h"
 
 #define F_CPU 8000000UL
 
@@ -49,4 +51,5 @@ private:
     Memoire24CXXX memory;
     LED led;
     uint16_t currentAddress = 0x00;
+    Timer timer0;
 };
