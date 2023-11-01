@@ -54,6 +54,25 @@ bool ByteCodeInterpreter::receiveAndSave()
 }
 
 /**
+ * @brief Send the byte code from memory using memoire_24, while loop until 1111 1111 is sent
+ *
+ */
+void ByteCodeInterpreter::sendByteCode()
+{
+    // read the memory and send each byte to com.sendString, use an string fstring
+    uint8_t byteCode = 0x00;
+    uint16_t address = 0x00;
+    char buffer[4];
+    while (byteCode != FIN)
+    {
+        byteCode = memory.lecture(address);
+        sprintf(buffer, "%02X", byteCode);
+        com.sendString(buffer);
+        address++;
+    }
+}
+
+/**
  * @brief Runs interpreteByteCode with start address 0x00
  *
  */
@@ -100,7 +119,8 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
         break;
     case TRG:
         break;
-    case DBC: {
+    case DBC:
+    {
         uint16_t iterationAddress = ++currentAddress;
         uint16_t loopStartAddress = ++currentAddress;
         this->executeDBC(iterationAddress, loopStartAddress);

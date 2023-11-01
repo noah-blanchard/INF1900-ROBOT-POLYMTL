@@ -11,6 +11,7 @@ public:
     ByteCodeInterpreter();
     ~ByteCodeInterpreter();
     bool receiveAndSave();
+    void sendByteCode();
     void run();
 
     // Instructions const
