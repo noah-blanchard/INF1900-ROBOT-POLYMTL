@@ -51,5 +51,5 @@ private:
     Memoire24CXXX memory;
     LED led;
     uint16_t currentAddress = 0x00;
-    Timer timer0;
+    Timer timer;
 };

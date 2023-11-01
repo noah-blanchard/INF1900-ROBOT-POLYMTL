@@ -228,9 +228,12 @@ void ByteCodeInterpreter::customDelay(uint16_t delay)
     for (int i = 0; i < delay; ++i)
     {
         timer.enable();
+        sei();
         while (!timerHasElapsed)
             ;
         timerHasElapsed = false;
+        cli();
         timer.disable();
+        timer.reset();
     }
 }
