@@ -1,5 +1,12 @@
 #include "ByteCodeInterpreter.h"
 
+volatile bool isWaiting = false;
+
+ISR(TIMER0_COMPA_vect)
+{
+    isWaiting = false;
+}
+
 /**
  * @brief Construct a new Byte Code Interpreter object
  *
@@ -181,8 +188,25 @@ void ByteCodeInterpreter::executeATT(uint16_t delayAddress)
     // ten times the default delay value, stored in a uint16_t
     uint8_t delay = 0x00;
     memory.lecture(delayAddress, &delay);
-    uint16_t delayValue = delay * defaultDelayValue;
-    _delay_ms(1000);
+    float delayValue = delay * defaultDelayValue;
+
+    Timer::timerConfig timerConfig = {
+        timer = 0,
+        prescaler = 256,
+        delay_ms = delayValue}
+
+    Timer timer(timerConfig);
+    timer.reset();
+    timer.enable();
+    isWaiting = true;
+
+    while (isWaiting)
+    {
+        // wait
+    }
+
+    timer.disable();
+    timer.reset();
 }
 
 void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)

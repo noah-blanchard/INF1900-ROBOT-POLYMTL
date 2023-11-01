@@ -1,10 +1,13 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdio.h>
+// interruptions
+#include <avr/interrupt.h>
 #include "Communication.h"
 #include "memoire_24.h"
 #include "LED.h"
 #include "Debug.h"
+#include "Timer.h"
 
 class ByteCodeInterpreter
 {
@@ -34,9 +37,9 @@ public:
     static const uint8_t FIN = 0xFF;  // fin
 
     static const uint16_t defaultDelayValue = 25; // default to 25 ms
-
 private:
-    void interpreteByteCode(uint8_t byteCode);
+    void
+    interpreteByteCode(uint8_t byteCode);
     void executeDBC(uint16_t iterationAddress, uint16_t startAdress);
     void executeATT(uint16_t delayAddress);
     void executeDAL(uint16_t colorAddress);
