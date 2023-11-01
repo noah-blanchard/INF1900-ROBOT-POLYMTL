@@ -66,6 +66,8 @@ uint8_t Timer::findPrescalerBits(uint16_t prescaler, uint8_t timer){
     }
 }
 
+Timer::Timer(){}
+
 /**
  * @brief Constructor for the Timer class. Initializes the timer with the provided configuration.
  * 

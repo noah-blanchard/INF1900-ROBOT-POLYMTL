@@ -31,6 +31,7 @@ const PrescalerMapping TIMER1_PRESCALERS[] = {
 class Timer
 {
 public:
+    Timer();
     Timer(TimerConfig config);
     ~Timer();
     void enable();
