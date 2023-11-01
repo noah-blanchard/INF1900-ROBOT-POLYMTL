@@ -8,11 +8,10 @@ int main()
 {
   ByteCodeInterpreter interpreter;
   //LED led(&PORTA, &DDRA, PA0, PA1);
-  interpreter.receiveAndSave();
+  //interpreter.receiveAndSave();
   while (1)
   {
-    interpreter.sendByteCode();
-    _delay_ms(2500);
+    interpreter.run();
   }
   return 0;
 }

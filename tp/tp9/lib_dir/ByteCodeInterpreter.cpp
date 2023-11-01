@@ -85,6 +85,7 @@ void ByteCodeInterpreter::sendByteCode()
 
 void ByteCodeInterpreter::run()
 {
+    //currentAddress = 0x00;
     uint8_t byteCode = 0x00;
     while (byteCode != FIN)
     {
@@ -104,6 +105,7 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
     switch (byteCode)
     {
     case DBT:
+        ++currentAddress;
         break;
     case ATT:
     {
@@ -179,7 +181,7 @@ void ByteCodeInterpreter::executeATT(uint16_t delayAddress)
     uint8_t delay = 0x00;
     memory.lecture(delayAddress, &delay);
     uint16_t delayValue = delay * defaultDelayValue;
-    this->customDelay(delayValue);
+    _delay_ms(1000);
     ++currentAddress;
 }
 
@@ -204,8 +206,8 @@ void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
 // do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5
 void ByteCodeInterpreter::customDelay(uint16_t delay)
 {
-    for (uint16_t i = 0; i < delay / 5; i++)
+    for (uint16_t i = 0; i < delay; i++)
     {
-        _delay_ms(5);
+        _delay_ms(1);
     }
 }
