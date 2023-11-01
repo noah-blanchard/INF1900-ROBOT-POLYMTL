@@ -48,10 +48,11 @@ bool ByteCodeInterpreter::receiveAndSave()
     while (byteCode != FIN)
     {
         byteCode = com.receive();
-        byteCode = com.receive();
-        if (byteCode == DBT | isDBT)
+        if ((byteCode == DBT) | isDBT){
             memory.ecriture(address, byteCode);
-        address++;
+            isDBT = true;
+            address++;
+        }
     }
     return true;
 }
