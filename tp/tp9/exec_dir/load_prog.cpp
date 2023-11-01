@@ -11,8 +11,8 @@ int main()
   Navigation nav;
   while (1)
   {
-    // bct.run();
-    nav.go(255, false);
+    bct.run();
+    // nav.go(255, false);
   }
   return 0;
 }
