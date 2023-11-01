@@ -48,7 +48,8 @@ bool ByteCodeInterpreter::receiveAndSave()
     while (byteCode != FIN)
     {
         byteCode = com.receive();
-        if ((byteCode == DBT) | isDBT){
+        if ((byteCode == DBT) | isDBT)
+        {
             memory.ecriture(address, byteCode);
             isDBT = true;
             address++;
@@ -105,9 +106,15 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
     case DBT:
         break;
     case ATT:
+    {
+        this->executeATT(++currentAddress);
         break;
+    }
     case DAL:
+    {
+        this->executeDAL(++currentAddress);
         break;
+    }
     case DET:
         break;
     case SGO:
@@ -166,15 +173,20 @@ void ByteCodeInterpreter::executeDBC(uint16_t iterationAddress, uint16_t startAd
     }
 }
 
-void ByteCodeInterpreter::executeATT(uint8_t delay)
+void ByteCodeInterpreter::executeATT(uint16_t delayAddress)
 {
     // ten times the default delay value, stored in a uint16_t
+    uint8_t delay = 0x00;
+    memory.lecture(delayAddress, &delay);
     uint16_t delayValue = delay * defaultDelayValue;
     this->customDelay(delayValue);
+    ++currentAddress;
 }
 
-void ByteCodeInterpreter::executeDAL(uint8_t color)
+void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
 {
+    uint8_t color = 0x00;
+    memory.lecture(colorAddress, &color);
     switch (color)
     {
     case 0x01:
@@ -186,6 +198,7 @@ void ByteCodeInterpreter::executeDAL(uint8_t color)
     default:
         break;
     }
+    ++currentAddress;
 }
 
 // do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5

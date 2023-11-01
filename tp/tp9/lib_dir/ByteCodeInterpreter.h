@@ -38,8 +38,8 @@ public:
 private:
     void interpreteByteCode(uint8_t byteCode);
     void executeDBC(uint16_t iterationAddress, uint16_t startAdress);
-    void executeATT(uint8_t delay);
-    void executeDAL(uint8_t color);
+    void executeATT(uint16_t delayAddress);
+    void executeDAL(uint16_t colorAddress);
     void customDelay(uint16_t delay);
 
     Communication com;
