@@ -7,11 +7,12 @@
 int main()
 {
 
-  ByteCodeInterpreter bct;
-
+  // ByteCodeInterpreter bct;
+  Navigation nav;
   while (1)
   {
-    bct.run();
+    // bct.run();
+    nav.go(255, false);
   }
   return 0;
 }
