@@ -170,6 +170,9 @@ install: $(HEXROMTRG)
 debug: CFLAGS += -DACTIVE_DEBUG
 debug: install
 
+load: CFLAGS += -DACTIVE_LOAD
+load: install
+
 # Make clean permet d'effacer tout les fichiers generes
 # lors de la compilation
 clean:

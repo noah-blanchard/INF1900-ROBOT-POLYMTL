@@ -5,7 +5,7 @@
  *
  */
 
-ByteCodeInterpreter::ByteCodeInterpreter()
+ByteCodeInterpreter::ByteCodeInterpreter() : led(&PORTA, &DDRA, PA0, PA1)
 {
 }
 
@@ -40,15 +40,126 @@ fin: 1111 1111
  * @return true If the byte code was received
  * @return false If the byte code was not received
  */
-bool ByteCodeInterpreter::receiveByteCode()
+bool ByteCodeInterpreter::receiveAndSave()
 {
     uint8_t byteCode = 0x00;
     uint16_t address = 0x00;
-    while (byteCode != 0xFF)
+    while (byteCode != FIN)
     {
         byteCode = com.receive();
-        memoire.ecriture(address, byteCode);
+        memory.ecriture(address, byteCode);
         address++;
     }
     return true;
+}
+
+/**
+ * @brief Runs interpreteByteCode with start address 0x00
+ *
+ */
+
+void ByteCodeInterpreter::run()
+{
+    uint8_t byteCode = 0x00;
+    while (byteCode != FIN)
+    {
+        byteCode = memory.lecture(currentAddress);
+        this->interpreteByteCode(byteCode, currentAddress);
+        ++currentAddress;
+    }
+}
+
+/**
+ * @brief Execute the byte code from memory using memoire_24
+ *
+ */
+void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
+{
+    switch (byteCode)
+    {
+    case DBT:
+        break;
+    case ATT:
+        break;
+    case DAL:
+        break;
+    case DET:
+        break;
+    case SGO:
+        break;
+    case SAR:
+        break;
+    case MAR:
+        break;
+    case MAV:
+        break;
+    case MRE:
+        break;
+    case TRD:
+        break;
+    case TRG:
+        break;
+    case DBC:
+        this->executeDBC(memory.lecture(++currentAddress), ++currentAddress);
+        break;
+    case FBC:
+        break;
+    case FIN:
+        break;
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief Routine for executing a DBC instruction
+ *
+ */
+void ByteCodeInterpreter::executeDBC(uint8_t iterations, uint16_t startAdress)
+{
+    // go back to current address when FBC is met, go back to interpreteByteCode when fbc is met and iterations is 0
+    uint8_t byteCode = 0x00;
+    while (iterations != 0)
+    {
+        byteCode = memory.lecture(currentAddress);
+        this->interpreteByteCode(byteCode);
+        ++currentAddress;
+
+        if (byteCode == FBC)
+        {
+            --iterations;
+            currentAddress = startAdress;
+        }
+    }
+}
+
+void ByteCodeInterpreter::executeATT(uint8_t delay)
+{
+    // ten times the default delay value, stored in a uint16_t
+    uint16_t delayValue = delay * defaultDelayValue;
+    this->customDelay(delayValue);
+}
+
+void ByteCodeInterpreter::executeDAL(uint8_t color)
+{
+    switch (color)
+    {
+    case 0x01:
+        led.turnLedGreen();
+        break;
+    case 0x02:
+        led.turnLedRed();
+        break;
+    default:
+        break;
+    }
+}
+
+// do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5
+void ByteCodeInterpreter::customDelay(uint16_t delay)
+{
+    for (uint16_t i = 0; i < delay / 5; i++)
+    {
+        _delay_ms(5);
+    }
 }
