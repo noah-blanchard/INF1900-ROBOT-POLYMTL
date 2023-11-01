@@ -4,6 +4,7 @@
 // interruptions
 #include <avr/interrupt.h>
 #include "Communication.h"
+#include "Navigation.h"
 #include "memoire_24.h"
 #include "LED.h"
 #include "Debug.h"
@@ -32,22 +33,26 @@ public:
     static const uint8_t MAR2 = 0x61; // arrêter les moteurs
     static const uint8_t MAV = 0x62;  // avancer
     static const uint8_t MRE = 0x63;  // reculer
-    static const uint8_t TRD = 0x64;  // tourner à droite
-    static const uint8_t TRG = 0x65;  // tourner à gauche
+    static const uint8_t TRD = 0x64;  // tourner à droite de 90 degrés
+    static const uint8_t TRG = 0x65;  // tourner à gauche de 90 degrés
     static const uint8_t DBC = 0xC0;  // début de boucle
     static const uint8_t FBC = 0xC1;  // fin de boucle
     static const uint8_t FIN = 0xFF;  // fin
 
     static const uint16_t defaultDelayValue = 25; // default to 25 ms
+    static const uint16_t turnDelayValue = 200;   // value to turn 90 degrees
 private:
     void
     interpreteByteCode(uint8_t byteCode);
     void executeDBC(uint16_t iterationAddress, uint16_t startAdress);
     void executeATT(uint16_t delayAddress);
     void executeDAL(uint16_t colorAddress);
+    void executeTRD();
+    void executeTRG();
     void customDelay(uint16_t delay);
 
     Communication com;
+    Navigation nav;
     Memoire24CXXX memory;
     LED led;
     uint16_t currentAddress = 0x00;

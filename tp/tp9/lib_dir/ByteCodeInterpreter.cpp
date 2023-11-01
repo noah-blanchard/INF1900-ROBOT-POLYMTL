@@ -143,9 +143,15 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
     case MRE:
         break;
     case TRD:
+    {
+        this->executeTRD();
         break;
+    }
     case TRG:
+    {
+        this->executeTRG();
         break;
+    }
     case DBC:
     {
         uint16_t iterationAddress = ++currentAddress;
@@ -218,6 +224,26 @@ void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
     default:
         break;
     }
+}
+
+void ByteCodeInterpreter::executeTRD()
+{
+    const uint16_t speed = 255;
+    nav.goLeftWheel(speed, false); // left wheel forward
+    nav.goRightWheel(speed, true); // right wheel backward
+    this->customDelay(turnDelayValue);
+    nav.stop();
+    ++currentAddress;
+}
+
+void ByteCodeInterpreter::executeTRG()
+{
+    const uint16_t speed = 255;
+    nav.goLeftWheel(speed, true);   // left wheel backward
+    nav.goRightWheel(speed, false); // right wheel forward
+    this->customDelay(turnDelayValue);
+    nav.stop();
+    ++currentAddress;
 }
 
 // do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5
