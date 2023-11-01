@@ -44,10 +44,13 @@ bool ByteCodeInterpreter::receiveAndSave()
 {
     uint8_t byteCode = 0x00;
     uint16_t address = 0x00;
+    bool isDBT = false;
     while (byteCode != FIN)
     {
         byteCode = com.receive();
-        memory.ecriture(address, byteCode);
+        byteCode = com.receive();
+        if (byteCode == DBT | isDBT)
+            memory.ecriture(address, byteCode);
         address++;
     }
     return true;
@@ -65,11 +68,12 @@ void ByteCodeInterpreter::sendByteCode()
     char buffer[4];
     while (byteCode != FIN)
     {
-        byteCode = memory.lecture(address);
-        sprintf(buffer, "%02X", byteCode);
+        memory.lecture(address, &byteCode);
+        sprintf(buffer, "%02X\n", byteCode);
         com.sendString(buffer);
         address++;
     }
+    com.sendString("\n");
 }
 
 /**

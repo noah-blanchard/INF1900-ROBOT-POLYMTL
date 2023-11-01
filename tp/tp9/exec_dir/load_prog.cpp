@@ -7,6 +7,8 @@
 int main()
 {
   ByteCodeInterpreter interpreter;
+  //LED led(&PORTA, &DDRA, PA0, PA1);
+  interpreter.receiveAndSave();
   while (1)
   {
     interpreter.sendByteCode();
