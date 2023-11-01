@@ -40,7 +40,7 @@ public:
     static const uint8_t FIN = 0xFF;  // fin
 
     static const uint16_t defaultDelayValue = 25; // default to 25 ms
-    static const uint16_t turnDelayValue = 1000;  // value to turn 90 degrees
+    static const uint16_t turnDelayValue = 500;   // value to turn 90 degrees
 private:
     void
     interpreteByteCode(uint8_t byteCode);
