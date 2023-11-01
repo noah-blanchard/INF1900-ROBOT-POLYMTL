@@ -7,12 +7,16 @@
 int main()
 {
 
-  // ByteCodeInterpreter bct;
+  ByteCodeInterpreter bct;
   Navigation nav;
+  //bct.receiveAndSave();
   while (1)
   {
+    bct.sendByteCode();
+    // //_delay_ms(1000);
+    // // nav.go(255, false);
+    // nav.goLeftWheel(255, false);
     bct.run();
-    // nav.go(255, false);
   }
   return 0;
 }
