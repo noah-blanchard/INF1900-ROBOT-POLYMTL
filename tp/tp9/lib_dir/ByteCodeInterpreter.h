@@ -2,12 +2,12 @@
 #include <util/delay.h>
 #include <stdio.h>
 // interruptions
-#include <avr/interrupt.h>
 #include "Communication.h"
 #include "memoire_24.h"
 #include "LED.h"
 #include "Debug.h"
-#include "Timer.h"
+
+#define F_CPU 8000000UL
 
 class ByteCodeInterpreter
 {
