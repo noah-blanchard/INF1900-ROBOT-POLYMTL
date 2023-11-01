@@ -241,11 +241,8 @@ void ByteCodeInterpreter::executeTRG()
 {
     const uint16_t speed = 255;
     com.sendString("TRG\n");
-    while (true)
-    {
-        nav.goLeftWheel(speed, true); // left wheel backward
-        nav.goRightWheel(speed, false);
-    } // right wheel forward
+    nav.goLeftWheel(speed, true);   // left wheel backward
+    nav.goRightWheel(speed, false); // right wheel forward
     this->customDelay(turnDelayValue);
     nav.stop();
     ++currentAddress;
