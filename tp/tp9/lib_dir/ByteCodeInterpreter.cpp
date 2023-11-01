@@ -229,6 +229,7 @@ void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
 void ByteCodeInterpreter::executeTRD()
 {
     const uint16_t speed = 255;
+    com.sendString("TRD\n");
     nav.goLeftWheel(speed, false); // left wheel forward
     nav.goRightWheel(speed, true); // right wheel backward
     this->customDelay(turnDelayValue);
@@ -239,6 +240,7 @@ void ByteCodeInterpreter::executeTRD()
 void ByteCodeInterpreter::executeTRG()
 {
     const uint16_t speed = 255;
+    com.sendString("TRG\n");
     nav.goLeftWheel(speed, true);   // left wheel backward
     nav.goRightWheel(speed, false); // right wheel forward
     this->customDelay(turnDelayValue);
