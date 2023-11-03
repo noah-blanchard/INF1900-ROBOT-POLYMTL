@@ -1,7 +1,6 @@
 #include "sound.h"
 
 #define F_CPU 8000000
-uint16_t ChosenFrequency = 0; 
  
 Sound::Sound()
 {
@@ -22,141 +21,150 @@ void Sound::stopSound()
     TCCR2A &= ~(1 << COM2A0);
 }
 
-void Sound::makeSound(uint8_t timing)
-{
-    TCNT2 = 0;
+// void Sound::makeSound(uint8_t timing)
+// {
+//     TCNT2 = 0;
     
-    OCR2A = timing; // On initialise le timer 2
+//     OCR2A = timing; // On initialise le timer 2
 
-    TCCR2A |= 1 << COM2A0;
+//     TCCR2A |= 1 << COM2A0;
 
-    TCCR2A |= 1 << WGM21;
+//     TCCR2A |= 1 << WGM21;
     
-    TCCR2B |= (1 << CS22) | (1 << CS21); // /256
-}
+//     TCCR2B |= (1 << CS22) | (1 << CS21); // /256
+// }
 
 void Sound::chooseFrequency(uint8_t note);
 {
 	switch (note)
     {
         case 45  :
-            ChosenFrequency = 110; 
+            choosenFrequency = 110; 
             break;       
         case 46 :        
-            ChosenFrequency = 117;
+            choosenFrequency = 117;
             break;       
         case 47  :         
-           ChosenFrequency = 123;
+           choosenFrequency = 123;
             break;       
         case 48  :         
-            ChosenFrequency = 131;
+            choosenFrequency = 131;
             break;       
         case 49 :        
-            ChosenFrequency = 139;
+            choosenFrequency = 139;
             break;       
         case 50  :         
-            ChosenFrequency = 147;
+            choosenFrequency = 147;
             break;       
         case 51 :        
-            ChosenFrequency = 156;
+            choosenFrequency = 156;
             break;      
         case 52  :         
-            ChosenFrequency = 165;
+            choosenFrequency = 165;
             break;       
         case 53  :         
-            ChosenFrequency = 175;
+            choosenFrequency = 175;
             break;       
         case 54 :        
-            ChosenFrequency = 185;
+            choosenFrequency = 185;
             break;       
         case 55  :         
-            ChosenFrequency = 196;
+            choosenFrequency = 196;
             break;       
         case 56 :        
-            ChosenFrequency = 208;
+            choosenFrequency = 208;
             break;       
         case 57  :         
-            ChosenFrequency = 220;
+            choosenFrequency = 220;
             break;       
         case 58 :        
-            ChosenFrequency = 233;
+            choosenFrequency = 233;
             break;     
         case 59  :         
-            ChosenFrequency = 247;
+            choosenFrequency = 247;
             break;       
         case 60  :         
-           ChosenFrequency= 262;
+           choosenFrequency= 262;
             break;       
         case 61 :        
-            ChosenFrequency= 277;
+            choosenFrequency= 277;
             break;       
         case 62  :         
-            ChosenFrequency = 294;
+            choosenFrequency = 294;
             break;       
         case 63 :        
-            ChosenFrequency = 311;
+            choosenFrequency = 311;
             break;       
         case 64  :         
-            ChosenFrequency = 330;
+            choosenFrequency = 330;
             break;       
         case 65  :         
-            ChosenFrequency = 349;
+            choosenFrequency = 349;
             break;       
         case 66 :        
-            ChosenFrequency = 370;
+            choosenFrequency = 370;
             break;       
         case 67  :         
-            ChosenFrequency = 392;
+            choosenFrequency = 392;
             break;       
         case 68 :        
-            ChosenFrequency = 415;
+            choosenFrequency = 415;
             break;       
         case 69  :         
-            ChosenFrequency= 440;
+            choosenFrequency= 440;
             break;       
         case 70 :        
-            ChosenFrequency = 466;
+            choosenFrequency = 466;
             break;       
         case 71  :         
-            ChosenFrequency = 494;
+            choosenFrequency = 494;
             break;       
         case 72  :         
-            frequency = 523;
+            choosenFrequency = 523;
             break;       
         case 73 :        
-            ChosenFrequency = 554;
+            choosenFrequency = 554;
             break;       
         case 74  :         
-            ChosenFrequency = 587;
+            choosenFrequency = 587;
             break;       
         case 75 :        
-            ChosenFrequency = 622;
+            choosenFrequency = 622;
             break;       
         case 76  :         
-            ChosenFrequency = 659;
+            choosenFrequency = 659;
             break;       
         case 77  :         
-            ChosenFrequency = 698;
+            choosenFrequency = 698;
             break;       
         case 78 :        
-            ChosenFrequency = 740;
+            choosenFrequency = 740;
             break;       
         case 79  :         
-            ChosenFrequency = 784;
+            choosenFrequency = 784;
             break;       
         case 80 :       
-            ChosenFrequency = 831;
+            choosenFrequency = 831;
             break;       
         case 81  :         
-            ChosenFrequency = 880;
+            choosenFrequency = 880;
             break;
     }
-    makeSound(F_CPU / (ChosenFrequency*2));
+    makeSound(choosenFrequency);
 }
 
+void Sound::makeSound(uint16_t frequency)
+{
+    // Calculer le timing pour OCR2A
+    uint16_t timing = (F_CPU / (2 * 256 * frequency)) - 1;
 
+    // Initialiser TCNT2 à 0
+    TCNT2 = 0;
+    
+    // Mise à jour de la valeur OCR2A
+    OCR2A = timing;
 
-
-
-
-
+    // Configurer le Timer 2
+    TCCR2A = (1 << WGM21) | (1 << COM2A0); // Mode CTC et toggle sur compare match
+    TCCR2B = (1 << CS22) | (1 << CS21);    // Prescaler de 256
+}

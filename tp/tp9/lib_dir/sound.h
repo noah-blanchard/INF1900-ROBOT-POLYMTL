@@ -1,14 +1,17 @@
 #include <avr/io.h>
+#include <stdint.h>
 
-class Sound{   
-    public:
-       void chooseFrequency(uint8_t note);
-       void stopSound();
+class Sound
+{
+public:
+    void chooseFrequency(uint8_t note);
+    void stopSound();
 
- Sound();
+    Sound();
 
-~Sound() {};
+    ~Sound(){};
 
-    private:
-       makeSound(uint8_t timing);
+private:
+    void makeSound(uint8_t timing);
+    uint16_t choosenFrequency = 0;
 };
