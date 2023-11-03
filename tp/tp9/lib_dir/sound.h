@@ -12,6 +12,6 @@ public:
     ~Sound(){};
 
 private:
-    void makeSound(uint8_t timing);
+    void makeSound(uint16_t frequency);
     uint16_t choosenFrequency = 0;
 };

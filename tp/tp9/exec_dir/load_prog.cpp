@@ -8,15 +8,14 @@ int main()
 {
 
   ByteCodeInterpreter bct;
-  Navigation nav;
-  //bct.receiveAndSave();
-  while (1)
-  {
-    bct.sendByteCode();
-    // //_delay_ms(1000);
-    // // nav.go(255, false);
-    // nav.goLeftWheel(255, false);
-    bct.run();
-  }
+  //Navigation nav;
+  bct.receiveAndSave();
+  // DDRB |= (1 << PB3) | (1 << PB5); // car D0, D1, D5 et D4 sont deja pris
+  //   PORTB |= (1 << PB3);
+  //  Sound test;
+    //uint8_t noteDuration = 200; 
+    while(1){
+      bct.run();
+    }
   return 0;
 }

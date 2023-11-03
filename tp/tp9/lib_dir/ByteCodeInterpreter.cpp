@@ -2,7 +2,7 @@
 
 volatile bool timerHasElapsed = false;
 
-ISR(TIMER0_COMPA_vect)
+ISR(TIMER2_COMPA_vect)
 {
     timerHasElapsed = true;
 }
@@ -15,7 +15,7 @@ ISR(TIMER0_COMPA_vect)
 ByteCodeInterpreter::ByteCodeInterpreter() : led(&PORTA, &DDRA, PA0, PA1)
 {
     TimerConfig timerConfig;
-    timerConfig.timer = 0;
+    timerConfig.timer = 2;
     timerConfig.prescaler = 256;
     timerConfig.delay_ms = 1;
     timer = Timer(timerConfig);
@@ -257,21 +257,8 @@ void ByteCodeInterpreter::executeTRG()
 void ByteCodeInterpreter::executeSGO(uint16_t noteAddress)
 {
     uint8_t note = 0x00;
-    // memory.lecture(noteAddress, &note);
-    // sound.chooseFrequency(note);
-    uint8_t noteDuration = 200; // 200 ms par note
-    
-    for (int i = 0; i < 30 * 1000 / noteDuration; ++i) // Jouer pendant 30 secondes
-    {
-        // Séquence de notes de votre choix, par exemple, C, D, E, F, G, A, B
-        for (int note = 60; note <= 71; ++note)
-        {
-            sound.chooseFrequency(note);
-            _delay_ms(noteDuration);
-            sound.stopSound();
-            _delay_ms(10); // Pause entre les notes
-        }
-    }
+    memory.lecture(noteAddress, &note);
+    sound.chooseFrequency(note);
 }
 
 void ByteCodeInterpreter::executeSAR()

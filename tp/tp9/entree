@@ -1,0 +1,37 @@
+dbt;
+sgo 64;   // E
+att 15;   // short
+sar;
+att 1;
+
+sgo 64;   // E
+att 15;   // short
+sar;
+att 1;
+
+sgo 64;   // E
+att 30;   // short
+sar;
+att 1;
+
+sgo 60;   // C
+att 30;   // short
+sar;
+att 1;
+
+sgo 64;   // E
+att 15;   // short
+sar;
+att 1;
+
+sgo 67;   // G
+att 30;   // long
+sar;
+att 1;
+
+sgo 55;   // G
+att 60;   // short pause
+sar;
+att 1;
+att 100;
+fin;

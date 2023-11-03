@@ -4,25 +4,33 @@
  
 Sound::Sound()
 {
-    DDRD |= (1 << PD1) | (1 << PD0); // car D0, D1, D5 et D4 sont deja pris
-    PORTD |= (1 << PD1);
-    PORTD &= ~(1 << PD0);
+    DDRB |= (1 << PB3) | (1 << PB5);
+    PORTB |= (1 << PB3);
+    PORTB &= ~(1 << PB5);
 }
 
-void Sound::stopSound()
-{
-    PORTD &= ~(1 << PD1);
-    TCCR2A &= ~(1 << COM2A0);
-}
-
-void Sound::stopSound()
-{
-    PORTD &= ~(1 << PD1);
-    TCCR2A &= ~(1 << COM2A0);
-}
-
-// void Sound::makeSound(uint8_t timing)
+// Sound::Sound()
 // {
+//     DDRD |= (1 << PD7) | (1 << PD6);
+//     PORTD |= (1 << PD7);
+//     PORTD &= ~(1 << PD6);
+// }
+
+void Sound::stopSound()
+{
+    PORTB &= ~(1 << PB3);
+    TCCR0A &= ~(1 << COM0A0);
+}
+
+// void Sound::stopSound()
+// {
+//     PORTD &= ~(1 << PD7);
+//     TCCR2A &= ~(1 << COM2A0);
+// }
+
+// void Sound::makeSound(uint16_t frequency)
+// {
+//     uint32_t timing = (F_CPU / (2. * 256 * frequency)) - 1.;
 //     TCNT2 = 0;
     
 //     OCR2A = timing; // On initialise le timer 2
@@ -34,7 +42,33 @@ void Sound::stopSound()
 //     TCCR2B |= (1 << CS22) | (1 << CS21); // /256
 // }
 
-void Sound::chooseFrequency(uint8_t note);
+void Sound::makeSound(uint16_t frequency)
+{
+    uint32_t timing = (F_CPU / (2. * 256 * frequency)) - 1.;
+    TCNT0 = 0;
+    
+    OCR0A = timing; // On initialise le timer 2
+
+    TCCR0A |= 1 << COM0A0;
+
+    TCCR0A |= 1 << WGM01;
+    
+    TCCR0B |= (1 << CS02);
+}
+
+// void Sound::makeSound(uint16_t frequency)
+// {
+//     uint32_t timing = ((F_CPU / (2. * 256 * frequency)) - 1.);
+
+//     TCNT0 = 0;
+    
+//     OCR0A = timing;
+
+//     TCCR0A = (1 << WGM01) | (1 << WGM00)  | (1 << COM0A1); 
+//     TCCR0B = (1 << CS02);  
+// }
+
+void Sound::chooseFrequency(uint8_t note)
 {
 	switch (note)
     {
@@ -151,20 +185,4 @@ void Sound::chooseFrequency(uint8_t note);
             break;
     }
     makeSound(choosenFrequency);
-}
-
-void Sound::makeSound(uint16_t frequency)
-{
-    // Calculer le timing pour OCR2A
-    uint16_t timing = (F_CPU / (2 * 256 * frequency)) - 1;
-
-    // Initialiser TCNT2 à 0
-    TCNT2 = 0;
-    
-    // Mise à jour de la valeur OCR2A
-    OCR2A = timing;
-
-    // Configurer le Timer 2
-    TCCR2A = (1 << WGM21) | (1 << COM2A0); // Mode CTC et toggle sur compare match
-    TCCR2B = (1 << CS22) | (1 << CS21);    // Prescaler de 256
 }
