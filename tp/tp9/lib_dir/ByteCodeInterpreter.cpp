@@ -133,9 +133,15 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
     case DET:
         break;
     case SGO:
+    {
+        this->executeSGO(++currentAddress);
         break;
+    }
     case SAR:
+    {
+        this->executeSAR();
         break;
+    }
     case MAR:
         break;
     case MAV:
@@ -245,6 +251,19 @@ void ByteCodeInterpreter::executeTRG()
     nav.goRightWheel(speed, false); // right wheel forward
     this->customDelay(turnDelayValue);
     nav.stop();
+    ++currentAddress;
+}
+
+void ByteCodeInterpreter::executeSGO(uint16_t noteAddress)
+{
+    uint8_t note = 0x00;
+    memory.lecture(noteAddress, &note);
+    sound.chooseFrequency(note);
+}
+
+void ByteCodeInterpreter::executeSAR()
+{
+    sound.stopSound();
     ++currentAddress;
 }
 

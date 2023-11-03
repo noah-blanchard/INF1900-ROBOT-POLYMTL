@@ -9,6 +9,7 @@
 #include "LED.h"
 #include "Debug.h"
 #include "Timer.h"
+#include "sound.h"
 
 #define F_CPU 8000000UL
 
@@ -50,6 +51,8 @@ private:
     void executeTRD();
     void executeTRG();
     void customDelay(uint16_t delay);
+    void executeSGO(uint16_t noteAddress);
+    void executeSAR();
 
     Communication com;
     Navigation nav;
@@ -57,4 +60,5 @@ private:
     LED led;
     uint16_t currentAddress = 0x00;
     Timer timer;
+    Sound sound;
 };
