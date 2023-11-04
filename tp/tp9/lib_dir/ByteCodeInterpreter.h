@@ -48,11 +48,16 @@ private:
     void executeDBC(uint16_t iterationAddress, uint16_t startAdress);
     void executeATT(uint16_t delayAddress);
     void executeDAL(uint16_t colorAddress);
+    void executeDET();
     void executeTRD();
     void executeTRG();
     void customDelay(uint16_t delay);
     void executeSGO(uint16_t noteAddress);
     void executeSAR();
+    void executeMAR();
+    // void executeMAR2();
+    void executeMAV(uint16_t speedAddress);
+    void executeMRE(uint16_t speedAddress);
 
     Communication com;
     Navigation nav;

@@ -131,7 +131,10 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
         break;
     }
     case DET:
+    {
+        this->executeDET();
         break;
+    }
     case SGO:
     {
         this->executeSGO(++currentAddress);
@@ -143,11 +146,20 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
         break;
     }
     case MAR:
+    {
+        this->executeMAR();
         break;
+    }
     case MAV:
+    {
+        this->executeMAV(++currentAddress);
         break;
+    }
     case MRE:
+    {
+        this->executeMRE(++currentAddress);
         break;
+    }
     case TRD:
     {
         this->executeTRD();
@@ -232,6 +244,12 @@ void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
     }
 }
 
+void ByteCodeInterpreter::executeDET()
+{
+    led.turnLedOff();
+    ++currentAddress;
+}
+
 void ByteCodeInterpreter::executeTRD()
 {
     const uint16_t speed = 255;
@@ -265,6 +283,26 @@ void ByteCodeInterpreter::executeSAR()
 {
     sound.stopSound();
     ++currentAddress;
+}
+
+void ByteCodeInterpreter::executeMAR()
+{
+    nav.stop();
+    ++currentAddress;
+}
+
+void ByteCodeInterpreter::executeMAV(uint16_t speedAddress)
+{
+    uint8_t speed = 0x00;
+    memory.lecture(speedAddress, &speed);
+    nav.goForward(speed);
+}
+
+void ByteCodeInterpreter::executeMRE(uint16_t speedAddress)
+{
+    uint8_t speed = 0x00;
+    memory.lecture(speedAddress, &speed);
+    nav.goBackward(speed);
 }
 
 // do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5

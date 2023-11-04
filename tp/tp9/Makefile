@@ -12,6 +12,9 @@ install: lib
 debug: lib
 	$(MAKE) -C exec_dir debug
 
+load: lib
+	$(MAKE) -C exec_dir load
+
 clean:
 	$(MAKE) -C lib_dir clean
 	$(MAKE) -C exec_dir clean
