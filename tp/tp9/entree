@@ -1,7 +1,8 @@
 dbt;
-sar;
+dal 1;
+att 60;
+dal 2;
 mre 255;
 att 60;
-mar;
-att 20;
+mar ;
 fin;

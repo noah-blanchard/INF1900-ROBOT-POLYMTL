@@ -57,6 +57,7 @@ bool ByteCodeInterpreter::receiveAndSave()
     uint8_t byteCode = 0x00;
     uint16_t address = 0x00;
     bool isDBT = false;
+    memory.init();
     while (byteCode != FIN)
     {
         byteCode = com.receive();
@@ -145,7 +146,7 @@ void ByteCodeInterpreter::interpreteByteCode(uint8_t byteCode)
         this->executeSAR();
         break;
     }
-    case MAR:
+    case (MAR | MAR2):
     {
         this->executeMAR();
         break;

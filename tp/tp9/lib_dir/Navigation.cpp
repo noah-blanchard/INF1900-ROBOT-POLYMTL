@@ -26,6 +26,10 @@ uint16_t Navigation::_validateSpeed(uint16_t speed)
 Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
 {
     DDRD = (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
+    PORTD |= (1 << PD5);
+    PORTD |= (1 << PD4);
+    PORTD &= ~(1 << PD7);
+    PORTD &= ~(1 << PD7);
 }
 
 /**
@@ -34,7 +38,7 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
  */
 void Navigation::leftForward()
 {
-    PORTD |= (1 << PD4);
+    //PORTD |= (1 << PD4);
     PORTD &= ~(1 << PD6);
 }
 
@@ -44,7 +48,7 @@ void Navigation::leftForward()
  */
 void Navigation::rightForward()
 {
-    PORTD |= (1 << PD5);
+    //PORTD |= (1 << PD5);
     PORTD &= ~(1 << PD7);
 }
 
@@ -55,7 +59,7 @@ void Navigation::rightForward()
 void Navigation::leftBackward()
 {
     PORTD |= (1 << PD6);
-    PORTD &= ~(1 << PD4);
+    //PORTD &= ~(1 << PD4);
 }
 
 /**
@@ -65,7 +69,7 @@ void Navigation::leftBackward()
 void Navigation::rightBackward()
 {
     PORTD |= (1 << PD7);
-    PORTD &= ~(1 << PD5);
+    //PORTD &= ~(1 << PD5);
 }
 
 /**

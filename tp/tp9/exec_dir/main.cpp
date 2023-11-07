@@ -25,11 +25,19 @@ void executeRun()
 
 int main()
 {
-#ifdef ACTIVE_LOAD
-  executeLoad();
-#else
-  executeRun();
-#endif
+  LED led(&PORTA, &DDRA, PA0, PA1);
+  ByteCodeInterpreter interpreter;
+  interpreter.receiveAndSave();
+  while (true)
+  {
+    interpreter.run();
+    //nav.go(255, false);
+  }
+// #ifdef ACTIVE_LOAD
+//   executeLoad();
+// #else
+//   executeRun();
+// #endif
 
   return 0;
 }
