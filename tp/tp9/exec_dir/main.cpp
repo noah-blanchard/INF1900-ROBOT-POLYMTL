@@ -5,7 +5,7 @@
 
 void executeLoad()
 {
-  LED led;
+  LED led(&PORTA, &DDRA, PA0, PA1);
   ByteCodeInterpreter interpreter;
   interpreter.receiveAndSave();
   while (true)

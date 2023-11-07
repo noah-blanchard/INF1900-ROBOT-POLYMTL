@@ -246,7 +246,7 @@ void ByteCodeInterpreter::executeDAL(uint16_t colorAddress)
 
 void ByteCodeInterpreter::executeDET()
 {
-    led.turnLedOff();
+    led.turnOffLed();
     ++currentAddress;
 }
 
@@ -295,30 +295,32 @@ void ByteCodeInterpreter::executeMAV(uint16_t speedAddress)
 {
     uint8_t speed = 0x00;
     memory.lecture(speedAddress, &speed);
-    nav.goForward(speed);
+    nav.go(speed, false);
 }
 
 void ByteCodeInterpreter::executeMRE(uint16_t speedAddress)
 {
     uint8_t speed = 0x00;
     memory.lecture(speedAddress, &speed);
-    nav.goBackward(speed);
+    nav.go(speed, true);
 }
 
 // do the same but using 5 instead of 1 because possible errors cpu delay, but adapt the value in the for loop delay / 5
 void ByteCodeInterpreter::customDelay(uint16_t delay)
 {
     timer.reset();
+    cli();
+    timer.enable();
+     sei();
     // use timer0 to wait for the delay
     for (int i = 0; i < delay; ++i)
     {
-        timer.enable();
-        sei();
+        
+       
         while (!timerHasElapsed)
             ;
         timerHasElapsed = false;
-        cli();
-        timer.disable();
+
         timer.reset();
     }
 }
