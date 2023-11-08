@@ -1,7 +1,7 @@
 /**
  * @file Navigation.cpp
  * @brief Implementation of the Navigation class.
-*/
+ */
 #include "Navigation.h"
 
 /**
@@ -21,60 +21,60 @@ uint16_t Navigation::_validateSpeed(uint16_t speed)
 
 /**
  * @brief Constructs a new Navigation object and initializes the DDRD register.
- * 
+ *
  */
 Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
 {
     DDRD = (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
     PORTD |= (1 << PD5);
     PORTD |= (1 << PD4);
-    PORTD &= ~(1 << PD7);
+    PORTD &= ~(1 << PD6);
     PORTD &= ~(1 << PD7);
 }
 
 /**
  * @brief Sets the left wheel to move forward.
- * 
+ *
  */
 void Navigation::leftForward()
 {
-    //PORTD |= (1 << PD4);
+    // PORTD |= (1 << PD4);
     PORTD &= ~(1 << PD6);
 }
 
 /**
  * @brief Sets the right wheel to move forward.
- * 
+ *
  */
 void Navigation::rightForward()
 {
-    //PORTD |= (1 << PD5);
+    // PORTD |= (1 << PD5);
     PORTD &= ~(1 << PD7);
 }
 
 /**
  * @brief Sets the left wheel to move backward.
- * 
+ *
  */
 void Navigation::leftBackward()
 {
     PORTD |= (1 << PD6);
-    //PORTD &= ~(1 << PD4);
+    // PORTD &= ~(1 << PD4);
 }
 
 /**
  * @brief Sets the right wheel to move backward.
- * 
+ *
  */
 void Navigation::rightBackward()
 {
     PORTD |= (1 << PD7);
-    //PORTD &= ~(1 << PD5);
+    // PORTD &= ~(1 << PD5);
 }
 
 /**
  * @brief Sets both wheels to move forward.
- * 
+ *
  */
 void Navigation::forward()
 {
@@ -84,7 +84,7 @@ void Navigation::forward()
 
 /**
  * @brief Sets both wheels to move backward.
- * 
+ *
  */
 void Navigation::backward()
 {
@@ -94,7 +94,7 @@ void Navigation::backward()
 
 /**
  * @brief Sets both wheels to move at the given speed and direction.
- * 
+ *
  * @param speed The speed value to set the wheels to move at.
  * @param backward A boolean value indicating whether the wheels should move backward or forward.
  */
@@ -117,7 +117,7 @@ void Navigation::go(uint16_t speed, bool backward)
 
 /**
  * @brief Sets the left wheel to move at the given speed and direction.
- * 
+ *
  * @param speed The speed value to set the left wheel to move at.
  * @param backward A boolean value indicating whether the left wheel should move backward or forward.
  */
@@ -139,7 +139,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
 
 /**
  * @brief Sets the right wheel to move at the given speed and direction.
- * 
+ *
  * @param speed The speed value to set the right wheel to move at.
  * @param backward A boolean value indicating whether the right wheel should move backward or forward.
  */
@@ -161,7 +161,7 @@ void Navigation::goRightWheel(uint16_t speed, bool backward)
 
 /**
  * @brief Stops both wheels from moving.
- * 
+ *
  */
 void Navigation::stop()
 {
@@ -171,7 +171,7 @@ void Navigation::stop()
 
 /**
  * @brief Stops the left wheel from moving.
- * 
+ *
  */
 void Navigation::stopLeft()
 {
@@ -182,7 +182,7 @@ void Navigation::stopLeft()
 
 /**
  * @brief Stops the right wheel from moving.
- * 
+ *
  */
 void Navigation::stopRight()
 {
