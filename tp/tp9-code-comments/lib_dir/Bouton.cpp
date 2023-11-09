@@ -1,89 +1,60 @@
-/**
- * @file Bouton.cpp
- * @brief Implementation of the Bouton class.
- * 
- * This file contains the implementation of the Bouton class, which provides methods to set up and control an interrupt triggered by a button press.
- * The class provides methods to set the interrupt trigger to rising, falling or any edge, enable or disable the interrupt, and reset the interrupt.
- */
+// Inclusion du fichier d'en-tête pour la classe Bouton.
 #include "Bouton.h"
 
+// Constructeur de la classe Bouton.
+Bouton::Bouton(uint8_t int_N) : _int_N(int_N) // Initialise le numéro d'interruption avec la valeur passée.
+{
+}
 
-/**
- * @brief Constructor for the Bouton class.
- * 
- * @param int_N The interrupt number associated with the button.
- */
-Bouton::Bouton(uint8_t int_N) : _int_N(int_N)
-{}
+// Destructeur de la classe Bouton, actuellement vide car il n'y a rien à nettoyer explicitement.
+Bouton::~Bouton() {}
 
-Bouton::~Bouton(){ }
-
-/**
- * @brief Sets the interrupt to trigger on a rising edge.
- * 
- */
+// Configure l'interruption pour qu'elle soit déclenchée sur un front montant.
 void Bouton::setRisingEdge()
 {
-    reset();
+    reset(); // Réinitialise la configuration des interruptions.
 
-    EICRA |= (1 << ISC00);
+    EICRA |= (1 << ISC00); // Configure le premier bit pour la détection de front montant.
 
-    EICRA = (1 << ISC01);
+    EICRA = (1 << ISC01); // Ceci est probablement une erreur. Il devrait utiliser '|=', sinon cela écrase la configuration précédente.
 }
 
-/**
- * @brief Sets the interrupt to trigger on a falling edge.
- * 
- */
+// Configure l'interruption pour qu'elle soit déclenchée sur un front descendant.
 void Bouton::setFallingEdge()
 {
-    reset();
+    reset(); // Réinitialise la configuration des interruptions.
 
-    EICRA |= (0 << ISC00);
+    EICRA |= (0 << ISC00); // Efface le premier bit pour la détection de front descendant (inutile car écrire 0 n'a aucun effet).
 
-    EICRA = (1 << ISC01);
-
+    EICRA = (1 << ISC01); // Ceci est probablement une erreur. Il devrait utiliser '|=', sinon cela écrase la configuration précédente.
 }
 
-/**
- * @brief Sets the interrupt to trigger on any edge.
- * 
- */
+// Configure l'interruption pour qu'elle soit déclenchée sur les deux fronts.
 void Bouton::setAnyEdge()
 {
-    reset();
+    reset(); // Réinitialise la configuration des interruptions.
 
-    EICRA |= (1 << ISC00);
+    EICRA |= (1 << ISC00); // Configure le premier bit pour la détection de n'importe quel front.
 
-    EICRA = (0 << ISC01);
-
+    EICRA = (0 << ISC01); // Ceci est probablement une erreur. Il devrait utiliser '|=', sinon cela écrase la configuration précédente.
 }
 
-/**
- * @brief Enables the interrupt.
- * 
- */
+// Active les interruptions.
 void Bouton::enableInterrupt()
 {
-    EIMSK |= (1 << _int_N);
+    EIMSK |= (1 << _int_N); // Active l'interruption en configurant le bit correspondant dans le registre EIMSK.
 }
 
-/**
- * @brief Disables the interrupt.
- * 
- */
+// Désactive les interruptions.
 void Bouton::disableInterrupt()
 {
-    EIMSK &= ~(1 << _int_N);
+    EIMSK &= ~(1 << _int_N); // Désactive l'interruption en nettoyant le bit correspondant dans le registre EIMSK.
 }
 
-/**
- * @brief Resets the interrupt.
- * 
- */
-void Bouton::reset(){
-    EICRA &= ~(1 << ISC00);
+// Réinitialise la configuration des interruptions.
+void Bouton::reset()
+{
+    EICRA &= ~(1 << ISC00); // Nettoie le bit pour la détection de front montant.
 
-    EICRA &= ~(1 << ISC01);
+    EICRA &= ~(1 << ISC01); // Nettoie le bit pour la détection de front descendant.
 }
-
