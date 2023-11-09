@@ -1,8 +1,39 @@
-dbt;
-dal 1;
-att 60;
-dal 2;
-mre 255;
-att 60;
-mar ;
-fin;
+dbt ;# Indique le début du programme
+att 10 ;# Attendre 250 ms
+
+dal 1 ;# Allumer la DEL en vert
+att 10 ;# Attendre 250 ms
+det ;# Éteindre la DEL
+att 10 ;# Attendre 250 ms
+
+dal 2 ;# Allumer la DEL en rouge
+att 10 ;# Attendre 250 ms
+det ;# Éteindre la DEL
+att 10 ;# Attendre 250 ms
+
+sgo 69 ;# Jouer un son à 440 Hz
+att 10 ;# Attendre 250 ms
+sar ;# Arrêter de jouer le son
+att 10 ;# Attendre 250 ms
+
+sgo 45 ;# Jouer un son à 110 Hz
+att 10 ;# Attendre 250 ms
+sar ;# Arrêter de jouer le son
+att 10 ;# Attendre 250 ms
+
+mav 255 ;# Avancer à vitesse 100%
+att 20 ;# Attendre 500 ms
+mar ;# Arrêter les moteurs
+att 10 ;# Attendre 250 ms
+
+mre 128 ;# Reculer à vitesse 50%
+att 20 ;# Attendre 500 ms
+mar ;# Arrêter les moteurs
+att 10 ;# Attendre 250 ms
+
+trd ;# Tourner à droite de 90 degrés
+att 10 ;# Attendre 250 ms
+trg ;# Tourner à gauche de 90 degrés
+att 10 ;# Attendre 250 ms
+
+fin ;# Fin de l'exécution du programme

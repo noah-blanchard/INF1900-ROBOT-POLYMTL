@@ -212,11 +212,6 @@ void ByteCodeInterpreter::executeATT(uint16_t delayAddress)
     memory.lecture(delayAddress, &delay);            // Lecture de la valeur de délai à partir de la mémoire.
     uint16_t delayValue = delay * defaultDelayValue; // Calcul du délai réel.
 
-    // Envoi de la valeur de délai via RS232.
-    char buffer[4];
-    sprintf(buffer, "%d\n", delayValue);
-    com.sendString(buffer);
-
     // Attente active pendant le délai calculé.
     this->customDelay(delayValue);
 }
