@@ -1,17 +1,19 @@
-  #include <stdint.h>
-  #include <avr/io.h>
-  class Bouton{
-    public:
-    Bouton(uint8_t int_N_p);
-    ~Bouton();
+#include <stdint.h>
+#include <avr/io.h>
+class Bouton
+{
+public:
+  Bouton(uint8_t int_N_p);
+  ~Bouton();
 
-    void setRisingEdge();
-    void setFallingEdge();
-    void setAnyEdge();
-    void enableInterrupt();
-    void disableInterrupt();
-    void reset();
+  void setLowLevel();
+  void setRisingEdge();
+  void setFallingEdge();
+  void setAnyEdge();
+  void enableInterrupt();
+  void disableInterrupt();
+  void reset();
 
-    private:
-        uint8_t _int_N;
-  };
+private:
+  uint8_t _int_N;
+};
