@@ -14,10 +14,37 @@ volatile uint8_t columnSeleted = 1;
 volatile uint8_t selectChoice = false;
 volatile uint8_t validateChoice = false;
 
+Bouton toValidate(1); // PD3
+Bouton toSelect(0); //PD2
+
 enum class selection {INITIAL, selectLine, selectColumn,confirmChoices};
+
+ISR ( INT0_vect) {
+// select Choice
+selectChoice = true;
+EIFR |= (1 << INTF0) ;
+
+}
+
+ISR ( INT1_vect) {
+// validate Choice
+validateChoice = true;
+EIFR |= (1 << INTF0) ;
+
+}
+
+
 
 void configureButtons()
 {
+	cli();
+	toSelect.enableInterrupt();
+	toSelect.setLowLevel();
+
+	toValidate.enableInterrupt();
+	toValidate.setLowLevel();
+
+	sei();
 
 }
 
@@ -89,6 +116,7 @@ void identifyCorner()
 
 int main(void) {	
 
+	configureButtons();
 	identifyCorner();
 	// Cr�ation de l'objet (l'afficheur est connect� sur le port DEMO_PORT)
 	// LCM disp(&DEMO_DDR, &DEMO_PORT);
