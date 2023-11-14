@@ -14,15 +14,27 @@ void LineMaker::adjustTrajectory()
             break;
         }
 
-        case INNER_LEFT || OUTER_LEFT: {
+        case INNER_LEFT {
             _nav.goRightWheel(adjustSpeed, false);
             _nav.goLeftWheel(baseSpeed, false);
             break;
         }
 
-        case INNER_RIGHT || OUTER_RIGHT: {
-            _nav.goLeftWheel(adjustSpeed, false);
+        case OUTER_LEFT: {
+            _nav.goRightWheel(adjustSpeed, false);
+            _nav.goLeftWheel(baseSpeed, false);
+            break;
+        }
+
+        case INNER_RIGHT: {
             _nav.goRightWheel(baseSpeed, false);
+            _nav.goLeftWheel(adjustSpeed, false);
+            break;
+        }
+
+        case OUTER_RIGHT: {
+            _nav.goRightWheel(baseSpeed, false);
+            _nav.goLeftWheel(adjustSpeed, false);
             break;
         }
 
