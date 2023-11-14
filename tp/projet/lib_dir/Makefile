@@ -40,6 +40,8 @@ endif
 
 CXXFLAGS=-fno-exceptions
 
+CFLAGS += -DF_CPU=8000000UL
+
 ####### Cible (Target) #######
 TRG=$(PROJECTNAME).a
 

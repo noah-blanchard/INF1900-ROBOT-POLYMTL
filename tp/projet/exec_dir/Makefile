@@ -91,6 +91,8 @@ endif
 # Flags pour le compilateur en C++
 CXXFLAGS=-fno-exceptions
 
+CFLAGS += -DF_CPU=8000000UL
+
 # Linker pour lier les librairies utilisees
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) -L../lib_dir
 
