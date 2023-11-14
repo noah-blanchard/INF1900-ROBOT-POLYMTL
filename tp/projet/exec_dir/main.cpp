@@ -1,43 +1,16 @@
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include "ByteCodeInterpreter.h"
+#include "LineMaker.h"
 
-void executeLoad()
-{
-  LED led(&PORTA, &DDRA, PA0, PA1);
-  ByteCodeInterpreter interpreter;
-  interpreter.receiveAndSave();
-  while (true)
-  {
-    led.turnLedGreen();
-  }
-}
+int main(){
 
-void executeRun()
-{
-  ByteCodeInterpreter interpreter;
-  while (true)
-  {
-    interpreter.run();
-  }
-}
+    LineMaker lineMaker;
 
-int main()
-{
-  LED led(&PORTA, &DDRA, PA0, PA1);
-  ByteCodeInterpreter interpreter;
-  interpreter.receiveAndSave();
-  while (true)
-  {
-    interpreter.run();
-    //nav.go(255, false);
-  }
-// #ifdef ACTIVE_LOAD
-//   executeLoad();
-// #else
-//   executeRun();
-// #endif
+    while(true){
+        lineMaker.adjustTrajectory();
+    }
 
-  return 0;
+    return 0;
+
 }
