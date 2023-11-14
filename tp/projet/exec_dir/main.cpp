@@ -6,9 +6,11 @@
 int main(){
 
     LineMaker lineMaker;
+    Navigation nav;
 
     while(true){
         lineMaker.adjustTrajectory();
+        //nav.go(255, false);
     }
 
     return 0;

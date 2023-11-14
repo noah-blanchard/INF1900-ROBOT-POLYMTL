@@ -14,7 +14,7 @@ void LineMaker::adjustTrajectory()
             break;
         }
 
-        case INNER_LEFT {
+        case INNER_LEFT: {
             _nav.goRightWheel(adjustSpeed, false);
             _nav.goLeftWheel(baseSpeed, false);
             break;
@@ -27,7 +27,7 @@ void LineMaker::adjustTrajectory()
         }
 
         case INNER_RIGHT: {
-            _nav.goRightWheel(baseSpeed, false);
+           _nav.goRightWheel(baseSpeed, false);
             _nav.goLeftWheel(adjustSpeed, false);
             break;
         }
@@ -38,14 +38,18 @@ void LineMaker::adjustTrajectory()
             break;
         }
 
+        case NONE:{
+            _nav.stop();
+            break;
+        }
+
         default:{
             break;
         }
     }
 }
 
-LineMaker::retrieveSensorData()
-{
+
     uint8_t LineMaker::retrieveSensorData()
     {
         uint8_t sensorData = 0;
@@ -66,4 +70,3 @@ LineMaker::retrieveSensorData()
 
         return sensorData;
     }
-}
