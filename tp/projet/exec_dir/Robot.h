@@ -35,6 +35,7 @@ enum class State
     CALCULATE_PATH,
     FOLLOW_LINE,
     MEET_CROSSROAD,
+    MEET_OBSTACLE,
     TURN_AT_CROSSROAD
 };
 

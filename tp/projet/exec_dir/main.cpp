@@ -1,16 +1,14 @@
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include "LineMaker.h"
+#include "Robot.h"
 
 int main(){
 
-    LineMaker lineMaker;
-    Navigation nav;
+    Robot robot;
 
     while(true){
-        lineMaker.adjustTrajectory();
-        //nav.go(255, false);
+        robot.runRoutine();
     }
 
     return 0;

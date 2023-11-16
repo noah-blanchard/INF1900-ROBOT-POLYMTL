@@ -77,7 +77,7 @@ void Robot::_followLineRoutine()
         return;
     } else
     {
-        switch (flag)
+    switch (flag)
     {
     case LineMaker::Flag::NO_ADJUSTMENT:
     {
