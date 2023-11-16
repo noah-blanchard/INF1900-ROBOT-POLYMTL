@@ -8,6 +8,7 @@
 #include "LineMaker.h"
 #include "Navigation.h"
 #include "InfraRedSensor.h"
+#include "Communication.h"
 
 // Define the clock speed
 #define F_CPU 8000000UL
