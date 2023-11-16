@@ -1,4 +1,4 @@
-/**
+  /**
  * @file Navigation.cpp
  * @brief Implementation of the Navigation class.
  */

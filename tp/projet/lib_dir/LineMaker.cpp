@@ -58,11 +58,11 @@ Flag LineMaker::getDetectionFlag()
     {
         flag = Flag::NO_ADJUSTMENT;
     }
-    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & (INNER_LEFT | MIDDLE)) == (INNER_LEFT | MIDDLE))
+    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & INNER_LEFT_MIDDLE) == INNER_LEFT_MIDDLE || (sensorData &INNER_OUTER_LEFT)==INNER_OUTER_LEFT)
     {
         flag = Flag::RIGHT_ADJUSTMENT;
     }
-    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & (INNER_RIGHT | MIDDLE)) == (INNER_RIGHT | MIDDLE))
+    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & INNER_RIGHT_MIDDLE) == INNER_RIGHT_MIDDLE || (sensorData &INNER_OUTER_RIGHT)==INNER_OUTER_RIGHT)
     {
         flag = Flag::LEFT_ADJUSTMENT;
     }
@@ -70,6 +70,25 @@ Flag LineMaker::getDetectionFlag()
     {
         flag = Flag::NO_LINE;
     }
+
+    else if ((sensorData & LEFT_INTERSECTION )== LEFT_INTERSECTION)
+    {
+        flag = Flag::LEFT_CROSSROAD;
+
+    }
+
+    else if ((sensorData & RIGHT_INTERSECTION)== RIGHT_INTERSECTION)
+    {
+        flag = Flag::RIGHT_CROSSROAD;
+
+    }
+
+
+    else if ((sensorData & ALL  ) == ALL )
+    {
+        flag = Flag::FULL_CROSSROAD;
+
+    } 
 
     return flag;
 }

@@ -116,6 +116,25 @@ void Robot::_followLineRoutine()
         _currentState = State::MEET_CROSSROAD;
         break;
     }
+
+
+    //Je rajoute des cases pour LEFT_CROSSROAD ET RIGHT_CROSSROAD
+
+    case Flag::LEFT_CROSSROAD:
+    {
+        _navModule.stop();
+        _currentState = State::MEET_CROSSROAD;
+        break;
+    }
+
+    case Flag::RIGHT_CROSSROAD:
+    {
+        _navModule.stop();
+        _currentState = State::MEET_CROSSROAD;
+        break;
+    }
+
+
     default:
     {
         _navModule.stop();

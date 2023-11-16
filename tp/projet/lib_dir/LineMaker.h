@@ -18,7 +18,9 @@ enum class Flag
     FULL_CROSSROAD,
     //T_CROSSROAD,
     CORNER_CROSSROAD,
-};
+    LEFT_CROSSROAD,
+    RIGHT_CROSSROAD,
+    };
 
 class LineMaker
 {
@@ -36,6 +38,19 @@ public:
     static const uint8_t INNER_RIGHT = 0b01000;
     static const uint8_t OUTER_RIGHT = 0b10000;
     static const uint8_t ALL = OUTER_LEFT | INNER_LEFT | MIDDLE | INNER_RIGHT | OUTER_RIGHT;
+
+    //Je rajoute des static const pour eviter les longues lignes de codes
+    static const uint8_t LEFT_INTERSECTION =   OUTER_LEFT | INNER_LEFT  | MIDDLE;
+    static const uint8_t RIGHT_INTERSECTION = OUTER_RIGHT | INNER_RIGHT | MIDDLE;
+
+    static const uint8_t INNER_LEFT_MIDDLE  =  INNER_LEFT | MIDDLE;
+    static const uint8_t INNER_RIGHT_MIDDLE = INNER_RIGHT | MIDDLE;
+
+    static const uint8_t INNER_OUTER_LEFT =  INNER_LEFT | OUTER_LEFT ;
+    static const uint8_t INNER_OUTER_RIGHT = INNER_RIGHT | OUTER_RIGHT ;
+
+
+
 
 private:
     uint8_t _retrieveSensorData();
