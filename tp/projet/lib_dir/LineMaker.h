@@ -10,14 +10,23 @@
 #define PORT_SENSOR PORTA
 #define PIN_SENSOR PINA
 
-class LineMaker
+enum class Flag
+{
+    LEFT_ADJUSTMENT,
+    RIGHT_ADJUSTMENT,
+    NO_ADJUSTMENT,
+    NO_LINE,
+    FULL_CROSSROAD,
+    T_CROSSROAD,
+    CORNER_CROSSROAD,
+} class LineMaker
 {
 
 public:
     LineMaker();
     ~LineMaker();
 
-    void adjustTrajectory();
+    Flag getDetectionFlag();
 
     static const uint8_t NONE = 0b00000;
     static const uint8_t OUTER_LEFT = 0b00001;
@@ -28,11 +37,5 @@ public:
     static const uint8_t ALL = OUTER_LEFT | INNER_LEFT | MIDDLE | INNER_RIGHT | OUTER_RIGHT;
 
 private:
-
-    uint8_t retrieveSensorData();
-    Navigation _nav;
-
-    const uint8_t baseSpeed = 120;
-    const uint8_t adjustSpeed = 190;
-
+    uint8_t _retrieveSensorData();
 };

@@ -15,11 +15,18 @@ public:
     void stopLeft();
     void stopRight();
 
+    void adjustRight();
+    void adjustLeft();
+
 private:
     Wheel _leftWheel;
     Wheel _rightWheel;
 
-    void forward();
+    static const uint8_t _BASE_SPEED = 180;
+    static const uint8_t _ADJUST_OFFSET = 50;
+
+    void
+    forward();
     void backward();
     void leftForward();
     void rightForward();

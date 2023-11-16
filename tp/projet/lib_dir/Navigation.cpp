@@ -190,3 +190,23 @@ void Navigation::stopRight()
     PORTD &= ~(1 << PD5);
     PORTD &= ~(1 << PD7);
 }
+
+/**
+ * @brief Send more power in right wheel
+ *
+ */
+void Navigation::adjustRight()
+{
+    nav.goRightWheel(_BASE_SPEED, false);
+    nav.goLeftWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
+}
+
+/**
+ * @brief Send more power in left wheel
+ *
+ */
+void Navigation::adjustLeft()
+{
+    nav.goRightWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
+    nav.goLeftWheel(_BASE_SPEED, false);
+}
