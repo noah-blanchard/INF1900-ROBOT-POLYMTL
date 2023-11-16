@@ -16,7 +16,7 @@ enum class Flag
     NO_ADJUSTMENT,
     NO_LINE,
     FULL_CROSSROAD,
-    T_CROSSROAD,
+    //T_CROSSROAD,
     CORNER_CROSSROAD,
 };
 

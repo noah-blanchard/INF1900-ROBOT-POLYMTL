@@ -58,11 +58,11 @@ Flag LineMaker::getDetectionFlag()
     {
         flag = Flag::NO_ADJUSTMENT;
     }
-    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT)
+    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & (INNER_LEFT | MIDDLE)) == (INNER_LEFT | MIDDLE))
     {
         flag = Flag::RIGHT_ADJUSTMENT;
     }
-    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT)
+    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & (INNER_RIGHT | MIDDLE)) == (INNER_RIGHT | MIDDLE))
     {
         flag = Flag::LEFT_ADJUSTMENT;
     }

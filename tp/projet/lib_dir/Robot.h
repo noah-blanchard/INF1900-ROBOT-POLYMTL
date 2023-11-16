@@ -57,7 +57,7 @@ public:
 
 private:
     static const uint8_t _BASE_SPEED = 180;
-    static const uint16_t _BASE_PAUSE_DELAY = 300;
+    static const uint16_t _BASE_PAUSE_DELAY = 80;
 
     Timer _delayTimerModule;
     LineMaker _lineMakerModule;

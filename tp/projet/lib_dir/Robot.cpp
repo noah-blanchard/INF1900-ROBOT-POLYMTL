@@ -74,12 +74,12 @@ void Robot::_followLineRoutine()
 {
     Flag flag = _lineMakerModule.getDetectionFlag();
 
-    if(_irSensorModule.isObstacleDetected()){
-        _navModule.stop();
-        _currentState = State::MEET_OBSTACLE;
-        return;
-    } else
-    {
+    // if(_irSensorModule.isObstacleDetected()){
+    //     _navModule.stop();
+    //     _currentState = State::MEET_OBSTACLE;
+    //     return;
+    // } else
+    // {
     switch (flag)
     {
     case Flag::NO_ADJUSTMENT:
@@ -89,15 +89,17 @@ void Robot::_followLineRoutine()
     }
     case Flag::LEFT_ADJUSTMENT:
     {
-        _pause();
         _navModule.adjustLeft();
+        _pause();
+        _navModule.stop();
         _pause();
         break;
     }
     case Flag::RIGHT_ADJUSTMENT:
     {
+         _navModule.adjustRight();
         _pause();
-        _navModule.adjustRight();
+        _navModule.stop();
         _pause();
         break;
     }
@@ -118,9 +120,9 @@ void Robot::_followLineRoutine()
         break;
     }
     }
-    }
+    //}
     
-    _navModule.stop();
+    //_navModule.stop();
 }
 
 void Robot::_pause()
