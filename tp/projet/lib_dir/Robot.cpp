@@ -81,10 +81,7 @@ void Robot::_followLineRoutine()
 
     if(_irSensorModule.isObstacleDetected()){
         _navModule.stop();
-    }
-        _currentState = State::MEET_OBSTACLE;
-    } else
-    {
+    } else   {
     switch (flag)
     {
     case Flag::NO_ADJUSTMENT:
@@ -126,6 +123,7 @@ void Robot::_followLineRoutine()
     }
     }
     //}
+    }
     
     //_navModule.stop();
 }
