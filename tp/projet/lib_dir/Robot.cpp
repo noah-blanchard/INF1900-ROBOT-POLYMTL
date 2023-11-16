@@ -38,6 +38,11 @@ void Robot::runRoutine()
         //_identifyCornerRoutine();
         break;
     }
+    case State::MAKE_TRIP:
+    {
+        //_identifyCornerRoutine();
+        break;
+    }
     case State::TRAVEL_POSITION_SELECTION:
     {
         //_travelPositionSelectionRoutine();
