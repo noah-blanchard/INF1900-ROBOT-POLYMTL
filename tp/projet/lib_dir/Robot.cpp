@@ -79,55 +79,55 @@ void Robot::_followLineRoutine()
 {
     Flag flag = _lineMakerModule.getDetectionFlag();
 
-    // if(_irSensorModule.isObstacleDetected()){
-    //     _navModule.stop();
-    //     _currentState = State::MEET_OBSTACLE;
-    //     return;
+    if(_irSensorModule.isObstacleDetected()){
+        _navModule.go(180, false);
+    }
+        //_currentState = State::MEET_OBSTACLE;
     // } else
     // {
-    switch (flag)
-    {
-    case Flag::NO_ADJUSTMENT:
-    {
-        _navModule.go(180, false);
-        break;
-    }
-    case Flag::LEFT_ADJUSTMENT:
-    {
-        _navModule.adjustLeft();
-        _pause();
-        _navModule.stop();
-        _pause();
-        break;
-    }
-    case Flag::RIGHT_ADJUSTMENT:
-    {
-         _navModule.adjustRight();
-        _pause();
-        _navModule.stop();
-        _pause();
-        break;
-    }
-    case Flag::NO_LINE:
-    {
-        _navModule.stop();
-        break;
-    }
-    case Flag::FULL_CROSSROAD:
-    {
-        _navModule.stop();
-        _currentState = State::MEET_CROSSROAD;
-        break;
-    }
-    default:
-    {
-        _navModule.stop();
-        break;
-    }
-    }
-    //}
+    // switch (flag)
+    // {
+    // case Flag::NO_ADJUSTMENT:
+    // {
+    //     _navModule.go(180, false);
+    //     break;
+    // }
+    // case Flag::LEFT_ADJUSTMENT:
+    // {
+    //     _navModule.adjustLeft();
+    //     _pause();
+    //     _navModule.stop();
+    //     _pause();
+    //     break;
+    // }
+    // case Flag::RIGHT_ADJUSTMENT:
+    // {
+    //      _navModule.adjustRight();
+    //     _pause();
+    //     _navModule.stop();
+    //     _pause();
+    //     break;
+    // }
+    // case Flag::NO_LINE:
+    // {
+    //     _navModule.stop();
+    //     break;
+    // }
+    // case Flag::FULL_CROSSROAD:
+    // {
+    //     _navModule.stop();
+    //     _currentState = State::MEET_CROSSROAD;
+    //     break;
+    // }
+    // default:
+    // {
+    //     _navModule.stop();
+    //     break;
+    // }
+    // }
+    // //}
     
-    //_navModule.stop();
+    // //_navModule.stop();
 }
 
 void Robot::_pause()
