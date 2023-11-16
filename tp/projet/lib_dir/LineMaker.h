@@ -1,5 +1,4 @@
 #include <avr/io.h>
-#include "Navigation.h"
 
 #define OUTER_LEFT_SENSOR PA2
 #define INNER_LEFT_SENSOR PA4
@@ -19,7 +18,9 @@ enum class Flag
     FULL_CROSSROAD,
     T_CROSSROAD,
     CORNER_CROSSROAD,
-} class LineMaker
+};
+
+class LineMaker
 {
 
 public:

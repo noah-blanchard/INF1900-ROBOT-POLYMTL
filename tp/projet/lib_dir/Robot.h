@@ -12,8 +12,7 @@
 // Define the clock speed
 #define F_CPU 8000000UL
 
-// custom timer volatile variable
-volatile bool customDelayElapsed = false;
+
 
 // robot.h will be a big State Machine
 /** Possible States

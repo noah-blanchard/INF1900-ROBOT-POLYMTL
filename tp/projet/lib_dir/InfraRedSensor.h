@@ -4,18 +4,17 @@
 
 #include "can.h"
 
-volatile uint16_t distance = OxFFFF;
-volatile can analogicConverter;
-
 class InfraRedSensor {
 public:
     InfraRedSensor();
     ~InfraRedSensor();
 
     uint16_t getDistance();
-    bool detectObstacle();
+    bool isObstacleDetected();
 private:
     
-    static const uint8_t _distanceReferenceValue = 255;
+    static const uint16_t _distanceReferenceValue = 1000;
     uint16_t _distance;
+
+    can _analogicConverter;
 };

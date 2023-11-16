@@ -1,5 +1,8 @@
 #include "Robot.h"
 
+// custom timer volatile variable
+volatile bool customDelayElapsed = false;
+
 ISR(TIMER2_COMPA_vect)
 {
     customDelayElapsed = true;
@@ -27,22 +30,22 @@ void Robot::runRoutine()
     {
     case State::MODE_SELECTION:
     {
-        _modeSelectionRoutine();
+        //_modeSelectionRoutine();
         break;
     }
     case State::IDENTIFY_CORNER:
     {
-        _identifyCornerRoutine();
+        //_identifyCornerRoutine();
         break;
     }
     case State::TRAVEL_POSITION_SELECTION:
     {
-        _travelPositionSelectionRoutine();
+        //_travelPositionSelectionRoutine();
         break;
     }
     case State::CALCULATE_PATH:
     {
-        _calculatePathRoutine();
+        //_calculatePathRoutine();
         break;
     }
     case State::FOLLOW_LINE:
@@ -52,12 +55,12 @@ void Robot::runRoutine()
     }
     case State::MEET_CROSSROAD:
     {
-        _meetCrossroadRoutine();
+        //_meetCrossroadRoutine();
         break;
     }
     case State::TURN_AT_CROSSROAD:
     {
-        _turnAtCrossroadRoutine();
+        //_turnAtCrossroadRoutine();
         break;
     }
     default:
@@ -69,7 +72,7 @@ void Robot::runRoutine()
 
 void Robot::_followLineRoutine()
 {
-    LineMaker::Flag flag = _lineMakerModule.getDetectionFlag();
+    Flag flag = _lineMakerModule.getDetectionFlag();
 
     if(_irSensorModule.isObstacleDetected()){
         _navModule.stop();
@@ -79,31 +82,31 @@ void Robot::_followLineRoutine()
     {
     switch (flag)
     {
-    case LineMaker::Flag::NO_ADJUSTMENT:
+    case Flag::NO_ADJUSTMENT:
     {
         _navModule.go(180, false);
         break;
     }
-    case LineMaker::Flag::LEFT_ADJUSTMENT:
+    case Flag::LEFT_ADJUSTMENT:
     {
         _pause();
         _navModule.adjustLeft();
         _pause();
         break;
     }
-    case LineMaker::Flag::RIGHT_ADJUSTMENT:
+    case Flag::RIGHT_ADJUSTMENT:
     {
         _pause();
         _navModule.adjustRight();
         _pause();
         break;
     }
-    case LineMaker::Flag::NO_LINE:
+    case Flag::NO_LINE:
     {
         _navModule.stop();
         break;
     }
-    case LineMaker::Flag::FULL_CROSSROAD:
+    case Flag::FULL_CROSSROAD:
     {
         _navModule.stop();
         _currentState = State::MEET_CROSSROAD;
@@ -135,9 +138,9 @@ void Robot::_customDelay(uint16_t delay)
     for (int i = 0; i < delay; ++i)
     {
 
-        while (!timerHasElapsed)
+        while (!customDelayElapsed)
             ;
-        timerHasElapsed = false;
+        customDelayElapsed = false;
 
         _delayTimerModule.reset();
     }

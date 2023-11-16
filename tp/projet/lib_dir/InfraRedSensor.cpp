@@ -1,17 +1,30 @@
 #include "InfraRedSensor.h"
 
+//volatile uint16_t distance = 0xffff;
+volatile bool canRead = false;
+
 ISR(ADC_vect) {
-    distance = analogicConverter.lecture(0);
+    canRead = true;
 }
 
 InfraRedSensor::InfraRedSensor() {
-    this->_can.enableADCInterrupt();
+    _analogicConverter.enableADCInterrupt();
+
 }
 
 InfraRedSensor::~InfraRedSensor() {
-    this->_can.disableADCInterrupt();
+    _analogicConverter.disableADCInterrupt();
 }
 
-bool InfraRedSensor::detectObstacle() {
-    return distance < _distanceReferenceValue;
+uint16_t InfraRedSensor::getDistance(){
+    return _analogicConverter.lecture(0);
+}
+
+bool InfraRedSensor::isObstacleDetected() {
+    bool returnValue = false;
+    if(canRead){
+        returnValue = getDistance() >= _distanceReferenceValue;
+        canRead = false;
+        }
+    return returnValue;
 }

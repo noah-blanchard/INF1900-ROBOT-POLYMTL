@@ -197,8 +197,8 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    nav.goRightWheel(_BASE_SPEED, false);
-    nav.goLeftWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
+    goRightWheel(_BASE_SPEED, false);
+    goLeftWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
 }
 
 /**
@@ -207,6 +207,6 @@ void Navigation::adjustRight()
  */
 void Navigation::adjustLeft()
 {
-    nav.goRightWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
-    nav.goLeftWheel(_BASE_SPEED, false);
+    goRightWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
+    goLeftWheel(_BASE_SPEED, false);
 }
