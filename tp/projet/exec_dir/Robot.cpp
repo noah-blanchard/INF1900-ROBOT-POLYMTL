@@ -71,7 +71,13 @@ void Robot::_followLineRoutine()
 {
     LineMaker::Flag flag = _lineMakerModule.getDetectionFlag();
 
-    switch (flag)
+    if(_irSensorModule.isObstacleDetected()){
+        _navModule.stop();
+        _currentState = State::MEET_OBSTACLE;
+        return;
+    } else
+    {
+        switch (flag)
     {
     case LineMaker::Flag::NO_ADJUSTMENT:
     {
@@ -109,7 +115,8 @@ void Robot::_followLineRoutine()
         break;
     }
     }
-
+    }
+    
     _navModule.stop();
 }
 

@@ -38,6 +38,8 @@ public:
    // inclusivement.  Seulement les 10 bits de poids faible
    // sont significatifs.
    uint16_t lecture(uint8_t pos);
+   void enableADCInterrupt();
+   void disableADCInterrupt();
 
 private:
    // Donnees membres - aucun

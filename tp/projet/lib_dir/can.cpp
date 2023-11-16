@@ -70,3 +70,12 @@ can::lecture( uint8_t pos)
    return adcVal;
 }
 
+void can::enableADCInterrupt()
+{
+    ADCSRA |= (1 << ADIE);
+}
+
+void can::disableADCInterrupt()
+{
+    ADCSRA &= ~(1 << ADIE);
+}

@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "LineMaker.h"
 #include "Navigation.h"
+#include "InfraRedSensor.h"
 
 // Define the clock speed
 #define F_CPU 8000000UL
@@ -61,6 +62,8 @@ private:
     Timer _delayTimerModule;
     LineMaker _lineMakerModule;
     Navigation _navModule;
+    InfraRedSensor _irSensorModule;
+
     State _currentState;
 
     uint8_t _currentPosition[2];
