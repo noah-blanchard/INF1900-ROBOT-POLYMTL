@@ -40,6 +40,7 @@ void Robot::runRoutine()
     }
     case State::MAKE_TRIP:
     {
+        _maketrip.selectDestinations(_destination);
         //_identifyCornerRoutine();
         break;
     }
