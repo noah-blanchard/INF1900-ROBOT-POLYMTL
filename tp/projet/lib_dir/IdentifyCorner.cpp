@@ -10,10 +10,9 @@ IdentifyCorner::~IdentifyCorner()
 
 void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 {
-            _display = "Searching for corner...";
+    _display = "Searching for corner...";
     while (!_found)
     {
-        _currentSequence = 0;
         switch (_state)
         {
         case IdentifyCornerState::GO_FORWARD:
@@ -104,9 +103,9 @@ void IdentifyCorner::_detectIntersection()
         _delay_ms(2500);
         break;
     }
-    _displayCurrentSequence();
-    _delay_ms(2500);
     _currentSequence |= (sequenceToAdd);
+    _displayCurrentSequence();
+    _delay_ms(3000);
     _state = IdentifyCornerState::DETECT_FORWARD;
 }
 
@@ -128,6 +127,10 @@ void IdentifyCorner::_detectForward()
         _display = "FORWARD DETECTED";
         _delay_ms(2500);
     }
+    _display = "SEQUENCE:";
+   _delay_ms(2500);
+    _displayCurrentSequence();
+    _delay_ms(4000);
     _currentSequence |= (sequenceToAdd);
     // add the current sequence into th _sequence with tteh bitshift than increment
     _sequence |= (_currentSequence << _bitshift);
@@ -145,6 +148,7 @@ void IdentifyCorner::_detectForward()
     }
     else
     {
+               _currentSequence = 0;
         _state = IdentifyCornerState::GO_FORWARD;
     }
 }
@@ -215,6 +219,7 @@ void IdentifyCorner::_turn()
     // stop
     _navModule.stop();
 
+    _currentSequence = 0;
     _state = IdentifyCornerState::GO_FORWARD;
 }
 
