@@ -46,24 +46,24 @@ void IdentifyCorner::_goForward()
     //_display.clear();
     //_display << "GO FORWARD";
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(120, false);
+    _navModule.go(130, false);
     switch (flag)
     {
 
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustRight();
-        _delay_ms(200);
+        _delay_ms(100);
         _navModule.stop();
-        _delay_ms(70);
+        _delay_ms(30);
         break;
 
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustLeft();
-        _delay_ms(200);
+        _delay_ms(100);
         _navModule.stop();
-        _delay_ms(70);
+        _delay_ms(30);
         break;
 
     case LineMakerFlag::RIGHT_CROSSROAD:
@@ -127,9 +127,10 @@ void IdentifyCorner::_turnAround()
 
     uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-    if(sensor == LineMaker::ALL || sensor == LineMaker::OUTER_LEFT || sensor == LineMaker::OUTER_RIGHT || sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if(sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
     {
         _navModule.stop();
+        _delay_ms(1000);
         _state = IdentifyCornerState::GO_BACK;
     }
 }
