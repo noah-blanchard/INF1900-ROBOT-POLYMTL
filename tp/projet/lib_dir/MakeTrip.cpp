@@ -34,8 +34,9 @@ EIFR |= (1 << INTF1) ;
 
 }
 
+MakeTrip::MakeTrip(){}
 
-void selectDestinations(uint8_t _destination[2])
+void MakeTrip::selectDestinations(uint8_t _destination[2])
 {
 	cli();
 	toSelect.enableInterrupt();
