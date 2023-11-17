@@ -133,7 +133,7 @@ void Robot::_followLineRoutine()
 
     case Flag::LEFT_CROSSROAD:
     {
-        _navModule.stop();
+        _navModule.go(255, false);
         _currentState = State::MEET_CROSSROAD;
         break;
     }

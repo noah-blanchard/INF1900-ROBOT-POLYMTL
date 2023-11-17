@@ -71,13 +71,13 @@ Flag LineMaker::getDetectionFlag()
         flag = Flag::NO_LINE;
     }
 
-    else if ((sensorData & LEFT_INTERSECTION )== LEFT_INTERSECTION)
+    else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION)
     {
         flag = Flag::LEFT_CROSSROAD;
 
     }
 
-    else if ((sensorData & RIGHT_INTERSECTION)== RIGHT_INTERSECTION)
+    else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION)
     {
         flag = Flag::RIGHT_CROSSROAD;
 
