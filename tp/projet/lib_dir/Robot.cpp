@@ -1,6 +1,5 @@
 #include "Robot.h"
 
-
 // custom timer volatile variable
 volatile bool customDelayElapsed = false;
 
@@ -28,7 +27,7 @@ Robot::Robot()
 
     _delayTimerModule = Timer(timerConfig);
     //_currentState = State::MODE_SELECTION;
-    _currentState = State::IDENTIFY_CORNER; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    _currentState = State::FOLLOW_LINE; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
 }
 
 Robot::~Robot()
@@ -72,12 +71,12 @@ void Robot::runRoutine()
     }
     case State::MEET_CROSSROAD:
     {
-        //_meetCrossroadRoutine();
+        _meetCrossroadRoutine();
         break;
     }
     case State::TURN_AT_CROSSROAD:
     {
-        //_turnAtCrossroadRoutine();
+        _turnAtCrossroadRoutine();
         break;
     }
     default:
@@ -91,78 +90,116 @@ void Robot::_followLineRoutine()
 {
     Flag flag = _lineMakerModule.getDetectionFlag();
     LCM disp(&DDRC, &PORTC);
-	disp.clear();
+    disp.clear();
 
-    if(_irSensorModule.isObstacleDetected()){
+    if (_irSensorModule.isObstacleDetected())
+    {
         _navModule.stop();
-    } else   {
+    }
+    else
+    {
+        switch (flag)
+        {
+        case Flag::NO_ADJUSTMENT:
+        {
+            _navModule.go(180, false);
+            disp << "hqhqhq";
+            break;
+        }
+        case Flag::LEFT_ADJUSTMENT:
+        {
+            _navModule.adjustLeft();
+            _pause();
+            _navModule.stop();
+            _pause();
+            break;
+        }
+        case Flag::RIGHT_ADJUSTMENT:
+        {
+            _navModule.adjustRight();
+            _pause();
+            _navModule.stop();
+            _pause();
+            break;
+        }
+        case Flag::NO_LINE:
+        {
+            _navModule.stop();
+            break;
+        }
+        case Flag::FULL_CROSSROAD:
+        {
+            disp << "(4,1) N";
+            _navModule.stop();
+
+            _currentState = State::MEET_CROSSROAD;
+            break;
+        }
+
+            // Je rajoute des cases pour LEFT_CROSSROAD ET RIGHT_CROSSROAD
+
+        case Flag::LEFT_CROSSROAD:
+        {
+            disp << "left";
+
+            _navModule.stop();
+            _currentState = State::MEET_CROSSROAD;
+            break;
+        }
+
+        case Flag::RIGHT_CROSSROAD:
+        {
+            disp << "right";
+
+            _navModule.stop();
+            _currentState = State::MEET_CROSSROAD;
+            break;
+        }
+
+        default:
+        {
+            _navModule.stop();
+            break;
+        }
+        }
+        //}
+    }
+}
+
+void Robot::_meetCrossroadRoutine()
+{
+    // Go a bit forward during 100 ms
+    _navModule.go(_BASE_SPEED, false);
+    _customDelay(100);
+    _navModule.stop();
+    _customDelay(100);
+    // change state to turn at crossroad
+    _currentState = State::TURN_AT_CROSSROAD;
+}
+
+void Robot::_turnAtCrossroadRoutine()
+{
+    // for the moment let's only turn to the right until the linemaker sens the "leftAdjustment" flag
+    Flag flag = _lineMakerModule.getDetectionFlag();
     switch (flag)
     {
-    case Flag::NO_ADJUSTMENT:
-    {
-        _navModule.go(180, false);
-        disp << "hqhqhq";
-        break;
-    }
     case Flag::LEFT_ADJUSTMENT:
     {
-        _navModule.adjustLeft();
-        _pause();
         _navModule.stop();
-        _pause();
-        break;
-    }
-    case Flag::RIGHT_ADJUSTMENT:
-    {
-         _navModule.adjustRight();
-        _pause();
-        _navModule.stop();
-        _pause();
+        _currentState = State::FOLLOW_LINE;
         break;
     }
     case Flag::NO_LINE:
     {
-        _navModule.stop();
+        _navModule.goRightWheel(_TURN_SPEED, false);
+        _navModule.goLeftWheel(_TURN_SPEED, false);
         break;
     }
-    case Flag::FULL_CROSSROAD:
-    {
-        disp << "(4,1) N";
-        _navModule.stop();
-
-        _currentState = State::MEET_CROSSROAD;
-        break;
-    }
-
-
-    //Je rajoute des cases pour LEFT_CROSSROAD ET RIGHT_CROSSROAD
-
-    case Flag::LEFT_CROSSROAD:
-    {
-                disp << "left";
-
-        _navModule.stop();
-        _currentState = State::MEET_CROSSROAD;
-        break;
-    }
-
-    case Flag::RIGHT_CROSSROAD:
-    {
-                disp << "right";
-
-        _navModule.stop();
-        _currentState = State::MEET_CROSSROAD;
-        break;
-    }
-
-
     default:
     {
         _navModule.stop();
         break;
     }
-    }
-    //}
     }
 }
 

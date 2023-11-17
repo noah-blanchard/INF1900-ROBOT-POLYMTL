@@ -62,6 +62,7 @@ public:
 
 private:
     static const uint8_t _BASE_SPEED = 180;
+    static const uint8_t _TURN_SPEED = 120;
     static const uint16_t _BASE_PAUSE_DELAY = 80;
 
     Bouton _validateButton;
