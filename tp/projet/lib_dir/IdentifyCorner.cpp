@@ -1,6 +1,6 @@
 #include "IdentifyCorner.h"
 
-IdentifyCorner::IdentifyCorner()
+IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC)
 {
 }
 
@@ -10,10 +10,10 @@ IdentifyCorner::~IdentifyCorner()
 
 void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 {
-    while (!found)
+            _display = "Searching for corner...";
+    while (!_found)
     {
         _currentSequence = 0;
-        _display = "Searching for corner...";
         switch (_state)
         {
         case IdentifyCornerState::GO_FORWARD:
@@ -29,11 +29,11 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             break;
 
         case IdentifyCornerState::TURN:
-            _turn(true);
+            _turn();
             break;
 
         case IdentifyCornerState::STOP:
-            _stop();
+            //_stop();
             break;
         }
     }
@@ -43,11 +43,12 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 // go forward should follow the line using the line maker module
 void IdentifyCorner::_goForward()
 {
+    _display = "GO FORWARD";
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     switch (flag)
     {
     case LineMakerFlag::NO_ADJUSTMENT:
-        _navModule.go(180, false);
+        _navModule.go(120, false);
         break;
 
     case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -78,6 +79,8 @@ void IdentifyCorner::_goForward()
 // detect intersection should detect the intersection
 void IdentifyCorner::_detectIntersection()
 {
+    _display = "DETECT INTERSECT";
+    _delay_ms(2500);
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     uint8_t sequenceToAdd = 0;
     // use bitshift to add at the right place
@@ -85,14 +88,20 @@ void IdentifyCorner::_detectIntersection()
     {
     case LineMakerFlag::RIGHT_CROSSROAD:
         sequenceToAdd |= (RIGHT);
+        _display = "RIGHT DETECT";
+        _delay_ms(2500);
         break;
 
     case LineMakerFlag::LEFT_CROSSROAD:
         sequenceToAdd |= (LEFT);
+         _display = "LEFT DETECT";
+        _delay_ms(2500);
         break;
 
     case LineMakerFlag::FULL_CROSSROAD:
         sequenceToAdd |= (LEFT | RIGHT);
+         _display = "FULL DETECT";
+        _delay_ms(2500);
         break;
     }
     _currentSequence |= (sequenceToAdd);
@@ -103,15 +112,19 @@ void IdentifyCorner::_detectIntersection()
 void IdentifyCorner::_detectForward()
 {
     // go a bit forward, then wait
-    _navModule.go(180, false);
+    _navModule.go(120, false);
     _delay_ms(1000);
     _navModule.stop();
+    _display = "LOOKING FORWARD";
+    _delay_ms(2500);
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     uint8_t sequenceToAdd = 0;
     // if flag == no line then there's no forward
     if (!(flag == LineMakerFlag::NO_LINE))
     {
         sequenceToAdd |= (FORWARD);
+        _display = "FORWARD DETECTED";
+        _delay_ms(2500);
     }
     _currentSequence |= (sequenceToAdd);
     // add the current sequence into th _sequence with tteh bitshift than increment
@@ -172,6 +185,8 @@ void IdentifyCorner::_turn()
     // stop
     _navModule.stop();
 
+    _display = "TURNING";
+
     // now turn until the line is found (left adjustment for right turn, right adjustment for left turn)
     if (isLeft)
     {
@@ -195,3 +210,4 @@ void IdentifyCorner::_turn()
 
     _state = IdentifyCornerState::GO_FORWARD;
 }
+

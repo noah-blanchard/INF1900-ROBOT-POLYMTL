@@ -40,8 +40,10 @@ private:
     void _goForward();
     void _detectIntersection();
     void _detectForward();
-    void _turn(bool isLeft);
+    void _turn();
     void _stop();
+
+    void _displayCurrentSequence();
 
     // match the sequence
     void _matchSequence();
