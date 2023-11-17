@@ -125,15 +125,12 @@ void IdentifyCorner::_turnAround()
         _navModule.goLeftWheel(120, false);
     }
 
-    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    switch (flag)
+    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+
+    if(sensor == LineMaker::ALL || sensor == LineMaker::OUTER_LEFT || sensor == LineMaker::OUTER_RIGHT || sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
     {
-    case LineMakerFlag::OUTER_LEFT_DETECT:
+        _navModule.stop();
         _state = IdentifyCornerState::GO_BACK;
-        break;
-    case LineMakerFlag::OUTER_RIGHT_DETECT:
-        _state = IdentifyCornerState::GO_BACK;
-        break;
     }
 }
 
