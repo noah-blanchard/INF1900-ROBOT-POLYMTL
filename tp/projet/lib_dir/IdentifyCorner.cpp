@@ -26,6 +26,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 
         case IdentifyCornerState::GO_BACK:
             //_goBack();
+            _display("GO_BACK")
             break;
         }
     }
@@ -60,7 +61,8 @@ void IdentifyCorner::_goForward()
 
     case LineMakerFlag::RIGHT_CROSSROAD:
     {
-        if(!_blockIncrementation){
+        if (!_blockIncrementation)
+        {
             _intersectionCount++;
             _blockIncrementation = true;
         }
@@ -69,7 +71,8 @@ void IdentifyCorner::_goForward()
     }
 
     case LineMakerFlag::LEFT_CROSSROAD:
-        if(!_blockIncrementation){
+        if (!_blockIncrementation)
+        {
             _intersectionCount++;
             _blockIncrementation = true;
         }
@@ -77,7 +80,11 @@ void IdentifyCorner::_goForward()
         break;
 
     case LineMakerFlag::FULL_CROSSROAD:
-        _intersectionCount++;
+        if (!_blockIncrementation)
+        {
+            _intersectionCount++;
+            _blockIncrementation = true;
+        }
         break;
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
@@ -99,6 +106,26 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 void IdentifyCorner::_turnAround()
 {
     _displayCurrentIntersectionCount();
+    // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
+    if (isRight)
+    {
+        _navModule.goRightWheel(120, false);
+        _navModule.goLeftWheel(120, true);
+    }
+    else
+    {
+        _navModule.goRightWheel(120, true);
+        _navModule.goLeftWheel(120, false);
+    }
+    while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::NO_ADJUSTMENT || _lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() != LineMakerFlag::RIGHT_ADJUSTMENT)
+    {
+        display = "TURNING AROUND";
+    }
+
+    // stop
+    _navModule.stop();
+
+    _state = IdentifyCornerState::GO_BACK;
 }
 
 // void IdentifyCorner::identificationProcess(uint8_t *_beginning)
