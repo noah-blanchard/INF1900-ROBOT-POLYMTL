@@ -34,6 +34,7 @@ EIFR |= (1 << INTF1) ;
 
 }
 
+
 MakeTrip::MakeTrip(){}
 
 void MakeTrip::selectDestinations(uint8_t _destination[2])
