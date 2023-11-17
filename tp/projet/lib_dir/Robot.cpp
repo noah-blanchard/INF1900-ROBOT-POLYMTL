@@ -170,9 +170,9 @@ void Robot::_meetCrossroadRoutine()
 {
     // Go a bit forward during 100 ms
     _navModule.go(_BASE_SPEED, false);
-    _customDelay(100);
+    _customDelay(1000);
     _navModule.stop();
-    _customDelay(100);
+    _customDelay(300);
     // change state to turn at crossroad
     _currentState = State::TURN_AT_CROSSROAD;
 }
@@ -189,15 +189,10 @@ void Robot::_turnAtCrossroadRoutine()
         _currentState = State::FOLLOW_LINE;
         break;
     }
-    case Flag::NO_LINE:
+    default:
     {
         _navModule.goRightWheel(_TURN_SPEED, false);
         _navModule.goLeftWheel(_TURN_SPEED, false);
-        break;
-    }
-    default:
-    {
-        _navModule.stop();
         break;
     }
     }
