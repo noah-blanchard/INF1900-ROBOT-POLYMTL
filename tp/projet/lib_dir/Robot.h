@@ -73,7 +73,7 @@ private:
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
     MakeTrip _maketrip;
-    IdentifyCorner _identifyCorner;
+    IdentifyCorner_old _identifyCorner;
 
 
     State _currentState;

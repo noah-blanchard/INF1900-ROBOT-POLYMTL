@@ -88,7 +88,7 @@ void Robot::runRoutine()
 
 void Robot::_followLineRoutine()
 {
-    Flag flag = _lineMakerModule.getDetectionFlag();
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     LCM disp(&DDRC, &PORTC);
     disp.clear();
 
@@ -100,13 +100,13 @@ void Robot::_followLineRoutine()
     {
         switch (flag)
         {
-        case Flag::NO_ADJUSTMENT:
+        case LineMakerFlag::NO_ADJUSTMENT:
         {
             _navModule.go(180, false);
             disp << "hqhqhq";
             break;
         }
-        case Flag::LEFT_ADJUSTMENT:
+        case LineMakerFlag::LEFT_ADJUSTMENT:
         {
             _navModule.adjustLeft();
             _pause();
@@ -114,7 +114,7 @@ void Robot::_followLineRoutine()
             _pause();
             break;
         }
-        case Flag::RIGHT_ADJUSTMENT:
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
         {
             _navModule.adjustRight();
             _pause();
@@ -122,12 +122,12 @@ void Robot::_followLineRoutine()
             _pause();
             break;
         }
-        case Flag::NO_LINE:
+        case LineMakerFlag::NO_LINE:
         {
             _navModule.stop();
             break;
         }
-        case Flag::FULL_CROSSROAD:
+        case LineMakerFlag::FULL_CROSSROAD:
         {
             disp << "(4,1) N";
             _navModule.stop();
@@ -138,7 +138,7 @@ void Robot::_followLineRoutine()
 
             // Je rajoute des cases pour LEFT_CROSSROAD ET RIGHT_CROSSROAD
 
-        case Flag::LEFT_CROSSROAD:
+        case LineMakerFlag::LEFT_CROSSROAD:
         {
             disp << "left";
 
@@ -147,7 +147,7 @@ void Robot::_followLineRoutine()
             break;
         }
 
-        case Flag::RIGHT_CROSSROAD:
+        case LineMakerFlag::RIGHT_CROSSROAD:
         {
             disp << "right";
 
@@ -185,10 +185,10 @@ void Robot::_meetCrossroadRoutine()
 void Robot::_turnAtCrossroadRoutine()
 {
     // for the moment let's only turn to the right until the linemaker sens the "leftAdjustment" flag
-    Flag flag = _lineMakerModule.getDetectionFlag();
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     switch (flag)
     {
-    case Flag::LEFT_ADJUSTMENT:
+    case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         _navModule.stop();
         _currentState = State::FOLLOW_LINE;

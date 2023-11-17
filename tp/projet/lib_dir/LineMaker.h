@@ -9,7 +9,7 @@
 #define PORT_SENSOR PORTA
 #define PIN_SENSOR PINA
 
-enum class Flag
+enum class LineMakerFlag
 {
     LEFT_ADJUSTMENT,
     RIGHT_ADJUSTMENT,
@@ -29,7 +29,7 @@ public:
     LineMaker();
     ~LineMaker();
 
-    Flag getDetectionFlag();
+    LineMakerFlag getDetectionFlag();
 
     static const uint8_t NONE = 0b00000;
     static const uint8_t OUTER_LEFT = 0b00001;

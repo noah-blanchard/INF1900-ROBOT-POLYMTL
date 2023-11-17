@@ -1,249 +1,194 @@
-#include <stdlib.h>
-#include <avr/io.h>
-#include <util/delay.h>
-#include <stdio.h>
-#include <avr/interrupt.h>
 #include "IdentifyCorner.h"
 
-uint8_t stepRegistered = 0b000000;
-
-// IdentifyCorner::IndentifyCorner(){}
-
-void IdentifyCorner::_printLocalization(uint8_t step)
+IdentifyCorner::IdentifyCorner()
 {
-	LCM disp(&DDRC, &PORTC);
-	disp.clear();
-	switch (step)
-	{
-	case LCBV:
-		disp << "(4,1) N";
-		break;
-
-	case LCBH:
-		disp << "(4,1) E";
-		break;
-
-	case LCTV:
-		disp << "(1,1) S";
-		break;
-
-	case LCTH:
-		disp << "(1,1) E";
-		break;
-
-	case RCTH:
-		disp << "(1,7) O";
-		break;
-
-	case RCTV:
-		disp << "(1,7) S";
-		break;
-
-	case RCBV:
-		disp << "(4,7) N";
-		break;
-
-	case RCBH:
-		disp << "(4,7) O";
-		break;
-	}
 }
 
-bool IdentifyCorner::_recognizeCorner(uint8_t registration)
+IdentifyCorner::~IdentifyCorner()
 {
-	if (registration == LCBV || registration == LCBH || registration == LCTV || registration == LCTH || registration == RCTH || registration == RCTV || registration == RCBV || registration == RCBH)
-	{
-		return true;
-	}
-	return false;
 }
 
 void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 {
+    while (!found)
+    {
+        _currentSequence = 0;
+        _display = "Searching for corner...";
+        switch (_state)
+        {
+        case IdentifyCornerState::GO_FORWARD:
+            _goForward();
+            break;
 
-	Flag flag = _lineMakerModule.getDetectionFlag();
-	LCM disp(&DDRC, &PORTC);
-	disp.clear();
-	disp << "Searching...";
+        case IdentifyCornerState::DETECT_INTERSECTION:
+            _detectIntersection();
+            break;
 
-	switch (flag)
-	{
-	case Flag::NO_ADJUSTMENT:
-	{
-		_navModule.go(180, false);
-		break;
-	}
-	case Flag::RIGHT_CROSSROAD:
-	{
-		_navModule.stop();
-		_stepRegistered |= (RIGHT << _bitshift);
-		_bitshift += 2;
-		// turn right
-		_turnRight();
-		// mettre right à la
-		break;
-	}
-	case Flag::LEFT_CROSSROAD:
-	{
-		_navModule.stop();
-		_stepRegistered |= (LEFT << _bitshift);
-		_bitshift += 2;
-		// turn left
-		if (_stepRegistered == LCBV)
-		{
-			disp = "LCBV";
-		}
-		break;
-		// mettre left à la
-	}
-	}
+        case IdentifyCornerState::DETECT_FORWARD:
+            _detectForward();
+            break;
+
+        case IdentifyCornerState::TURN:
+            _turn(true);
+            break;
+
+        case IdentifyCornerState::STOP:
+            _stop();
+            break;
+        }
+    }
+    return;
 }
 
-	// void IdentifyCorner::identificationProcess(uint8_t _beginning)
-	// {
-	// 	Flag flag = _lineMakerModule.getDetectionFlag();
-	// 	LCM disp(&DDRC, &POFOLLOW_LINERTC);
-	// 	disp.clear();
-	// 	disp << "Searching";
-	// 	switch (flag)
-	// 	{
-	// 	case Flag::NO_ADJUSTMENT:
-	// 	{
-	// 		_navModule.go(180, false);
-	// 		if (_recognizeCorner(_stepRegistered))
-	// 		{
+// go forward should follow the line using the line maker module
+void IdentifyCorner::_goForward()
+{
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    switch (flag)
+    {
+    case LineMakerFlag::NO_ADJUSTMENT:
+        _navModule.go(180, false);
+        break;
 
-	// 			_navModule.stop();
-	// 			_beginning = _stepRegistered;
-	// 			_printLocalization(_stepRegistered);
-	// 			_sound.chooseFrequency(81);
-	// 		}
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+        _navModule.adjustRight();
+        break;
 
-	// 		break;
-	// 	}
-	// 	case Flag::LEFT_ADJUSTMENT:
-	// 	{        _customDelay(500);
-      
-	// 		_navModule.adjustLeft();
-	// 		_delay_ms(200);
-	// 		_navModule.stop();
-	// 		_delay_ms(80);
-	// 		break;
-	// 	}
-	// 	case Flag::RIGHT_ADJUSTMENT:
-	// 	{
-	// 		_navModule.adjustRight();
-	// 		_delay_ms(200);
-	// 		_navModule.stop();
-	// 		_delay_ms(80);
-	// 		break;
-	// 	}
-	// 	case Flag::NO_LINE:
-	// 	{
-	// 		_navModule.stop();
-	// 		if (_recognizeCorner(_stepRegistered))
-	// 		{
-	// 			_navModule.stop();
-	// 			_beginning = _stepRegistered;
-	// 			_printLocalization(_stepRegistered);
-	// 			_sound.chooseFrequency(81);
-	// 		}
-	// 		break;
-	// 	}
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+        _navModule.adjustLeft();
+        break;
 
-	// 	case Flag::LEFT_CROSSROAD:
-	// 	{
-	// 		_navModule.stop();
-	// 		_stepRegistered |= LEFT;
-	// 		_beginning = _stepRegistered;
-	// 		if (_stepRegistered == 0b00001101)
-	// 			break;
-	// 		if (_recognizeCorner(_stepRegistered))
-	// 		{
-	// 			_navModule.stop();
-	// 			_beginning = _stepRegistered;
-	// 			_printLocalization(_stepRegistered);
-	// 			_sound.chooseFrequency(81);
-	// 		}
-	// 		else
-	// 		{
-	// 			_turnLeft();
-	// 		}
-	// 		break;
-	// 	}
+    case LineMakerFlag::RIGHT_CROSSROAD:
+        _navModule.stop();
+        _state = IdentifyCornerState::DETECT_INTERSECTION;
+        break;
 
-	// 	case Flag::RIGHT_CROSSROAD:
-	// 	{
-	// 		_navModule.stop();
-	// 		_stepRegistered |= RIGHT;
-	// 		_beginning = _stepRegistered;
-	// 		if (_stepRegistered == 0b00001110)
-	// 			break;
-	// 		if (_recognizeCorner(_stepRegistered))
-	// 		{
-	// 			_navModule.stop();
-	// 			Flag flag = _lineMakerModule.getDetectionFlag();
+    case LineMakerFlag::LEFT_CROSSROAD:
+        _navModule.stop();
+        _state = IdentifyCornerState::DETECT_INTERSECTION;
+        break;
 
-	// 			_printLocalization(_stepRegistered);
-	// 			_sound.chooseFrequency(81);
-	// 		}
-	// 		else
-	// 		{
-	// 			_turnRight();
-	// 		}
-	// 		break;
-	// 	}
+    case LineMakerFlag::FULL_CROSSROAD:
+        _navModule.stop();
+        _state = IdentifyCornerState::DETECT_INTERSECTION;
+        break;
+    }
+}
 
-	// 	case Flag::FULL_CROSSROAD:
-	// 	{
-	// 		_navModule.stop();
-	// 		_stepRegistered |= BOTH;
-	// 		if (_recognizeCorner(_stepRegistered))
-	// 		{
-	// 			_navModule.stop();
-	// 			_beginning = _stepRegistered;
-	// 			_printLocalization(_stepRegistered);
-	// 			_sound.chooseFrequency(81);
-	// 		}
-	// 		else
-	// 		{
-	// 			_navModule.go(180, false);
-	// 		}
-	// 		break;
-	// 	}
+// detect intersection should detect the intersection
+void IdentifyCorner::_detectIntersection()
+{
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    uint8_t sequenceToAdd = 0;
+    // use bitshift to add at the right place
+    switch (flag)
+    {
+    case LineMakerFlag::RIGHT_CROSSROAD:
+        sequenceToAdd |= (RIGHT);
+        break;
 
-	// 	default:
-	// 	{
-	// 		_navModule.stop();
-	// 		break;
-	// 	}
-	// 	}
-	// }
+    case LineMakerFlag::LEFT_CROSSROAD:
+        sequenceToAdd |= (LEFT);
+        break;
 
-	void IdentifyCorner::_turnRight()
-	{
-	LCM disp(&DDRC, &PORTC);
-	disp.clear();
-	
-		// while line maker doesnt meet NO_ADJUSTMENT
-		while (_lineMakerModule.getDetectionFlag() != Flag::LEFT_ADJUSTMENT)
-		{
-			disp << "RIGHT...";
-			_navModule.goLeftWheel(SLOW_TURN_SPEED, false);
-			_navModule.goRightWheel(SLOW_TURN_SPEED, true);
-		}
-	}
+    case LineMakerFlag::FULL_CROSSROAD:
+        sequenceToAdd |= (LEFT | RIGHT);
+        break;
+    }
+    _currentSequence |= (sequenceToAdd);
+    _state = IdentifyCornerState::DETECT_FORWARD;
+}
 
-	void IdentifyCorner::_turnLeft()
-	{
-	LCM disp(&DDRC, &PORTC);
-	disp.clear();
-		// while line maker doesnt meet NO_ADJUSTMENT
-		while (_lineMakerModule.getDetectionFlag() != Flag::RIGHT_ADJUSTMENT)
-		{
-			
-	disp << "LEFT...";
-			_navModule.goRightWheel(SLOW_TURN_SPEED, false);
-			_navModule.goLeftWheel(SLOW_TURN_SPEED, true);
-		}
-	}
+// detect forward should detect the forward
+void IdentifyCorner::_detectForward()
+{
+    // go a bit forward, then wait
+    _navModule.go(180, false);
+    _delay_ms(1000);
+    _navModule.stop();
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    uint8_t sequenceToAdd = 0;
+    // if flag == no line then there's no forward
+    if (!(flag == LineMakerFlag::NO_LINE))
+    {
+        sequenceToAdd |= (FORWARD);
+    }
+    _currentSequence |= (sequenceToAdd);
+    // add the current sequence into th _sequence with tteh bitshift than increment
+    _sequence |= (_currentSequence << _bitshift);
+    _bitshift += 3;
+
+    // if there's either left or right in the current sequence, then we turn
+    if ((_currentSequence & (LEFT | RIGHT)) != 0)
+    {
+        _state = IdentifyCornerState::TURN;
+    }
+    else
+    {
+        _state = IdentifyCornerState::GO_FORWARD;
+    }
+}
+
+// turn should turn
+void IdentifyCorner::_turn()
+{
+
+    // determine if left or right using the current sequence
+    bool isLeft = false;
+    if ((_currentSequence & LEFT) != 0)
+    {
+        isLeft = true;
+    }
+    else if ((_currentSequence & RIGHT) != 0)
+    {
+        isLeft = false;
+    }
+
+    // if (isLeft)
+    // {
+    //     _navModule.goRightWheel(120, false);
+    //     _navModule.goLeftWheel(120, true);
+    // }
+    // else
+    // {
+    //     _navModule.goRightWheel(120, true);
+    //     _navModule.goLeftWheel(120, false);
+    // }
+
+    // turn for 250 ms in the right direction
+    if (isLeft)
+    {
+        _navModule.goRightWheel(120, false);
+        _navModule.goLeftWheel(120, true);
+        _delay_ms(250);
+    }
+    else
+    {
+        _navModule.goRightWheel(120, true);
+        _navModule.goLeftWheel(120, false);
+        _delay_ms(250);
+    }
+
+    // stop
+    _navModule.stop();
+
+    // now turn until the line is found (left adjustment for right turn, right adjustment for left turn)
+    if (isLeft)
+    {
+        _navModule.goRightWheel(120, false);
+        _navModule.goLeftWheel(120, true);
+        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT)
+        {
+        }
+    }
+    else
+    {
+        _navModule.goRightWheel(120, true);
+        _navModule.goLeftWheel(120, false);
+        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::RIGHT_ADJUSTMENT)
+        {
+        }
+    }
+
+    _state = IdentifyCornerState::GO_FORWARD;
+}
