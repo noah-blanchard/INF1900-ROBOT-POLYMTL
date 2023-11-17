@@ -267,6 +267,7 @@ void IdentifyCorner::_matchSequence()
         _found = false;
     }
     _delay_ms(4000);
+    _state = IdentifyCornerState::GO_FORWARD;
 }
 
 void IdentifyCorner::_displayCurrentSequence()
