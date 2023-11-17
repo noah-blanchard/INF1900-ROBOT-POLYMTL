@@ -58,139 +58,180 @@ bool IdentifyCorner::_recognizeCorner(uint8_t registration)
 	return false;
 }
 
-void IdentifyCorner::identificationProcess(uint8_t _beginning)
+void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 {
+
 	Flag flag = _lineMakerModule.getDetectionFlag();
 	LCM disp(&DDRC, &PORTC);
 	disp.clear();
-	disp << "Searching";
+	disp << "Searching...";
+
 	switch (flag)
 	{
 	case Flag::NO_ADJUSTMENT:
 	{
 		_navModule.go(180, false);
-		if (_recognizeCorner(_stepRegistered))
-		{
-
-			_navModule.stop();
-			_beginning = _stepRegistered;
-			_printLocalization(_stepRegistered);
-			_sound.chooseFrequency(81);
-		}
-
 		break;
 	}
-	case Flag::LEFT_ADJUSTMENT:
-	{
-		_navModule.adjustLeft();
-		_delay_ms(200);
-		_navModule.stop();
-		_delay_ms(80);
-		break;
-	}
-	case Flag::RIGHT_ADJUSTMENT:
-	{
-		_navModule.adjustRight();
-		_delay_ms(200);
-		_navModule.stop();
-		_delay_ms(80);
-		break;
-	}
-	case Flag::NO_LINE:
-	{
-		_navModule.stop();
-		if (_recognizeCorner(_stepRegistered))
-		{
-			_navModule.stop();
-			_beginning = _stepRegistered;
-			_printLocalization(_stepRegistered);
-			_sound.chooseFrequency(81);
-		}
-		break;
-	}
-
-	case Flag::LEFT_CROSSROAD:
-	{
-		_navModule.stop();
-		_stepRegistered |= LEFT;
-		_beginning = _stepRegistered;
-		if (_stepRegistered == 0b00001101)
-			break;
-		if (_recognizeCorner(_stepRegistered))
-		{
-			_navModule.stop();
-			_beginning = _stepRegistered;
-			_printLocalization(_stepRegistered);
-			_sound.chooseFrequency(81);
-		}
-		else
-		{
-			_turnLeft();
-		}
-		break;
-	}
-
 	case Flag::RIGHT_CROSSROAD:
 	{
 		_navModule.stop();
-		_stepRegistered |= RIGHT;
-		_beginning = _stepRegistered;
-		if (_stepRegistered == 0b00001110)
-			break;
-		if (_recognizeCorner(_stepRegistered))
-		{
-			_navModule.stop();
-			_beginning = _stepRegistered;
-			_printLocalization(_stepRegistered);
-			_sound.chooseFrequency(81);
-		}
-		else
-		{
-			_turnRight();
-		}
-		break;
+		_stepRegistered |= (RIGHT << _bitshift);
+		_bitshift += 2;
+		// turn right
+		_turnRight();
+		// mettre right à la
 	}
-
-	case Flag::FULL_CROSSROAD:
+	case Flag::LEFT_CROSSROAD:
 	{
 		_navModule.stop();
-		_stepRegistered |= BOTH;
-		if (_recognizeCorner(_stepRegistered))
+		_stepRegistered |= (LEFT << _bitshift);
+		_bitshift += 2;
+		// turn left
+		_turnLeft();
+		if (_stepRegistered == LCBV)
 		{
-			_navModule.stop();
-			_beginning = _stepRegistered;
-			_printLocalization(_stepRegistered);
-			_sound.chooseFrequency(81);
+			disp << "LCBV";
 		}
-		else
+		// mettre left à la
+	}
+	}
+
+	// void IdentifyCorner::identificationProcess(uint8_t _beginning)
+	// {
+	// 	Flag flag = _lineMakerModule.getDetectionFlag();
+	// 	LCM disp(&DDRC, &PORTC);
+	// 	disp.clear();
+	// 	disp << "Searching";
+	// 	switch (flag)
+	// 	{
+	// 	case Flag::NO_ADJUSTMENT:
+	// 	{
+	// 		_navModule.go(180, false);
+	// 		if (_recognizeCorner(_stepRegistered))
+	// 		{
+
+	// 			_navModule.stop();
+	// 			_beginning = _stepRegistered;
+	// 			_printLocalization(_stepRegistered);
+	// 			_sound.chooseFrequency(81);
+	// 		}
+
+	// 		break;
+	// 	}
+	// 	case Flag::LEFT_ADJUSTMENT:
+	// 	{
+	// 		_navModule.adjustLeft();
+	// 		_delay_ms(200);
+	// 		_navModule.stop();
+	// 		_delay_ms(80);
+	// 		break;
+	// 	}
+	// 	case Flag::RIGHT_ADJUSTMENT:
+	// 	{
+	// 		_navModule.adjustRight();
+	// 		_delay_ms(200);
+	// 		_navModule.stop();
+	// 		_delay_ms(80);
+	// 		break;
+	// 	}
+	// 	case Flag::NO_LINE:
+	// 	{
+	// 		_navModule.stop();
+	// 		if (_recognizeCorner(_stepRegistered))
+	// 		{
+	// 			_navModule.stop();
+	// 			_beginning = _stepRegistered;
+	// 			_printLocalization(_stepRegistered);
+	// 			_sound.chooseFrequency(81);
+	// 		}
+	// 		break;
+	// 	}
+
+	// 	case Flag::LEFT_CROSSROAD:
+	// 	{
+	// 		_navModule.stop();
+	// 		_stepRegistered |= LEFT;
+	// 		_beginning = _stepRegistered;
+	// 		if (_stepRegistered == 0b00001101)
+	// 			break;
+	// 		if (_recognizeCorner(_stepRegistered))
+	// 		{
+	// 			_navModule.stop();
+	// 			_beginning = _stepRegistered;
+	// 			_printLocalization(_stepRegistered);
+	// 			_sound.chooseFrequency(81);
+	// 		}
+	// 		else
+	// 		{
+	// 			_turnLeft();
+	// 		}
+	// 		break;
+	// 	}
+
+	// 	case Flag::RIGHT_CROSSROAD:
+	// 	{
+	// 		_navModule.stop();
+	// 		_stepRegistered |= RIGHT;
+	// 		_beginning = _stepRegistered;
+	// 		if (_stepRegistered == 0b00001110)
+	// 			break;
+	// 		if (_recognizeCorner(_stepRegistered))
+	// 		{
+	// 			_navModule.stop();
+	// 			_beginning = _stepRegistered;
+	// 			_printLocalization(_stepRegistered);
+	// 			_sound.chooseFrequency(81);
+	// 		}
+	// 		else
+	// 		{
+	// 			_turnRight();
+	// 		}
+	// 		break;
+	// 	}
+
+	// 	case Flag::FULL_CROSSROAD:
+	// 	{
+	// 		_navModule.stop();
+	// 		_stepRegistered |= BOTH;
+	// 		if (_recognizeCorner(_stepRegistered))
+	// 		{
+	// 			_navModule.stop();
+	// 			_beginning = _stepRegistered;
+	// 			_printLocalization(_stepRegistered);
+	// 			_sound.chooseFrequency(81);
+	// 		}
+	// 		else
+	// 		{
+	// 			_navModule.go(180, false);
+	// 		}
+	// 		break;
+	// 	}
+
+	// 	default:
+	// 	{
+	// 		_navModule.stop();
+	// 		break;
+	// 	}
+	// 	}
+	// }
+
+	void IdentifyCorner::_turnRight()
+	{
+		// while line maker doesnt meet NO_ADJUSTMENT
+		while (_lineMakerModule.getDetectionFlag() != Flag::LEFT_ADJUSTMENT)
 		{
-			_navModule.go(180, false);
+			_navModule.goLeftWheel(SLOW_TURN_SPEED, false);
+			_navModule.goRightWheel(SLOW_TURN_SPEED, true);
 		}
-		break;
 	}
 
-	default:
+	void IdentifyCorner::_turnLeft()
 	{
-		_navModule.stop();
-		break;
+		// while line maker doesnt meet NO_ADJUSTMENT
+		while (_lineMakerModule.getDetectionFlag() != Flag::RIGHT_ADJUSTMENT)
+		{
+			_navModule.goRightWheel(SLOW_TURN_SPEED, false);
+			_navModule.goLeftWheel(SLOW_TURN_SPEED, true);
+		}
 	}
-	}
-}
-
-void IdentifyCorner::_turnRight()
-{
-	// while line maker doesnt meet NO_ADJUSTMENT
-	while (_lineMakerModule.getDetectionFlag() != Flag::LEFT_ADJUSTMENT)
-	{
-		_navModule.goLeftWheel(SLOW_TURN_SPEED, false);
-	}
-}
-
-void IdentifyCorner::_turnLeft()
-{
-	// while line maker doesnt meet NO_ADJUSTMENT
-	while (_lineMakerModule.getDetectionFlag() != Flag::RIGHT_ADJUSTMENT)
-	{
-		_navModule.goRightWheel(SLOW_TURN_SPEED, false);
-	}
-}

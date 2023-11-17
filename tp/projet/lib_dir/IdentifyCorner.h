@@ -12,8 +12,8 @@
 #define DEMO_DDR DDRC
 #define DEMO_PORT PORTC
 
-static const uint16_t THESPEED = 120;
-static const uint16_t SLOW_TURN_SPEED = 80;
+static const uint16_t THESPEED = 150;
+static const uint16_t SLOW_TURN_SPEED = 130;
 
 class IdentifyCorner
 {
@@ -33,15 +33,15 @@ public:
 	static const uint8_t RCBV = 0b10011101;
 	static const uint8_t RCBH = 0b00111110;
 
-	void identificationProcess(uint8_t _beginning);
+	void identificationProcess(uint8_t *_beginning);
 
 private:
 	LineMaker _lineMakerModule;
 	Navigation _navModule;
 	Sound _sound;
 
-
 	uint8_t _stepRegistered = 0b00000000;
+	uint8_t _bitshift = 0;
 	bool _recognizeCorner(uint8_t _registration);
 	void _printLocalization(uint8_t _step);
 	void _turnRight();
