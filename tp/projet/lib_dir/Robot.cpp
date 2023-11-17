@@ -28,7 +28,7 @@ Robot::Robot()
 
     _delayTimerModule = Timer(timerConfig);
     //_currentState = State::MODE_SELECTION;
-    _currentState = State::FOLLOW_LINE; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    _currentState = State::IDENTIFY_CORNER; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
 }
 
 Robot::~Robot()
@@ -130,7 +130,7 @@ void Robot::_followLineRoutine()
         disp << "(4,1) N";
         _navModule.stop();
 
-        //_currentState = State::MEET_CROSSROAD;
+        _currentState = State::MEET_CROSSROAD;
         break;
     }
 
@@ -142,7 +142,7 @@ void Robot::_followLineRoutine()
                 disp << "left";
 
         _navModule.stop();
-        //_currentState = State::MEET_CROSSROAD;
+        _currentState = State::MEET_CROSSROAD;
         break;
     }
 
@@ -151,7 +151,7 @@ void Robot::_followLineRoutine()
                 disp << "right";
 
         _navModule.stop();
-        //_currentState = State::MEET_CROSSROAD;
+        _currentState = State::MEET_CROSSROAD;
         break;
     }
 

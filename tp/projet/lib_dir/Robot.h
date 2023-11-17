@@ -76,6 +76,7 @@ private:
 
 
     State _currentState;
+    State _previousState;
 
     uint8_t _currentPosition[2];
     Orientation _currentOrientation;
