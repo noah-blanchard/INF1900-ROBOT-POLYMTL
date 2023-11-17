@@ -6,7 +6,7 @@
 
 #include "lcm_so1602dtr_m_fw.h"
 #include "customprocs.h"
-#include "Bouton.h"
+#include "MakeTrip.h"
 
 #define DEMO_DDR	DDRC // `Data Direction Register' AVR occup� par l'aff.
 #define DEMO_PORT	PORTC // Port AVR occup� par l'afficheur
