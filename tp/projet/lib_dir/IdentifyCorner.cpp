@@ -11,38 +11,51 @@
 
 
 uint8_t stepRegistered = 0b00000000;
-
-
 Sound sound; 
 
 void _printLocalization(uint8_t step)
 {
+	LCM disp(&DDRC, &PORTC);
+	disp.clear();
 	switch (step)
 	{
 		case LCBV:
+			disp << "(4,1) N";
 		break;
 
 		case LCBH:
+			disp << "(4,1) E";
 		break;
 
 		case LCTV:
+			disp << "(1,1) S";
 		break;
 
 		case LCTH:
+			disp << "(1,1) E";
 		break;
 
 		case RCTH :
+			disp << "(1,7) O";
 		break;
 
 		case RCTV:
+			disp << "(1,7) S";
 		break;
 
 		case RCBV:
+			disp << "(4,7) N";
 		break;
 
 		case RCBH :
+			disp << "(4,7) O";
 		break;
 	}
+}
+
+uint8_t _recognizeCorner(uint8_t registration)
+{
+	switch
 }
 
 void _identificationProcess(uint8_t _beginning)
@@ -97,11 +110,13 @@ void _identificationProcess(uint8_t _beginning)
     {
         _navModule.stop();
 		// Register Step;
-		stepRegistered | = RIGHT ;
+		stepRegistered | = LEFT ;
+		_beginning = stepRegistered;
+		if(stepRegistered == 0b00001101) break;
 		if(_recognizeCorner(stepRegistered))
 		{	
 			 _navModule.stop();
-			 _beginning = stepRegistered;
+			_beginning = stepRegistered;
 			_printLocalization(stepRegistered);
 			sound.chooseFrequency(81);
 		}
@@ -116,8 +131,9 @@ void _identificationProcess(uint8_t _beginning)
     case Flag::RIGHT_CROSSROAD:
     {
         _navModule.stop();
-		// Register Step;
 		stepRegistered | = RIGHT ;
+		_beginning = stepRegistered;
+		if(stepRegistered == 0b00001110) break;
 		if(_recognizeCorner(stepRegistered))
 		{	
 			_navModule.stop();

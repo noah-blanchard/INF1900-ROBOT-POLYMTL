@@ -14,7 +14,7 @@ static const uint8_t RIGHT = 0b00000010;
 static const uint8_t BOTH = 0b00000011;
 
 static const uint8_t LCBV = 0b00000110;  
-static const uint8_t LCBH = 0b00001101;  
+static const uint8_t LCBH = 0b00101101;  
 static const uint8_t LCTV = 0b00001001;  
 static const uint8_t LCTH = 0b00001010;  
 static const uint8_t RCTH = 0b00000001;  
