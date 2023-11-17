@@ -220,6 +220,11 @@ void _displayCurrentSequence()
 {
     // display the current sequence
     char [16] displayString;
-    sprintf(displayString, "%d", _currentSequence);
+    //sprintf(displayString, "%d", _currentSequence);
+    // use sprint f to format as bits display not decim
+
+    // display in base 2 (binary) not decimal
+    sprintf(displayString, "%b", _currentSequence);
+
     _display = displayString;
 }
