@@ -131,6 +131,11 @@ void IdentifyCorner::_detectForward()
     _sequence |= (_currentSequence << _bitshift);
     _bitshift += 3;
 
+    _display = "SEQUENCE:"
+    _delay_ms(2500);
+    _displayCurrentSequence();
+    _delay_ms(4000);
+
     // if there's either left or right in the current sequence, then we turn
     if ((_currentSequence & (LEFT | RIGHT)) != 0)
     {
@@ -211,3 +216,10 @@ void IdentifyCorner::_turn()
     _state = IdentifyCornerState::GO_FORWARD;
 }
 
+void _displayCurrentSequence()
+{
+    // display the current sequence
+    char [16] displayString;
+    sprintf(displayString, "%d", _currentSequence);
+    _display = displayString;
+}
