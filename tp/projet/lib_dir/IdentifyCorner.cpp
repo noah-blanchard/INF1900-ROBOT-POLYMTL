@@ -31,10 +31,14 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             break;
 
         case IdentifyCornerState::TURN_SECOND_LINE:
-            //_turnAround();
+            _turnSecondLine();
             _display = "TURN_SECOND_LINE";
-            _navModule.stop();
+            //_navModule.stop();
             break;
+        
+        case IdentifyCornerState::GO_FORWARD_SECOND_LINE:
+            _goForwardSecondLine();
+            _display = "YES";
         }
     }
     return;
@@ -144,6 +148,10 @@ void IdentifyCorner::_goBack()
     {
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
+        _navModule.go(140, false);
+        _delay_ms(1000);
+        _navModule.stop();
+        _delay_ms(1000);
         _state = IdentifyCornerState::TURN_SECOND_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -165,10 +173,6 @@ void IdentifyCorner::_turnSecondLine()
 {
 
     // go forward for 1 second
-    _navModule.go(140, false);
-    _delay_ms(1000);
-    _navModule.stop();
-    _delay_ms(1000);
 
     // turn around from left
     if (isRight)
