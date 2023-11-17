@@ -84,6 +84,19 @@ LineMakerFlag LineMaker::getDetectionFlag()
     {
         flag = LineMakerFlag::LEFT_ADJUSTMENT;
     }
+
+    // outer_left_detect
+    else if (sensorData == INNER_LEFT_MIDDLE || sensorData == INNER_LEFT || sensorData == OUTER_LEFT)
+    {
+        flag = LineMakerFlag::OUTER_LEFT_DETECT;
+    }
+
+    // outer_right_detect
+    else if (sensorData == INNER_RIGHT_MIDDLE || sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT)
+    {
+        flag = LineMakerFlag::OUTER_RIGHT_DETECT;
+    }
+
     else if (sensorData == NONE)
     {
         flag = LineMakerFlag::NO_LINE;

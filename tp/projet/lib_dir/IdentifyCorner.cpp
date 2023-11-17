@@ -128,13 +128,10 @@ void IdentifyCorner::_turnAround()
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     switch (flag)
     {
-    case LineMakerFlag::NO_ADJUSTMENT:
+    case LineMakerFlag::OUTER_LEFT_DETECT:
         _state = IdentifyCornerState::GO_BACK;
         break;
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-        _state = IdentifyCornerState::GO_BACK;
-        break;
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    case LineMakerFlag::OUTER_RIGHT_DETECT:
         _state = IdentifyCornerState::GO_BACK;
         break;
     }
