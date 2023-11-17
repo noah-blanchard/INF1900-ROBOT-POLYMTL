@@ -14,6 +14,7 @@ enum class IdentifyCornerState
     DETECT_INTERSECTION,
     DETECT_FORWARD,
     TURN,
+    RECOGNIZE,
     STOP
 };
 class IdentifyCorner
