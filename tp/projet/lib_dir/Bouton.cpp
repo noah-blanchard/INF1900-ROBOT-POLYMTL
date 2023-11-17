@@ -7,6 +7,11 @@
  */
 #include "Bouton.h"
 
+Bouton::Boutont()
+{
+
+}
+
 /**
  * @brief Constructor for the Bouton class.
  *
@@ -41,16 +46,14 @@ void Bouton::setLowLevel()
         EICRA &= ~(1 << ISC20);
         EICRA &= ~(1 << ISC21);
         break;
+    default:
+        break;
     }
 }
 
 void Bouton::setRisingEdge()
 {
     reset();
-
-    // EICRA |= (1 << ISC00);
-
-    // EICRA = (1 << ISC01);
     switch (_int_N)
     {
     case INT0:
@@ -64,6 +67,8 @@ void Bouton::setRisingEdge()
     case INT2:
         EICRA |= (1 << ISC20);
         EICRA |= (1 << ISC21);
+        break;
+    default:
         break;
     }
 }
@@ -90,11 +95,9 @@ void Bouton::setFallingEdge()
         EICRA &= ~(1 << ISC20);
         EICRA |= (1 << ISC21);
         break;
+    default:
+        break;
     }
-
-    // EICRA |= (0 << ISC00);
-
-    // EICRA = (1 << ISC01);
 }
 
 /**
@@ -119,11 +122,9 @@ void Bouton::setAnyEdge()
         EICRA |= (1 << ISC20);
         EICRA &= ~(1 << ISC21);
         break;
+    default:
+        break;
     }
-
-    // EICRA |= (1 << ISC00);
-
-    // EICRA = (0 << ISC01);
 }
 
 /**
@@ -132,7 +133,14 @@ void Bouton::setAnyEdge()
  */
 void Bouton::enableInterrupt()
 {
-    EIMSK |= (1 << _int_N);
+    // check if _int_N is valid / defined before enabling interrupt
+
+    if(_int_N == INT0 || _int_N == INT1 || _int_N == INT2)
+    {
+        cli();
+        EIMSK |= (1 << _int_N);
+        sei();
+    }
 }
 
 /**
@@ -141,7 +149,12 @@ void Bouton::enableInterrupt()
  */
 void Bouton::disableInterrupt()
 {
-    EIMSK &= ~(1 << _int_N);
+    if(_int_N == INT0 || _int_N == INT1 || _int_N == INT2)
+    {
+        cli();
+        EIMSK &= ~(1 << _int_N);
+        sei();
+    }
 }
 
 /**

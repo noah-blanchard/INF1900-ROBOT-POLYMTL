@@ -10,6 +10,9 @@ ISR(TIMER2_COMPA_vect)
 
 Robot::Robot()
 {
+    _validateButton = Bouton(INT1);
+    _selectButton = Bouton(INT0);
+
     TimerConfig timerConfig;
     timerConfig.timer = 2;
     timerConfig.prescaler = 256;

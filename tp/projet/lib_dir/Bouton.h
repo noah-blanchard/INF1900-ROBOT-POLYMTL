@@ -3,6 +3,8 @@
 class Bouton
 {
 public:
+// default constructor
+  Bouton();
   Bouton(uint8_t int_N_p);
   ~Bouton();
 

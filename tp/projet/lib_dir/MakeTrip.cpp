@@ -37,8 +37,6 @@ EIFR |= (1 << INTF1) ;
 
 void selectDestinations(uint8_t _destination[2])
 {
-	Bouton toValidate(INT1); // PD3
-	Bouton toSelect(INT0); //PD2
 	cli();
 	toSelect.enableInterrupt();
 	toValidate.enableInterrupt();

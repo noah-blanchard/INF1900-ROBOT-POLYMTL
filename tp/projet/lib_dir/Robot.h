@@ -11,6 +11,7 @@
 #include "Navigation.h"
 #include "InfraRedSensor.h"
 #include "Communication.h"
+#include "Bouton.h"
 
 // Define the clock speed
 #define F_CPU 8000000UL
@@ -62,6 +63,9 @@ public:
 private:
     static const uint8_t _BASE_SPEED = 180;
     static const uint16_t _BASE_PAUSE_DELAY = 80;
+
+    Bouton _validateButton;
+    Bouton _selectButton;
 
     Timer _delayTimerModule;
     LineMaker _lineMakerModule;
