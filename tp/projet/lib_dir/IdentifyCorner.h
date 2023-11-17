@@ -23,6 +23,7 @@ enum class IdentifyCornerState
     GO_FORWARD,
     TURN_AROUND,
     GO_BACK,
+    TURN_SECOND_LINE,
 };
 class IdentifyCorner
 {
@@ -39,6 +40,8 @@ private:
     LCM _display;
 
     uint8_t _intersectionCount = 0;
+    uint8_t _firstLineCount = 0;
+    uint8_t _secondLineCount = 0;
 
     // routines
     void _goForward();
