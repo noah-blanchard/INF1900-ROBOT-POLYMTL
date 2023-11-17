@@ -26,7 +26,8 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 
         case IdentifyCornerState::GO_BACK:
             //_goBack();
-            _display ="GO_BACK";
+            _display = "GO_BACK";
+            _navModule.stop();
             break;
         }
     }
@@ -117,15 +118,20 @@ void IdentifyCorner::_turnAround()
         _navModule.goRightWheel(120, true);
         _navModule.goLeftWheel(120, false);
     }
-    while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::NO_ADJUSTMENT || _lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() != LineMakerFlag::RIGHT_ADJUSTMENT)
+
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    switch (flag)
     {
-        _display = "TURNING AROUND";
+    case LineMakerFlag::NO_ADJUSTMENT:
+        _state = IdentifyCornerState::GO_BACK;
+        break;
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+        _state = IdentifyCornerState::GO_BACK;
+        break;
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+        _state = IdentifyCornerState::GO_BACK;
+        break;
     }
-
-    // stop
-    _navModule.stop();
-
-    _state = IdentifyCornerState::GO_BACK;
 }
 
 // void IdentifyCorner::identificationProcess(uint8_t *_beginning)
