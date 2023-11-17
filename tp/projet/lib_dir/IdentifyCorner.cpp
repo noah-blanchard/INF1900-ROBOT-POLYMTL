@@ -104,6 +104,8 @@ void IdentifyCorner::_detectIntersection()
         _delay_ms(2500);
         break;
     }
+    _displayCurrentSequence();
+    _delay_ms(2500);
     _currentSequence |= (sequenceToAdd);
     _state = IdentifyCornerState::DETECT_FORWARD;
 }
@@ -131,7 +133,7 @@ void IdentifyCorner::_detectForward()
     _sequence |= (_currentSequence << _bitshift);
     _bitshift += 3;
 
-    _display = "SEQUENCE:"
+    _display = "SEQUENCE:";
     _delay_ms(2500);
     _displayCurrentSequence();
     _delay_ms(4000);
@@ -216,15 +218,15 @@ void IdentifyCorner::_turn()
     _state = IdentifyCornerState::GO_FORWARD;
 }
 
-void _displayCurrentSequence()
+void IdentifyCorner::_displayCurrentSequence()
 {
     // display the current sequence
-    char [16] displayString;
+    char displayString[16];
     //sprintf(displayString, "%d", _currentSequence);
     // use sprint f to format as bits display not decim
 
     // display in base 2 (binary) not decimal
-    sprintf(displayString, "%b", _currentSequence);
+    sprintf(displayString, "%d", _currentSequence);
 
     _display = displayString;
 }
