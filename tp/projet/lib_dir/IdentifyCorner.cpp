@@ -180,17 +180,17 @@ void IdentifyCorner::identificationProcess(uint8_t _beginning)
 void IdentifyCorner::_turnRight()
 {
 	// while line maker doesnt meet NO_ADJUSTMENT
-	while (_lineMakerModule.getDetectionFlag() != Flag::NO_ADJUSTMENT)
+	while (_lineMakerModule.getDetectionFlag() != Flag::LEFT_ADJUSTMENT)
 	{
-		_navModule.goLeftWheel(THESPEED, false);
+		_navModule.goLeftWheel(SLOW_TURN_SPEED, false);
 	}
 }
 
 void IdentifyCorner::_turnLeft()
 {
 	// while line maker doesnt meet NO_ADJUSTMENT
-	while (_lineMakerModule.getDetectionFlag() != Flag::NO_ADJUSTMENT)
+	while (_lineMakerModule.getDetectionFlag() != Flag::RIGHT_ADJUSTMENT)
 	{
-		_navModule.goRightWheel(THESPEED, false);
+		_navModule.goRightWheel(SLOW_TURN_SPEED, false);
 	}
 }
