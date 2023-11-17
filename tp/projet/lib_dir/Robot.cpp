@@ -36,12 +36,12 @@ void Robot::runRoutine()
     case State::IDENTIFY_CORNER:
     {
         //_identifyCornerRoutine();
+        _identifyCorner.identificationProcess(_beginning)
         break;
     }
     case State::MAKE_TRIP:
     {
         _maketrip.selectDestinations(_destination);
-        //_identifyCornerRoutine();
         break;
     }
     case State::TRAVEL_POSITION_SELECTION:
@@ -144,8 +144,6 @@ void Robot::_followLineRoutine()
     }
     //}
     }
-    
-    //_navModule.stop();
 }
 
 void Robot::_pause()

@@ -35,7 +35,7 @@ EIFR |= (1 << INTF1) ;
 }
 
 
-void void selectDestinations()
+void selectDestinations(uint8_t _destination[2])
 {
 	Bouton toValidate(INT1); // PD3
 	Bouton toSelect(INT0); //PD2

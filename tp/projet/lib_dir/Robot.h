@@ -5,6 +5,8 @@
 
 // Library Imports
 #include "Timer.h"
+#include "MakeTrip.h"
+#include "IdentifyCorner.h"
 #include "LineMaker.h"
 #include "Navigation.h"
 #include "InfraRedSensor.h"
@@ -65,6 +67,9 @@ private:
     LineMaker _lineMakerModule;
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
+    MakeTrip _maketrip;
+    IdentifyCorner _identifyCorner;
+
 
     State _currentState;
 
@@ -72,13 +77,14 @@ private:
     Orientation _currentOrientation;
 
     uint8_t _destination[2];
+    uint8_t _beginning[2];
 
     void _customDelay(uint16_t delay);
     void _pause();
 
     // following functions are the routines for each possible states
     void _modeSelectionRoutine();
-    void _identifyCornerRoutine();
+    //void _identifyCornerRoutine();
     void _travelPositionSelectionRoutine();
     void _calculatePathRoutine();
     void _followLineRoutine();
