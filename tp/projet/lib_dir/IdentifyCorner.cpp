@@ -177,7 +177,7 @@ void IdentifyCorner::_turn()
     {
         _navModule.goRightWheel(120, false);
         _navModule.goLeftWheel(120, true);
-        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT)
+        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::RIGHT_ADJUSTMENT)
         {
         }
     }
@@ -185,10 +185,13 @@ void IdentifyCorner::_turn()
     {
         _navModule.goRightWheel(120, true);
         _navModule.goLeftWheel(120, false);
-        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::RIGHT_ADJUSTMENT)
+        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT)
         {
         }
     }
+
+    // stop
+    _navModule.stop();
 
     _state = IdentifyCornerState::GO_FORWARD;
 }
