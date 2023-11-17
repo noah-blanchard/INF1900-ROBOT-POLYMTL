@@ -81,6 +81,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 		// turn right
 		_turnRight();
 		// mettre right à la
+		break;
 	}
 	case Flag::LEFT_CROSSROAD:
 	{
@@ -88,19 +89,20 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 		_stepRegistered |= (LEFT << _bitshift);
 		_bitshift += 2;
 		// turn left
-		_turnLeft();
 		if (_stepRegistered == LCBV)
 		{
-			disp << "LCBV";
+			disp = "LCBV";
 		}
+		break;
 		// mettre left à la
 	}
 	}
+}
 
 	// void IdentifyCorner::identificationProcess(uint8_t _beginning)
 	// {
 	// 	Flag flag = _lineMakerModule.getDetectionFlag();
-	// 	LCM disp(&DDRC, &PORTC);
+	// 	LCM disp(&DDRC, &POFOLLOW_LINERTC);
 	// 	disp.clear();
 	// 	disp << "Searching";
 	// 	switch (flag)
@@ -120,7 +122,8 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 	// 		break;
 	// 	}
 	// 	case Flag::LEFT_ADJUSTMENT:
-	// 	{
+	// 	{        _customDelay(500);
+      
 	// 		_navModule.adjustLeft();
 	// 		_delay_ms(200);
 	// 		_navModule.stop();
@@ -179,7 +182,8 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 	// 		if (_recognizeCorner(_stepRegistered))
 	// 		{
 	// 			_navModule.stop();
-	// 			_beginning = _stepRegistered;
+	// 			Flag flag = _lineMakerModule.getDetectionFlag();
+
 	// 			_printLocalization(_stepRegistered);
 	// 			_sound.chooseFrequency(81);
 	// 		}
@@ -218,9 +222,13 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 
 	void IdentifyCorner::_turnRight()
 	{
+	LCM disp(&DDRC, &PORTC);
+	disp.clear();
+	
 		// while line maker doesnt meet NO_ADJUSTMENT
 		while (_lineMakerModule.getDetectionFlag() != Flag::LEFT_ADJUSTMENT)
 		{
+			disp << "RIGHT...";
 			_navModule.goLeftWheel(SLOW_TURN_SPEED, false);
 			_navModule.goRightWheel(SLOW_TURN_SPEED, true);
 		}
@@ -228,9 +236,13 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 
 	void IdentifyCorner::_turnLeft()
 	{
+	LCM disp(&DDRC, &PORTC);
+	disp.clear();
 		// while line maker doesnt meet NO_ADJUSTMENT
 		while (_lineMakerModule.getDetectionFlag() != Flag::RIGHT_ADJUSTMENT)
 		{
+			
+	disp << "LEFT...";
 			_navModule.goRightWheel(SLOW_TURN_SPEED, false);
 			_navModule.goLeftWheel(SLOW_TURN_SPEED, true);
 		}
