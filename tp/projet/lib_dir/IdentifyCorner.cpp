@@ -69,12 +69,12 @@ void IdentifyCorner::identificationProcess(uint8_t _beginning)
 	case Flag::NO_ADJUSTMENT:
 	{
 		_navModule.go(180, false);
-		if (_recognizeCorner(stepRegistered))
+		if (_recognizeCorner(_stepRegistered))
 		{
 
 			_navModule.stop();
-			_beginning = stepRegistered;
-			_printLocalization(stepRegistered);
+			_beginning = _stepRegistered;
+			_printLocalization(_stepRegistered);
 			_sound.chooseFrequency(81);
 		}
 
@@ -99,11 +99,11 @@ void IdentifyCorner::identificationProcess(uint8_t _beginning)
 	case Flag::NO_LINE:
 	{
 		_navModule.stop();
-		if (_recognizeCorner(stepRegistered))
+		if (_recognizeCorner(_stepRegistered))
 		{
 			_navModule.stop();
-			_beginning = stepRegistered;
-			_printLocalization(stepRegistered);
+			_beginning = _stepRegistered;
+			_printLocalization(_stepRegistered);
 			_sound.chooseFrequency(81);
 		}
 		break;
@@ -112,15 +112,15 @@ void IdentifyCorner::identificationProcess(uint8_t _beginning)
 	case Flag::LEFT_CROSSROAD:
 	{
 		_navModule.stop();
-		stepRegistered |= LEFT;
-		_beginning = stepRegistered;
-		if (stepRegistered == 0b00001101)
+		_stepRegistered |= LEFT;
+		_beginning = _stepRegistered;
+		if (_stepRegistered == 0b00001101)
 			break;
-		if (_recognizeCorner(stepRegistered))
+		if (_recognizeCorner(_stepRegistered))
 		{
 			_navModule.stop();
-			_beginning = stepRegistered;
-			_printLocalization(stepRegistered);
+			_beginning = _stepRegistered;
+			_printLocalization(_stepRegistered);
 			_sound.chooseFrequency(81);
 		}
 		else
@@ -133,15 +133,15 @@ void IdentifyCorner::identificationProcess(uint8_t _beginning)
 	case Flag::RIGHT_CROSSROAD:
 	{
 		_navModule.stop();
-		stepRegistered |= RIGHT;
-		_beginning = stepRegistered;
-		if (stepRegistered == 0b00001110)
+		_stepRegistered |= RIGHT;
+		_beginning = _stepRegistered;
+		if (_stepRegistered == 0b00001110)
 			break;
-		if (_recognizeCorner(stepRegistered))
+		if (_recognizeCorner(_stepRegistered))
 		{
 			_navModule.stop();
-			_beginning = stepRegistered;
-			_printLocalization(stepRegistered);
+			_beginning = _stepRegistered;
+			_printLocalization(_stepRegistered);
 			_sound.chooseFrequency(81);
 		}
 		else
@@ -154,12 +154,12 @@ void IdentifyCorner::identificationProcess(uint8_t _beginning)
 	case Flag::FULL_CROSSROAD:
 	{
 		_navModule.stop();
-		stepRegistered |= BOTH;
-		if (_recognizeCorner(stepRegistered))
+		_stepRegistered |= BOTH;
+		if (_recognizeCorner(_stepRegistered))
 		{
 			_navModule.stop();
-			_beginning = stepRegistered;
-			_printLocalization(stepRegistered);
+			_beginning = _stepRegistered;
+			_printLocalization(_stepRegistered);
 			_sound.chooseFrequency(81);
 		}
 		else

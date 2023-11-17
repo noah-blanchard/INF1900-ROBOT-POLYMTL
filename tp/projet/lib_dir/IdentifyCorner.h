@@ -40,6 +40,8 @@ private:
 	Navigation _navModule;
 	Sound _sound;
 
+
+	uint8_t _stepRegistered = 0b00000000;
 	bool _recognizeCorner(uint8_t _registration);
 	void _printLocalization(uint8_t _step);
 	void _turnRight();
