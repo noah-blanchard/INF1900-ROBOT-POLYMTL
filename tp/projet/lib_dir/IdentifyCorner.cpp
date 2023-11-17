@@ -26,7 +26,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 
         case IdentifyCornerState::GO_BACK:
             //_goBack();
-            _display("GO_BACK")
+            _display ="GO_BACK";
             break;
         }
     }
@@ -119,7 +119,7 @@ void IdentifyCorner::_turnAround()
     }
     while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::NO_ADJUSTMENT || _lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() != LineMakerFlag::RIGHT_ADJUSTMENT)
     {
-        display = "TURNING AROUND";
+        _display = "TURNING AROUND";
     }
 
     // stop
