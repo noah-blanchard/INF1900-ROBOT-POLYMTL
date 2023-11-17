@@ -104,8 +104,6 @@ void IdentifyCorner::_detectIntersection()
         break;
     }
     _currentSequence |= (sequenceToAdd);
-    _displayCurrentSequence();
-    _delay_ms(3000);
     _state = IdentifyCornerState::DETECT_FORWARD;
 }
 
@@ -127,29 +125,20 @@ void IdentifyCorner::_detectForward()
         _display = "FORWARD DETECTED";
         _delay_ms(2500);
     }
-    _display = "SEQUENCE:";
-   _delay_ms(2500);
-    _displayCurrentSequence();
-    _delay_ms(4000);
     _currentSequence |= (sequenceToAdd);
     // add the current sequence into th _sequence with tteh bitshift than increment
     _sequence |= (_currentSequence << _bitshift);
     _bitshift += 3;
 
-    _display = "SEQUENCE:";
-    _delay_ms(2500);
-    _displayCurrentSequence();
-    _delay_ms(4000);
-
-    // if there's either left or right in the current sequence, then we turn
-    if ((_currentSequence & (LEFT | RIGHT)) != 0)
+    // if there's forward in the sequence, just go back to go forward
+    if ((_currentSequence & FORWARD) != 0)
     {
-        _state = IdentifyCornerState::TURN;
+        _state = IdentifyCornerState::GO_FORWARD;
     }
     else
     {
-               _currentSequence = 0;
-        _state = IdentifyCornerState::GO_FORWARD;
+        // if there's no forward, then we need to turn
+        _state = IdentifyCornerState::TURN;
     }
 }
 
