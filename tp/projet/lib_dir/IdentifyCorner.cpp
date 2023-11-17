@@ -35,21 +35,25 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 // go forward should follow the line using the line maker module until no line is detected
 void IdentifyCorner::_goForward()
 {
-    _display.clear();
-    _display << "GO FORWARD";
+    //_display.clear();
+    //_display << "GO FORWARD";
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    _navModule.go(120, false);
     switch (flag)
     {
-    case LineMakerFlag::NO_ADJUSTMENT:
-        _navModule.go(120, false);
-        break;
 
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _navModule.adjustRight();
+        _delay_ms(200);
+        _navModule.stop();
+        _delay_ms(70);
         break;
 
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustLeft();
+        _delay_ms(200);
+        _navModule.stop();
+        _delay_ms(70);
         break;
 
     case LineMakerFlag::RIGHT_CROSSROAD:
@@ -70,7 +74,7 @@ void IdentifyCorner::_goForward()
         _state = IdentifyCornerState::TURN_AROUND;
         break;
     }
-    _displayCurrentIntersectionCount();
+    //_displayCurrentIntersectionCount();
 }
 
 void IdentifyCorner::_displayCurrentIntersectionCount()
@@ -84,7 +88,7 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 // turn around should turn around
 void IdentifyCorner::_turnAround()
 {
-    _display = "TURN AROUND";
+    _displayCurrentIntersectionCount();
 }
 
 // void IdentifyCorner::identificationProcess(uint8_t *_beginning)
