@@ -9,9 +9,11 @@
 
 
 uint8_t stepRegistered = 0b00000000;
-Sound sound; 
 
-void _printLocalization(uint8_t step)
+
+//IdentifyCorner::IndentifyCorner(){}
+
+void IdentifyCorner::_printLocalization(uint8_t step)
 {
 	LCM disp(&DDRC, &PORTC);
 	disp.clear();
@@ -51,20 +53,22 @@ void _printLocalization(uint8_t step)
 	}
 }
 
-bool _recognizeCorner(uint8_t registration)
+bool IdentifyCorner::_recognizeCorner(uint8_t registration)
 {
-	if(registration == LCBV ||registration=  LCBH ||registration =  LCTV ||registration=  LCTH || registration= RCTH || registration= RCTV 
-	||registration= RCBV || registration= RCBH)
+	if(registration == LCBV ||registration==  LCBH ||registration ==  LCTV ||registration==  LCTH || registration== RCTH || registration== RCTV 
+	||registration == RCBV || registration== RCBH)
 	{
 		return true;
 	}
 	return false;
 }
 
-void _identificationProcess(uint8_t _beginning)
+void IdentifyCorner::identificationProcess(uint8_t _beginning)
 {
     Flag flag = _lineMakerModule.getDetectionFlag();
-
+	LCM disp(&DDRC, &PORTC);
+	disp.clear();
+	disp << "Searching";
     switch (flag)
     {
     case Flag::NO_ADJUSTMENT:
@@ -72,27 +76,30 @@ void _identificationProcess(uint8_t _beginning)
         _navModule.go(180, false);
 		if(_recognizeCorner(stepRegistered))
 		{	
+
 			_navModule.stop();
 			_beginning = stepRegistered;
-			_printLocalization(stepRegistered)
-			sound.chooseFrequency(81);
+			_printLocalization(stepRegistered);
+			_sound.chooseFrequency(81);
 		}
+
+		
         break;
     }
     case Flag::LEFT_ADJUSTMENT:
     {
         _navModule.adjustLeft();
-        _pause();
+        _delay_ms(200);
         _navModule.stop();
-        _pause();
+        _delay_ms(80);
         break;
     }
     case Flag::RIGHT_ADJUSTMENT:
     {
          _navModule.adjustRight();
-        _pause();
+        _delay_ms(200);
         _navModule.stop();
-        _pause();
+        _delay_ms(80);
         break;
     }
     case Flag::NO_LINE:
@@ -103,7 +110,7 @@ void _identificationProcess(uint8_t _beginning)
 			_navModule.stop();
 			_beginning = stepRegistered;
 			_printLocalization(stepRegistered);
-			sound.chooseFrequency(81);
+			_sound.chooseFrequency(81);
 		}
         break;
     }
@@ -112,7 +119,7 @@ void _identificationProcess(uint8_t _beginning)
     case Flag::LEFT_CROSSROAD:
     {
         _navModule.stop();
-		stepRegistered | = LEFT ;
+		stepRegistered |= LEFT ;
 		_beginning = stepRegistered;
 		if(stepRegistered == 0b00001101) break;
 		if(_recognizeCorner(stepRegistered))
@@ -120,7 +127,7 @@ void _identificationProcess(uint8_t _beginning)
 			 _navModule.stop();
 			_beginning = stepRegistered;
 			_printLocalization(stepRegistered);
-			sound.chooseFrequency(81);
+			_sound.chooseFrequency(81);
 		}
 		else
 		{
@@ -133,7 +140,7 @@ void _identificationProcess(uint8_t _beginning)
     case Flag::RIGHT_CROSSROAD:
     {
         _navModule.stop();
-		stepRegistered | = RIGHT ;
+		stepRegistered |= RIGHT ;
 		_beginning = stepRegistered;
 		if(stepRegistered == 0b00001110) break;
 		if(_recognizeCorner(stepRegistered))
@@ -141,7 +148,7 @@ void _identificationProcess(uint8_t _beginning)
 			_navModule.stop();
 			_beginning = stepRegistered;
 			_printLocalization(stepRegistered);
-			sound.chooseFrequency(81);
+			_sound.chooseFrequency(81);
 		}
 		else
 		{
@@ -154,13 +161,13 @@ void _identificationProcess(uint8_t _beginning)
 	case Flag::FULL_CROSSROAD:
     {
         _navModule.stop();
-		stepRegistered | = BOTH ;
+		stepRegistered |= BOTH ;
 		if(_recognizeCorner(stepRegistered))
 		{	
 			_navModule.stop();
 			_beginning = stepRegistered;
 			_printLocalization(stepRegistered);
-			sound.chooseFrequency(81);
+			_sound.chooseFrequency(81);
 		}
 		else
 		{

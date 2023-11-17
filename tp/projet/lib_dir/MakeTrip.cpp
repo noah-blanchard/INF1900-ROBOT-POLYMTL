@@ -16,9 +16,6 @@ uint8_t columnSeleted = 1;
 volatile uint8_t selectChoice = false;
 volatile uint8_t validateChoice = false;
 
-void static inline w(void) {
-	cp_wait_ms(2000);
-}_destination
 
 ISR ( INT0_vect) {
 // select Choice
@@ -37,16 +34,9 @@ EIFR |= (1 << INTF1) ;
 
 MakeTrip::MakeTrip(){}
 
-void MakeTrip::selectDestinations(uint8_t _destination[2])
+void MakeTrip::selectDestination(uint8_t* _destination)
 {
-	cli();
-	toSelect.enableInterrupt();
-	toValidate.enableInterrupt();
-	sei();
-
-	toSelect.setRisingEdge();
-	toValidate.setRisingEdge();
-
+	
 	LCM disp(&DDRC, &PORTC);
 	disp.clear();
 	w();
@@ -128,7 +118,7 @@ void MakeTrip::selectDestinations(uint8_t _destination[2])
 					disp = buf;
 					w();
 				}
-				if()
+				
             break;
 		}
 	}

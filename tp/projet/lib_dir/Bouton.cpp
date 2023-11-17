@@ -7,7 +7,7 @@
  */
 #include "Bouton.h"
 
-Bouton::Boutont()
+Bouton::Bouton()
 {
 
 }

@@ -12,6 +12,13 @@ Robot::Robot()
 {
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
+    cli();
+    _validateButton.enableInterrupt();
+    _validateButton.setRisingEdge();
+
+    _selectButton.enableInterrupt();
+    _selectButton.setRisingEdge();
+    sei();
 
     TimerConfig timerConfig;
     timerConfig.timer = 2;
@@ -20,7 +27,7 @@ Robot::Robot()
 
     _delayTimerModule = Timer(timerConfig);
     //_currentState = State::MODE_SELECTION;
-    _currentState = State::FOLLOW_LINE; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    _currentState = State::IDENTIFY_CORNER; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
 }
 
 Robot::~Robot()
@@ -39,12 +46,12 @@ void Robot::runRoutine()
     case State::IDENTIFY_CORNER:
     {
         //_identifyCornerRoutine();
-        _identifyCorner.identificationProcess(_beginning)
+        _identifyCorner.identificationProcess(_beginning);
         break;
     }
     case State::MAKE_TRIP:
     {
-        _maketrip.selectDestinations(_destination);
+        _maketrip.selectDestination(_destination);
         break;
     }
     case State::TRAVEL_POSITION_SELECTION:
