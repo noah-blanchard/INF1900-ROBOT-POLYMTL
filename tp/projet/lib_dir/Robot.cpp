@@ -1,5 +1,6 @@
 #include "Robot.h"
 
+
 // custom timer volatile variable
 volatile bool customDelayElapsed = false;
 
@@ -27,7 +28,7 @@ Robot::Robot()
 
     _delayTimerModule = Timer(timerConfig);
     //_currentState = State::MODE_SELECTION;
-    _currentState = State::IDENTIFY_CORNER; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    _currentState = State::FOLLOW_LINE; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
 }
 
 Robot::~Robot()
@@ -89,6 +90,8 @@ void Robot::runRoutine()
 void Robot::_followLineRoutine()
 {
     Flag flag = _lineMakerModule.getDetectionFlag();
+    LCM disp(&DDRC, &PORTC);
+	disp.clear();
 
     if(_irSensorModule.isObstacleDetected()){
         _navModule.stop();
@@ -98,6 +101,7 @@ void Robot::_followLineRoutine()
     case Flag::NO_ADJUSTMENT:
     {
         _navModule.go(180, false);
+        disp << "hqhqhq";
         break;
     }
     case Flag::LEFT_ADJUSTMENT:
@@ -123,8 +127,10 @@ void Robot::_followLineRoutine()
     }
     case Flag::FULL_CROSSROAD:
     {
+        disp << "(4,1) N";
         _navModule.stop();
-        _currentState = State::MEET_CROSSROAD;
+
+        //_currentState = State::MEET_CROSSROAD;
         break;
     }
 
@@ -133,15 +139,19 @@ void Robot::_followLineRoutine()
 
     case Flag::LEFT_CROSSROAD:
     {
-        _navModule.go(255, false);
-        _currentState = State::MEET_CROSSROAD;
+                disp << "left";
+
+        _navModule.stop();
+        //_currentState = State::MEET_CROSSROAD;
         break;
     }
 
     case Flag::RIGHT_CROSSROAD:
     {
+                disp << "right";
+
         _navModule.stop();
-        _currentState = State::MEET_CROSSROAD;
+        //_currentState = State::MEET_CROSSROAD;
         break;
     }
 

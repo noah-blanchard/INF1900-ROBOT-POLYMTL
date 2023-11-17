@@ -8,7 +8,8 @@
 
 
 
-uint8_t stepRegistered = 0b00000000;
+
+uint8_t stepRegistered = 0b00000110;
 
 
 //IdentifyCorner::IndentifyCorner(){}

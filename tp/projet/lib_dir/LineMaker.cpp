@@ -1,4 +1,12 @@
 #include "LineMaker.h"
+#include <stdio.h>
+#include "lcm_so1602dtr_m_fw.h"
+#include "customprocs.h"
+#include "Communication.h"
+
+void static inline w(void) {
+	cp_wait_ms(2000);
+}
 
 LineMaker::LineMaker() {}
 
@@ -54,9 +62,20 @@ Flag LineMaker::getDetectionFlag()
     uint8_t sensorData = _retrieveSensorData();
     Flag flag = Flag::NO_LINE;
 
-    if (sensorData == MIDDLE)
+    if (sensorData == ALL)
     {
-        flag = Flag::NO_ADJUSTMENT;
+        flag = Flag::FULL_CROSSROAD;
+    }
+       else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION)
+    {
+        flag = Flag::LEFT_CROSSROAD;
+
+    }
+
+    else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION)
+    {
+        flag = Flag::RIGHT_CROSSROAD;
+
     }
     else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & INNER_LEFT_MIDDLE) == INNER_LEFT_MIDDLE || (sensorData &INNER_OUTER_LEFT)==INNER_OUTER_LEFT)
     {
@@ -71,22 +90,10 @@ Flag LineMaker::getDetectionFlag()
         flag = Flag::NO_LINE;
     }
 
-    else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION)
+
+    else if (sensorData == MIDDLE )
     {
-        flag = Flag::LEFT_CROSSROAD;
-
-    }
-
-    else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION)
-    {
-        flag = Flag::RIGHT_CROSSROAD;
-
-    }
-
-
-    else if ((sensorData & ALL  ) == ALL )
-    {
-        flag = Flag::FULL_CROSSROAD;
+        flag = Flag::NO_ADJUSTMENT;
 
     } 
 

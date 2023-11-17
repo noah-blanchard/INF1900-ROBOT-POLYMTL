@@ -37,7 +37,7 @@ public:
     static const uint8_t MIDDLE = 0b00100;
     static const uint8_t INNER_RIGHT = 0b01000;
     static const uint8_t OUTER_RIGHT = 0b10000;
-    static const uint8_t ALL = OUTER_LEFT | INNER_LEFT | MIDDLE | INNER_RIGHT | OUTER_RIGHT;
+    static const uint8_t ALL = 0b11111;
 
     //Je rajoute des static const pour eviter les longues lignes de codes
     static const uint8_t LEFT_INTERSECTION =   OUTER_LEFT | INNER_LEFT  | MIDDLE;
