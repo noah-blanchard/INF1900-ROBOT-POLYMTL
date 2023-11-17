@@ -12,7 +12,7 @@
 #define DEMO_DDR DDRC
 #define DEMO_PORT PORTC
 
-static const uint16_t THESPEED = 255;
+static const uint16_t THESPEED = 160;
 
 class IdentifyCorner
 {

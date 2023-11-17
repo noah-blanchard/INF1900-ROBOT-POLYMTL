@@ -5,7 +5,7 @@
 #include <avr/interrupt.h>
 #include "IdentifyCorner.h"
 
-uint8_t stepRegistered = 0b00000110;
+uint8_t stepRegistered = 0b000000;
 
 // IdentifyCorner::IndentifyCorner(){}
 
