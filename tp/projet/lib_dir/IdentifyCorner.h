@@ -20,10 +20,11 @@
 
 enum class IdentifyCornerState
 {
-    GO_FORWARD,
+    GO_FORWARD_FIRST_LINE,
     TURN_AROUND,
     GO_BACK,
     TURN_SECOND_LINE,
+    GO_FORWARD_SECOND_LINE,
 };
 class IdentifyCorner
 {
@@ -47,6 +48,8 @@ private:
     void _goForward();
     void _turnAround();
     void _goBack();
+    void _turnSecondLine();
+    void _goForwardSecondLine();
 
     bool isRight = false;
 
@@ -71,7 +74,7 @@ private:
     // // match the sequence
     // void _matchSequence();
 
-    IdentifyCornerState _state = IdentifyCornerState::GO_FORWARD;
+    IdentifyCornerState _state = IdentifyCornerState::GO_FORWARD_FIRST_LINE;
 
     // // // define
     // // static const uint8_t LEFT = 0b00000100;

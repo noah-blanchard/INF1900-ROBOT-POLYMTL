@@ -16,7 +16,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
     {
         switch (_state)
         {
-        case IdentifyCornerState::GO_FORWARD:
+        case IdentifyCornerState::GO_FORWARD_FIRST_LINE:
             _goForward();
             break;
 
@@ -29,7 +29,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             _display = "GO_BACK";
             _navModule.stop();
             break;
-        
+
         case IdentifyCornerState::TURN_SECOND_LINE:
             //_turnAround();
             _display = "TURN_SECOND_LINE";
@@ -46,7 +46,7 @@ void IdentifyCorner::_goForward()
     //_display.clear();
     //_display << "GO FORWARD";
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(130, false);
+    _navModule.go(140, false);
     switch (flag)
     {
 
@@ -70,7 +70,7 @@ void IdentifyCorner::_goForward()
     {
         if (!_blockIncrementation)
         {
-            _intersectionCount++;
+            _firstLineCount++;
             _blockIncrementation = true;
         }
         isRight = true;
@@ -80,7 +80,7 @@ void IdentifyCorner::_goForward()
     case LineMakerFlag::LEFT_CROSSROAD:
         if (!_blockIncrementation)
         {
-            _intersectionCount++;
+            _firstLineCount++;
             _blockIncrementation = true;
         }
         isRight = false;
@@ -89,7 +89,7 @@ void IdentifyCorner::_goForward()
     case LineMakerFlag::FULL_CROSSROAD:
         if (!_blockIncrementation)
         {
-            _intersectionCount++;
+            _firstLineCount++;
             _blockIncrementation = true;
         }
         break;
@@ -127,7 +127,7 @@ void IdentifyCorner::_turnAround()
 
     uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-    if(sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -139,7 +139,7 @@ void IdentifyCorner::_goBack()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(120, false);
+    _navModule.go(140, false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
@@ -160,6 +160,85 @@ void IdentifyCorner::_goBack()
         break;
     }
 }
+
+void IdentifyCorner::_turnSecondLine()
+{
+
+    // go forward for 1 second
+    _navModule.go(140, false);
+    _delay_ms(1000);
+    _navModule.stop();
+    _delay_ms(1000);
+
+    // turn around from left
+    if (isRight)
+    {
+        _navModule.goRightWheel(120, false);
+        _navModule.goLeftWheel(140, true);
+    }
+    else
+    {
+        _navModule.goRightWheel(140, true);
+        _navModule.goLeftWheel(120, false);
+    }
+
+    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+
+    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    {
+        _navModule.stop();
+        _delay_ms(1000);
+        _state = IdentifyCornerState::GO_FORWARD_SECOND_LINE;
+    }
+}
+
+void IdentifyCorner::_goForwardSecondLine()
+{
+    // go forward until no line is detected
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    _navModule.go(140, false);
+    switch (flag)
+    {
+    case LineMakerFlag::NO_LINE:
+        _navModule.stop();
+        _state = IdentifyCornerState::TURN_AROUND;
+        break;
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+        _navModule.adjustLeft();
+        _delay_ms(200);
+        _navModule.stop();
+        _delay_ms(70);
+        break;
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+        _navModule.adjustRight();
+        _delay_ms(200);
+        _navModule.stop();
+        _delay_ms(70);
+        break;
+
+    case LineMakerFlag::RIGHT_CROSSROAD:
+    {
+        if (!_blockIncrementation)
+        {
+            _secondLineCount++;
+            _blockIncrementation = true;
+        }
+        isRight = true;
+        break;
+    }
+
+    case LineMakerFlag::LEFT_CROSSROAD:
+        if (!_blockIncrementation)
+        {
+            _secondLineCount++;
+            _blockIncrementation = true;
+        }
+        isRight = false;
+        break;
+    }
+
+}
+
     // void IdentifyCorner::identificationProcess(uint8_t *_beginning)
     // {
     //     _display = "Searching for corner...";
