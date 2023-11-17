@@ -43,6 +43,7 @@ void IdentifyCorner::_goForward()
     {
 
     case LineMakerFlag::RIGHT_ADJUSTMENT:
+        _blockIncrementation = false;
         _navModule.adjustRight();
         _delay_ms(200);
         _navModule.stop();
@@ -50,6 +51,7 @@ void IdentifyCorner::_goForward()
         break;
 
     case LineMakerFlag::LEFT_ADJUSTMENT:
+        _blockIncrementation = false;
         _navModule.adjustLeft();
         _delay_ms(200);
         _navModule.stop();
@@ -57,12 +59,20 @@ void IdentifyCorner::_goForward()
         break;
 
     case LineMakerFlag::RIGHT_CROSSROAD:
-        _intersectionCount++;
+    {
+        if(!_blockIncrementation){
+            _intersectionCount++;
+            _blockIncrementation = true;
+        }
         isRight = true;
         break;
+    }
 
     case LineMakerFlag::LEFT_CROSSROAD:
-        _intersectionCount++;
+        if(!_blockIncrementation){
+            _intersectionCount++;
+            _blockIncrementation = true;
+        }
         isRight = false;
         break;
 
