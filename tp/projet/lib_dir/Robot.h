@@ -77,7 +77,7 @@ private:
     Orientation _currentOrientation;
 
     uint8_t _destination[2];
-    uint8_t _beginning[2];
+    uint8_t _beginning;
 
     void _customDelay(uint16_t delay);
     void _pause();

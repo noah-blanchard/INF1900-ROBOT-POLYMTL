@@ -7,6 +7,7 @@
 #include "lcm_so1602dtr_m_fw.h"
 #include "customprocs.h"
 #include "Navigation.h"
+#include "Sound.h"
 
 
 static const uint8_t LEFT = 0b00000001;
@@ -40,5 +41,8 @@ private:
 	LineMaker _lineMakerModule;	
 	Navigation _navModule;
 	
+
+	bool _recognizeCorner(uint8_t _registration)
    	void _identificationProcess(uint8_t _beginning);
+	void _printLocalization(uint8_t _step)
 };

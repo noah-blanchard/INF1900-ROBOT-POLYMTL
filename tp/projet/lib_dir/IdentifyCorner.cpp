@@ -3,10 +3,8 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
-#include "lcm_so1602dtr_m_fw.h"
-#include "customprocs.h"
 #include "IdentifyCorner.h"
-#include "Sound.h"
+
 
 
 
@@ -53,9 +51,14 @@ void _printLocalization(uint8_t step)
 	}
 }
 
-uint8_t _recognizeCorner(uint8_t registration)
+bool _recognizeCorner(uint8_t registration)
 {
-	switch
+	if(registration == LCBV ||registration=  LCBH ||registration =  LCTV ||registration=  LCTH || registration= RCTH || registration= RCTV 
+	||registration= RCBV || registration= RCBH)
+	{
+		return true;
+	}
+	return false;
 }
 
 void _identificationProcess(uint8_t _beginning)
@@ -109,7 +112,6 @@ void _identificationProcess(uint8_t _beginning)
     case Flag::LEFT_CROSSROAD:
     {
         _navModule.stop();
-		// Register Step;
 		stepRegistered | = LEFT ;
 		_beginning = stepRegistered;
 		if(stepRegistered == 0b00001101) break;
