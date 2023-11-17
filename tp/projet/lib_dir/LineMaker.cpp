@@ -4,8 +4,9 @@
 #include "customprocs.h"
 #include "Communication.h"
 
-void static inline w(void) {
-	cp_wait_ms(2000);
+void static inline w(void)
+{
+    cp_wait_ms(2000);
 }
 
 LineMaker::LineMaker() {}
@@ -66,22 +67,20 @@ Flag LineMaker::getDetectionFlag()
     {
         flag = Flag::FULL_CROSSROAD;
     }
-       else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION)
+    else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION || (sensorData & (LEFT_INTERSECTION | INNER_RIGHT) == (LEFT_INTERSECTION | INNER_RIGHT)))
     {
         flag = Flag::LEFT_CROSSROAD;
-
     }
 
-    else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION)
+    else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION || (sensorData & (RIGHT_INTERSECTION | INNER_LEFT) == (RIGHT_INTERSECTION | INNER_LEFT)))
     {
         flag = Flag::RIGHT_CROSSROAD;
-
     }
-    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & INNER_LEFT_MIDDLE) == INNER_LEFT_MIDDLE || (sensorData &INNER_OUTER_LEFT)==INNER_OUTER_LEFT)
+    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & INNER_LEFT_MIDDLE) == INNER_LEFT_MIDDLE || (sensorData & INNER_OUTER_LEFT) == INNER_OUTER_LEFT)
     {
         flag = Flag::RIGHT_ADJUSTMENT;
     }
-    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & INNER_RIGHT_MIDDLE) == INNER_RIGHT_MIDDLE || (sensorData &INNER_OUTER_RIGHT)==INNER_OUTER_RIGHT)
+    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & INNER_RIGHT_MIDDLE) == INNER_RIGHT_MIDDLE || (sensorData & INNER_OUTER_RIGHT) == INNER_OUTER_RIGHT)
     {
         flag = Flag::LEFT_ADJUSTMENT;
     }
@@ -90,12 +89,10 @@ Flag LineMaker::getDetectionFlag()
         flag = Flag::NO_LINE;
     }
 
-
-    else if (sensorData == MIDDLE )
+    else if (sensorData == MIDDLE)
     {
         flag = Flag::NO_ADJUSTMENT;
-
-    } 
+    }
 
     return flag;
 }
