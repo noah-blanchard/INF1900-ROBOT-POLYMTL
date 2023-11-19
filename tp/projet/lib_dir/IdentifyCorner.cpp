@@ -41,6 +41,28 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             _display = "YES";
         }
     }
+    // It found the right intersection so call function compare match
+
+    // complete here what's supposed to do when it's found
+
+    // write function switch case recognization corner
+
+    //            FirstLine       SecondLine
+    // check first first if it works for these 2
+    // RCBH ==>   32
+    // RCBV ==>  23
+    
+    // RCTV ===> 2 intersections right -------  1 left 
+    // LCTH ====> 2 intersections right  ------ 1 left *
+    // Same go to the intersection of section line 
+
+    // LCBV ==> 1 First intersection is left --- 1* Ok
+    // LCBH ===> 1 first intersection  is right --- 1* Ok
+
+    // LCTV ===> 1 first intersection is left    --- 2* Ok
+    // RCTH ===> 1 first intersection is left ------ 2* Ok 
+    // turn on the intersection found on the second line ond second turn line
+
     return;
 }
 
@@ -147,6 +169,11 @@ void IdentifyCorner::_goBack()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
+        if(_return)
+        {
+            _navModule.stop();
+            break;
+        }
         _navModule.stop();
         _navModule.go(140, false);
         _delay_ms(1000);
@@ -198,6 +225,7 @@ void IdentifyCorner::_turnSecondLine()
 
 void IdentifyCorner::_goForwardSecondLine()
 {
+    _return = true; 
     // go forward until no line is detected
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     _navModule.go(140, false);
@@ -205,7 +233,12 @@ void IdentifyCorner::_goForwardSecondLine()
     {
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
-        _state = IdentifyCornerState::TURN_AROUND;
+
+        // Call function compare here and detect what corner it is
+        // if recognized then _found = true
+        //_state = IdentifyCornerState::TURN_AROUND;
+
+        // Later a function will be put here to make the robot go back to the right place
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustLeft();

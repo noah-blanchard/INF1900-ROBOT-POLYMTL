@@ -60,6 +60,7 @@ private:
     // uint8_t _currentSequence;
     // uint8_t _bitshift = 0;
     bool _found = false;
+    bool _return = false;
     bool _blockIncrementation;
 
     // // routines for each state
