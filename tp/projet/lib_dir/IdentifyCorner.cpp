@@ -48,20 +48,17 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
     // write function switch case recognization corner
 
     //            FirstLine       SecondLine
-    // check first first if it works for these 2
     // RCBH ==>   32
     // RCBV ==>  23
     
     // RCTV ===> 2 intersections right -------  1 left 
     // LCTH ====> 2 intersections right  ------ 1 left *
-    // Same go to the intersection of section line 
+    
+    // LCBV ==> 1 First intersection is left --- 1*
+    // LCBH ===> 1 first intersection  is right --- 1* and 
 
-    // LCBV ==> 1 First intersection is left --- 1* Ok
-    // LCBH ===> 1 first intersection  is right --- 1* Ok
-
-    // LCTV ===> 1 first intersection is left    --- 2* Ok
-    // RCTH ===> 1 first intersection is left ------ 2* Ok 
-    // turn on the intersection found on the second line ond second turn line
+    // LCTV ===> 1 first intersection is left    --- 2*
+    // RCTH ===> 1 first intersection is left ------ 2*
 
     return;
 }
@@ -233,12 +230,7 @@ void IdentifyCorner::_goForwardSecondLine()
     {
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
-
-        // Call function compare here and detect what corner it is
-        // if recognized then _found = true
-        //_state = IdentifyCornerState::TURN_AROUND;
-
-        // Later a function will be put here to make the robot go back to the right place
+        _state = IdentifyCornerState::TURN_AROUND;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustLeft();
