@@ -127,7 +127,7 @@ void IdentifyCorner::_goForward()
 void IdentifyCorner::_displayCurrentIntersectionCount()
 {
     char displayString[16];
-    sprintf(displayString, "%d", _intersectionCount);
+    sprintf(displayString, "%d %d", _firstLineCount, _secondLineCount);
     _display.clear();
     _display << displayString;
 }
@@ -166,11 +166,6 @@ void IdentifyCorner::_goBack()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
-        if(_return)
-        {
-            _navModule.stop();
-            break;
-        }
         _navModule.stop();
         _navModule.go(140, false);
         _delay_ms(1000);
@@ -222,7 +217,6 @@ void IdentifyCorner::_turnSecondLine()
 
 void IdentifyCorner::_goForwardSecondLine()
 {
-    _return = true; 
     // go forward until no line is detected
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     _navModule.go(140, false);
