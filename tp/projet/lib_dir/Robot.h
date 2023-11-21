@@ -1,3 +1,4 @@
+#pragma once
 // Avr Imports
 #include <avr/io.h>
 #include <util/delay.h>
@@ -7,16 +8,15 @@
 #include "Timer.h"
 #include "MakeTrip.h"
 #include "IdentifyCorner.h"
-//#include "LineMaker.h"
-//#include "Navigation.h"
+#include "Dijkstra.h"
+// #include "LineMaker.h"
+// #include "Navigation.h"
 #include "InfraRedSensor.h"
 #include "Communication.h"
 #include "Bouton.h"
 
 // Define the clock speed
 #define F_CPU 8000000UL
-
-
 
 // robot.h will be a big State Machine
 /** Possible States
@@ -37,19 +37,11 @@ enum class State
     MAKE_TRIP,
     TRAVEL_POSITION_SELECTION,
     CALCULATE_PATH,
+    NAVIGATE_TRIP,
     FOLLOW_LINE,
     MEET_CROSSROAD,
     MEET_OBSTACLE,
     TURN_AT_CROSSROAD
-};
-
-// orientation enum class
-enum class Orientation
-{
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST
 };
 
 class Robot
@@ -72,15 +64,18 @@ private:
     LineMaker _lineMakerModule;
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
-    MakeTrip _maketrip;
-    IdentifyCorner _identifyCorner;
-
+    MakeTrip _maketripModule;
+    IdentifyCorner _identifyCornerModule;
+    Dijkstra _dijkstraModule;
 
     State _currentState;
     State _previousState;
 
-    uint8_t _currentPosition[2];
-    Orientation _currentOrientation;
+    // uint8_t _currentPosition[2];
+    // Orientation _currentOrientation;
+
+    // move array
+    Move _moveArray[28];
 
     uint8_t _destination[2];
     uint8_t _beginning[2];
@@ -90,10 +85,11 @@ private:
 
     // following functions are the routines for each possible states
     void _modeSelectionRoutine();
-    //void _identifyCornerRoutine();
+    // void _identifyCornerRoutine();
     void _travelPositionSelectionRoutine();
     void _calculatePathRoutine();
     void _followLineRoutine();
     void _meetCrossroadRoutine();
     void _turnAtCrossroadRoutine();
+    void _navigateTripRoutine();
 };

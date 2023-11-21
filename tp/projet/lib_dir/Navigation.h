@@ -1,7 +1,18 @@
+#pragma once
 #include <stdint.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include "Wheel.h"
+#include "LineMaker.h"
+#include "Types.h"
+
+enum class NavigationState
+{
+    NEXT_MOVE,
+    FORWARD,
+    TURN_RIGHT,
+    TURN_LEFT,
+};
 
 class Navigation
 {
@@ -18,20 +29,36 @@ public:
     void adjustRight();
     void adjustLeft();
 
+    // function to follow follow a trip stored as an array of moves, switch case, state machine
+    void followTrip(Move *trip);
+
 private:
     Wheel _leftWheel;
     Wheel _rightWheel;
 
+    NavigationState _tripState = NavigationState::NEXT_MOVE;
+
     static const uint8_t _BASE_SPEED = 180;
     static const uint8_t _ADJUST_OFFSET = 50;
 
-    void
-    forward();
-    void backward();
-    void leftForward();
-    void rightForward();
-    void leftBackward();
-    void rightBackward();
+    // trip movements
+    void _nextMove(Move nextMove);
+    void _moveForward(uint16_t speed); // will just follow the line until the next crossroad
+    void _turnRight();
+    void _turnLeft();
+
+    // trip variables
+    uint8_t _currentPosition[2];
+    Orientation _currentOrientation;
+    LineMaker _lineMakerModule;
+
+    // wheel setups
+    void _forward();
+    void _backward();
+    void _leftForward();
+    void _rightForward();
+    void _leftBackward();
+    void _rightBackward();
 
     static uint16_t _validateSpeed(uint16_t speed);
 };

@@ -1,4 +1,4 @@
-  /**
+/**
  * @file Navigation.cpp
  * @brief Implementation of the Navigation class.
  */
@@ -36,7 +36,7 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
  * @brief Sets the left wheel to move forward.
  *
  */
-void Navigation::leftForward()
+void Navigation::_leftForward()
 {
     // PORTD |= (1 << PD4);
     PORTD &= ~(1 << PD6);
@@ -46,7 +46,7 @@ void Navigation::leftForward()
  * @brief Sets the right wheel to move forward.
  *
  */
-void Navigation::rightForward()
+void Navigation::_rightForward()
 {
     // PORTD |= (1 << PD5);
     PORTD &= ~(1 << PD7);
@@ -56,7 +56,7 @@ void Navigation::rightForward()
  * @brief Sets the left wheel to move backward.
  *
  */
-void Navigation::leftBackward()
+void Navigation::_leftBackward()
 {
     PORTD |= (1 << PD6);
     // PORTD &= ~(1 << PD4);
@@ -66,7 +66,7 @@ void Navigation::leftBackward()
  * @brief Sets the right wheel to move backward.
  *
  */
-void Navigation::rightBackward()
+void Navigation::_rightBackward()
 {
     PORTD |= (1 << PD7);
     // PORTD &= ~(1 << PD5);
@@ -76,20 +76,20 @@ void Navigation::rightBackward()
  * @brief Sets both wheels to move forward.
  *
  */
-void Navigation::forward()
+void Navigation::_forward()
 {
-    this->leftForward();
-    this->rightForward();
+    this->_leftForward();
+    this->_rightForward();
 }
 
 /**
  * @brief Sets both wheels to move backward.
  *
  */
-void Navigation::backward()
+void Navigation::_backward()
 {
-    this->leftBackward();
-    this->rightBackward();
+    this->_leftBackward();
+    this->_rightBackward();
 }
 
 /**
@@ -104,11 +104,11 @@ void Navigation::go(uint16_t speed, bool backward)
 
     if (backward)
     {
-        this->backward();
+        this->_backward();
     }
     else
     {
-        this->forward();
+        this->_forward();
     }
 
     _leftWheel.setCompareValue(speed);
@@ -127,11 +127,11 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
 
     if (backward)
     {
-        this->leftBackward();
+        this->_leftBackward();
     }
     else
     {
-        this->leftForward();
+        this->_leftForward();
     }
 
     _leftWheel.setCompareValue(speed);
@@ -149,11 +149,11 @@ void Navigation::goRightWheel(uint16_t speed, bool backward)
 
     if (backward)
     {
-        this->rightBackward();
+        this->_rightBackward();
     }
     else
     {
-        this->rightForward();
+        this->_rightForward();
     }
 
     _rightWheel.setCompareValue(speed);
@@ -209,4 +209,245 @@ void Navigation::adjustLeft()
 {
     goRightWheel(_BASE_SPEED - _ADJUST_OFFSET, false);
     goLeftWheel(_BASE_SPEED, false);
+}
+
+// FOLLOW TRIP IMPLEMENTATION
+
+void Navigation::followTrip(Move *trip)
+{
+    uint8_t tripIndex = 0;
+    _currentOrientation = Orientation::SOUTH;
+    _currentPosition[0] = 0; // 0 being x
+    _currentPosition[1] = 0; // 1 being y
+
+    while (trip[tripIndex].orientation != Orientation::FINISHED)
+    {
+        switch (_tripState)
+        {
+        case NavigationState::NEXT_MOVE:
+        {
+            _nextMove(trip[tripIndex++]);
+            break;
+        }
+        case NavigationState::FORWARD:
+        {
+            _moveForward(_BASE_SPEED);
+            break;
+        }
+        case NavigationState::TURN_RIGHT:
+        {
+            _turnRight();
+            break;
+        }
+        case NavigationState::TURN_LEFT:
+        {
+            _turnLeft();
+            break;
+        }
+        }
+    }
+}
+
+void Navigation::_nextMove(Move nextMove)
+{
+    // so here we need to compare the current position and orientation with next move
+    // if it's the same, state go forward
+    // if it's not the same, state turn right or left depending on the orientation
+    // for example, if current is south and next is east, turn left
+    // if current is south and next is west, turn right
+
+    if (_currentOrientation == nextMove.orientation)
+    {
+        _tripState = NavigationState::FORWARD;
+    }
+    else
+    {
+        switch (_currentOrientation)
+        {
+        case Orientation::NORTH:
+        {
+            if (nextMove.orientation == Orientation::EAST)
+            {
+                _currentOrientation = Orientation::EAST;
+                _currentPosition[0]++;
+                _tripState = NavigationState::TURN_RIGHT;
+            }
+            else if (nextMove.orientation == Orientation::WEST)
+            {
+                _currentOrientation = Orientation::WEST;
+                _currentPosition[0]--;
+                _tripState = NavigationState::TURN_LEFT;
+            }
+            break;
+        }
+        case Orientation::EAST:
+        {
+            if (nextMove.orientation == Orientation::SOUTH)
+            {
+                _currentOrientation = Orientation::SOUTH;
+                _currentPosition[1]++;
+                _tripState = NavigationState::TURN_RIGHT;
+            }
+            else if (nextMove.orientation == Orientation::NORTH)
+            {
+                _currentOrientation = Orientation::NORTH;
+                _currentPosition[1]--;
+                _tripState = NavigationState::TURN_LEFT;
+            }
+            break;
+        }
+        case Orientation::SOUTH:
+        {
+            if (nextMove.orientation == Orientation::WEST)
+            {
+                _currentOrientation = Orientation::WEST;
+                _currentPosition[0]--;
+                _tripState = NavigationState::TURN_RIGHT;
+            }
+            else if (nextMove.orientation == Orientation::EAST)
+            {
+                _currentOrientation = Orientation::EAST;
+                _tripState = NavigationState::TURN_LEFT;
+            }
+            break;
+        }
+        case Orientation::WEST:
+        {
+            if (nextMove.orientation == Orientation::NORTH)
+            {
+                _currentOrientation = Orientation::NORTH;
+                _currentPosition[1]++;
+                _tripState = NavigationState::TURN_RIGHT;
+            }
+            else if (nextMove.orientation == Orientation::SOUTH)
+            {
+                _currentOrientation = Orientation::SOUTH;
+                _currentPosition[1]--;
+                _tripState = NavigationState::TURN_LEFT;
+            }
+            break;
+        }
+        }
+    }
+}
+
+void Navigation::_moveForward(uint16_t speed)
+{
+    // so here we need to follow the line until we reach the next crossroad
+    // so we need to check if we are at a crossroad
+    // if we are, we need to update the current position and orientation
+    // if we are not, we need to keep following the line
+
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    switch (lineMakerFlag)
+    {
+    case LineMakerFlag::NO_ADJUSTMENT:
+    {
+        go(speed, false);
+        break;
+    }
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+    {
+        adjustLeft();
+        break;
+    }
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    {
+        adjustRight();
+        break;
+    }
+    case LineMakerFlag::OUTER_LEFT_DETECT:
+    {
+        _tripState = NavigationState::NEXT_MOVE;
+        break;
+    }
+    case LineMakerFlag::OUTER_RIGHT_DETECT:
+    {
+        _tripState = NavigationState::NEXT_MOVE;
+        break;
+    }
+    }
+}
+
+void Navigation::_turnRight()
+{
+    // so here we need to turn right
+    // so we need to update the current position and orientation
+    // and then we need to go forward
+    // turn right until we detect the line
+
+    // the first steps are for adjusting when arriving at the crossroad
+    // first go forward for 1 and a half second
+    go(_BASE_SPEED, false);
+    _delay_ms(1500);
+    stop();
+    // then turn a bit right for 1 second
+    goRightWheel(_TURN_SPEED, true);
+    goLeftWheel(_BASE_SPEED, false);
+    _delay_ms(1000);
+    stop();
+
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    switch (lineMakerFlag)
+    {
+    case LineMakerFlag::NO_LINE:
+    {
+        // if we don't detect the line, we need to turn right until we detect it
+        goRightWheel(_TURN_SPEED, true);
+        goLeftWheel(_BASE_SPEED, false);
+        break;
+    }
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    {
+        // if we detect the line on the left, it means we met the line
+        // so stop moving and go to forward state
+        stop();
+        _delay_ms(1000);
+        _tripState = NavigationState::NEXT_MOVE;
+        break;
+    }
+    }
+}
+
+void Navigation::_turnLeft()
+{
+    // so here we need to turn left
+    // so we need to update the current position and orientation
+    // and then we need to go forward
+    // turn left until we detect the line
+
+    // the first steps are for adjusting when arriving at the crossroad
+    // first go forward for 1 and a half second
+    go(_BASE_SPEED, false);
+    _delay_ms(1500);
+    stop();
+    // then turn a bit left for 1 second
+    goLeftWheel(_TURN_SPEED, true);
+    goRightWheel(_BASE_SPEED, false);
+    _delay_ms(1000);
+    stop();
+
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    switch (lineMakerFlag)
+    {
+    case LineMakerFlag::NO_LINE:
+    {
+        // if we don't detect the line, we need to turn left until we detect it
+        goLeftWheel(_TURN_SPEED, true);
+        goRightWheel(_BASE_SPEED, false);
+        break;
+    }
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+    {
+        // if we detect the line on the left, it means we met the line
+        // so stop moving and go to forward state
+        stop();
+        _delay_ms(1000);
+        _tripState = NavigationState::NEXT_MOVE;
+        break;
+    }
+    }
 }

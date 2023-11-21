@@ -46,12 +46,12 @@ void Robot::runRoutine()
     case State::IDENTIFY_CORNER:
     {
         //_identifyCornerRoutine();
-        _identifyCorner.identificationProcess(_beginning);
+        _identifyCornerModule.identificationProcess(_beginning);
         break;
     }
     case State::MAKE_TRIP:
     {
-        _maketrip.selectDestination(_destination);
+        _maketripModule.selectDestination(_destination);
         break;
     }
     case State::TRAVEL_POSITION_SELECTION:
@@ -61,7 +61,12 @@ void Robot::runRoutine()
     }
     case State::CALCULATE_PATH:
     {
-        //_calculatePathRoutine();
+        _calculatePathRoutine();
+        break;
+    }
+    case State::NAVIGATE_TRIP:
+    {
+        _navigateTripRoutine();
         break;
     }
     case State::FOLLOW_LINE:
@@ -201,6 +206,19 @@ void Robot::_turnAtCrossroadRoutine()
         break;
     }
     }
+}
+
+void Robot::_calculatePathRoutine()
+{
+    _dijkstraModule.run(_destination, _moveArray);
+    disp << "PATH CALCULATED";
+    _customDelay(2000);
+    _currentState = State::NAVIGATE_TRIP;
+}
+
+void Robot::_navigateTripRoutine()
+{
+    _navModule.followTrip(_moveArray);
 }
 
 void Robot::_pause()

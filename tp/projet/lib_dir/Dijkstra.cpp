@@ -129,7 +129,82 @@ Dijkstra::~Dijkstra()
 {
 }
 
-void Dijkstra::run(uint8_t destination, uint8_t *pathArray)
+void Dijkstra::run(uint8_t destination, Move *moveArray)
+{
+    _destination = destination;
+    _emptyDijkstraResult();
+    _dijkstra();
+
+    // position 0 is x = 0, y = 0
+    // position 1 is x = 1, y = 0
+    // position 6 is x = 6 y = 0
+    // position 7 is x = 0 y = 1
+
+    // so I want to convert the result of dijkstra to an array of Moves
+    // so position 7 is x = 7%7 = 0, y = 7/7 = 1
+    // position 8 is x = 8%7 = 1, y = 8/7 = 1
+    // position 13 is x = 13%7 = 6, y = 13/7 = 1
+    // position 6 is x = 6%7 = 6, y = 6/7 = 0
+
+    // so I want to convert the result of dijkstra to an array of Moves
+    // if last x < next x, orientation is EAST
+    // if last x > next x, orientation is WEST
+    // if last y < next y, orientation is SOUTH
+    // if last y > next y, orientation is NORTH
+
+    // do it now
+    uint8_t lastX = 0;
+    uint8_t lastY = 0;
+
+    uint8_t index = 0;
+    while (_dijkstraResult[index] != -1)
+    {
+        uint8_t nextX = _dijkstraResult[index] % 7;
+        uint8_t nextY = _dijkstraResult[index] / 7;
+        Orientation nextOrientation = Orientation::NORTH;
+
+        if (lastX < nextX)
+        {
+            nextOrientation = Orientation::EAST;
+        }
+        else if (lastX > nextX)
+        {
+            nextOrientation = Orientation::WEST;
+        }
+        else if (lastY < nextY)
+        {
+            nextOrientation = Orientation::SOUTH;
+        }
+        else if (lastY > nextY)
+        {
+            nextOrientation = Orientation::NORTH;
+        }
+
+        lastX = nextX;
+        lastY = nextY;
+
+        moveArray[index].orientation = lastOrientation;
+        moveArray[index].x = nextX;
+        moveArray[index].y = nextY;
+
+        index++;
+    }
+
+    // put ORIENTATION FINISHED at the end of the array and last x last y
+    moveArray[index].orientation = Orientation::FINISHED;
+    moveArray[index].x = lastX;
+    moveArray[index].y = lastY;
+}
+
+void Dijkstra::_emptyDijkstraResult()
+{
+    for (uint8_t i = 0; i < 28; ++i)
+    {
+        _dijkstraResult[i] = 0;
+    }
+}
+
+void Dijkstra::_dijkstra()
 {
     uint8_t poids[N_NOEUDS];
     uint8_t noeudPrecedent[N_NOEUDS];
@@ -172,21 +247,24 @@ void Dijkstra::run(uint8_t destination, uint8_t *pathArray)
     }
 
     // Reconstruire le chemin
-    uint8_t noeudCourant = destination;
+    uint8_t noeudCourant = _destination;
     uint8_t cheminIndex = 0;
 
     while (noeudCourant != 0)
     {
-        pathArray[cheminIndex++] = noeudCourant;
+        _dijkstraResult[cheminIndex++] = noeudCourant;
         noeudCourant = noeudPrecedent[noeudCourant];
     }
-    pathArray[cheminIndex] = 0; // Ajouter le noeud de départ
+    _dijkstraResult[cheminIndex] = 0; // Ajouter le noeud de départ
 
     // Inverser le chemin
     for (uint8_t i = 0; i < cheminIndex / 2; i++)
     {
-        uint8_t temp = pathArray[i];
-        pathArray[i] = pathArray[cheminIndex - i - 1];
-        pathArray[cheminIndex - i - 1] = temp;
+        uint8_t temp = _dijkstraResult[i];
+        _dijkstraResult[i] = _dijkstraResult[cheminIndex - i - 1];
+        _dijkstraResult[cheminIndex - i - 1] = temp;
     }
+
+    // put a -1 at the end of the array so we know where it ends
+    _dijkstraResult[cheminIndex + 1] = -1;
 }
