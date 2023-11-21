@@ -39,6 +39,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
         case IdentifyCornerState::GO_FORWARD_SECOND_LINE:
             _goForwardSecondLine();
            // _display = "sec line";
+           break;
 
         case IdentifyCornerState::TURN_THIRD_LINE:
             _turnThirdLine();
@@ -48,6 +49,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
         case IdentifyCornerState::GO_FORWARD_THIRD_LINE:
             _goForwardThirdLine();
             _display = "third line";
+            break;
         }
     }
     // It found the right intersection so call function compare match
@@ -152,11 +154,26 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 bool IdentifyCorner::_simpleCompareMAtch()
 {
     // add case 1-1 (right left and left right)
+    _displayCurrentIntersectionCount();
+    _delay_ms(5000);
     if(((_firstLineCount == 3) and (_secondLineCount == 2)) ||((_firstLineCount == 2) and (_secondLineCount == 3)) )
     {
         makeSound();
         _delay_ms(2000);
         _displayCurrentIntersectionCount();
+        return true;
+    } else if( (_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
+    {
+         // LCBV
+        _displayCurrentIntersectionCount();
+        makeSound();
+        return true;
+    }
+    else if( (_firstLineCount == 1) and (_secondLineCount == 1 and !_sidefirst))
+    {
+         // LCBH
+        _displayCurrentIntersectionCount();
+        makeSound();
         return true;
     }
     return false;
@@ -164,9 +181,9 @@ bool IdentifyCorner::_simpleCompareMAtch()
 
 bool IdentifyCorner::_furtherCompareMatch()
 {
-    if(_firstLineCount == 2 and _secondLineCount == 2)
+    if(_firstLineCount == 3 and _secondLineCount == 1)
     {
-        // LCTH
+        // LCTH -- good
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
@@ -185,21 +202,7 @@ bool IdentifyCorner::_furtherCompareMatch()
         makeSound();
         return true;
     }
-    else if( (_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
-    {
-         // LCBV
-        _displayCurrentIntersectionCount();
-        makeSound();
-        return true;
-    }
-    else if( (_firstLineCount == 1) and (_secondLineCount == 1 and !_sidefirst))
-    {
-         // LCBH
-        _displayCurrentIntersectionCount();
-        makeSound();
-        return true;
-    }
-    else
+    else if(_firstLineCount == 4 and _secondLineCount == 1)
     {
          // RCTV this case has to be covered;
          
@@ -237,6 +240,8 @@ void IdentifyCorner::_turnAround()
     {
         _navModule.stop();
         _delay_ms(1000);
+        _displayCurrentIntersectionCount();
+        _delay_ms(2000);
         _state = IdentifyCornerState::GO_BACK;
     }
 }
@@ -245,6 +250,7 @@ void IdentifyCorner::_goBack()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    
     _navModule.go(140, false);
     switch (flag)
     {
@@ -304,20 +310,19 @@ void IdentifyCorner::_goForwardSecondLine()
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
     _navModule.go(140, false);
     _display = "sec line";
-     _delay_ms(5000);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
         _display << "simple";
-       _state = IdentifyCornerState::TURN_AROUND;
+       //_state = IdentifyCornerState::TURN_AROUND;
        if(_simpleCompareMAtch())
        // it founds the right spot since the second line
        {
             _display.clear();
             _display << "simple";
-            _delay_ms(5000);
-            //_state = IdentifyCornerState::TURN_AROUND;
+            //_delay_ms(5000);
+            _state = IdentifyCornerState::TURN_AROUND;
        }
        else
        {
@@ -326,17 +331,20 @@ void IdentifyCorner::_goForwardSecondLine()
            _state = IdentifyCornerState::TURN_THIRD_LINE;
       }
         break;
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-        _navModule.adjustLeft();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
-        break;
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
+   case LineMakerFlag::RIGHT_ADJUSTMENT:
+        _blockIncrementation = false;
         _navModule.adjustRight();
-        _delay_ms(200);
+        _delay_ms(100);
         _navModule.stop();
-        _delay_ms(70);
+        _delay_ms(30);
+        break;
+
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+        _blockIncrementation = false;
+        _navModule.adjustLeft();
+        _delay_ms(100);
+        _navModule.stop();
+        _delay_ms(30);
         break;
 
     case LineMakerFlag::RIGHT_CROSSROAD:
@@ -345,6 +353,7 @@ void IdentifyCorner::_goForwardSecondLine()
         {
             // Correct this in code instead of _firstLineCount, it's _secondLineCount
             _secondLineCount++;
+
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
@@ -433,7 +442,7 @@ void IdentifyCorner::_goForwardThirdLine()
             if(_furtherCompareMatch())
             {
                 makeSound();
-                _delay_ms(2000);
+            
                 _displayCurrentIntersectionCount();
                  _state = IdentifyCornerState::TURN_AROUND;
             }
@@ -450,7 +459,7 @@ void IdentifyCorner::_goForwardThirdLine()
              if(_furtherCompareMatch())
             {
                 makeSound();
-                _delay_ms(2000);
+         
                 _displayCurrentIntersectionCount();
                  _state = IdentifyCornerState::TURN_AROUND;
             }
