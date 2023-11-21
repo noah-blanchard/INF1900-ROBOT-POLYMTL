@@ -1,12 +1,12 @@
 #include "Robot.h"
 
 // custom timer volatile variable
-volatile bool customDelayElapsed = false;
+// volatile bool customDelayElapsed = false;
 
-ISR(TIMER2_COMPA_vect)
-{
-    customDelayElapsed = true;
-}
+// ISR(TIMER2_COMPA_vect)
+// {
+//     customDelayElapsed = true;
+// }
 
 Robot::Robot()
 {
@@ -19,13 +19,6 @@ Robot::Robot()
     _selectButton.enableInterrupt();
     _selectButton.setRisingEdge();
     sei();
-
-    TimerConfig timerConfig;
-    timerConfig.timer = 2;
-    timerConfig.prescaler = 256;
-    timerConfig.delay_ms = 1;
-
-    _delayTimerModule = Timer(timerConfig);
     //_currentState = State::MODE_SELECTION;
     _currentState = State::MAKE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
 }
@@ -93,98 +86,23 @@ void Robot::runRoutine()
 
 void Robot::_followLineRoutine()
 {
-    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    LCM disp(&DDRC, &PORTC);
-    disp.clear();
-
-    if (_irSensorModule.isObstacleDetected())
-    {
-        _navModule.stop();
-    }
-    else
-    {
-        switch (flag)
-        {
-        case LineMakerFlag::NO_ADJUSTMENT:
-        {
-            _navModule.go(180, false);
-            disp << "hqhqhq";
-            break;
-        }
-        case LineMakerFlag::LEFT_ADJUSTMENT:
-        {
-            _navModule.adjustLeft();
-            _pause();
-            _navModule.stop();
-            _pause();
-            break;
-        }
-        case LineMakerFlag::RIGHT_ADJUSTMENT:
-        {
-            _navModule.adjustRight();
-            _pause();
-            _navModule.stop();
-            _pause();
-            break;
-        }
-        case LineMakerFlag::NO_LINE:
-        {
-            _navModule.stop();
-            break;
-        }
-        case LineMakerFlag::FULL_CROSSROAD:
-        {
-            disp << "(4,1) N";
-            _navModule.stop();
-
-            _currentState = State::MEET_CROSSROAD;
-            break;
-        }
-
-            // Je rajoute des cases pour LEFT_CROSSROAD ET RIGHT_CROSSROAD
-
-        case LineMakerFlag::LEFT_CROSSROAD:
-        {
-            disp << "left";
-
-            _navModule.stop();
-            _currentState = State::MEET_CROSSROAD;
-            break;
-        }
-
-        case LineMakerFlag::RIGHT_CROSSROAD:
-        {
-            disp << "right";
-
-            _navModule.stop();
-            _currentState = State::MEET_CROSSROAD;
-            break;
-        }
-
-        default:
-        {
-            _navModule.stop();
-            break;
-        }
-        }
-        //}
-    }
+    // s
 }
 
 void Robot::_meetCrossroadRoutine()
 {
-    // Go a bit forward during 100 ms
-    _navModule.go(_BASE_SPEED, false);
-    _customDelay(1000);
-    _navModule.stop();
-    _customDelay(300);
-    _navModule.goRightWheel(_TURN_SPEED, true);
-    _navModule.goLeftWheel(_TURN_SPEED, false);
-    _customDelay(400);
-    _navModule.stop();
-    _customDelay(300);
-    // change state to turn at crossroad
-    _currentState = State::TURN_AT_CROSSROAD;
+    // // Go a bit forward during 100 ms
+    // _navModule.go(_BASE_SPEED, false);
+    // _customDelay(1000);
+    // _navModule.stop();
+    // _customDelay(300);
+    // _navModule.goRightWheel(_TURN_SPEED, true);
+    // _navModule.goLeftWheel(_TURN_SPEED, false);
+    // _customDelay(400);
+    // _navModule.stop();
+    // _customDelay(300);
+    // // change state to turn at crossroad
+    // _currentState = State::TURN_AT_CROSSROAD;
 }
 
 void Robot::_turnAtCrossroadRoutine()
@@ -212,7 +130,7 @@ void Robot::_calculatePathRoutine()
 {
     _dijkstraModule.run(_destination, _moveArray);
     disp << "PATH CALCULATED";
-    _customDelay(2000);
+    //_customDelay(2000);
     _currentState = State::NAVIGATE_TRIP;
 }
 
@@ -221,25 +139,25 @@ void Robot::_navigateTripRoutine()
     _navModule.followTrip(_moveArray);
 }
 
-void Robot::_pause()
-{
-    _customDelay(_BASE_PAUSE_DELAY);
-}
+// void Robot::_pause()
+// {
+//     _customDelay(_BASE_PAUSE_DELAY);
+// }
 
-void Robot::_customDelay(uint16_t delay)
-{
-    _delayTimerModule.reset();
-    cli();
-    _delayTimerModule.enable();
-    sei();
-    // use timer0 to wait for the delay
-    for (int i = 0; i < delay; ++i)
-    {
+// void Robot::_customDelay(uint16_t delay)
+// {
+//     _delayTimerModule.reset();
+//     cli();
+//     _delayTimerModule.enable();
+//     sei();
+//     // use timer0 to wait for the delay
+//     for (int i = 0; i < delay; ++i)
+//     {
 
-        while (!customDelayElapsed)
-            ;
-        customDelayElapsed = false;
+//         while (!customDelayElapsed)
+//             ;
+//         customDelayElapsed = false;
 
-        _delayTimerModule.reset();
-    }
-}
+//         _delayTimerModule.reset();
+//     }
+// }

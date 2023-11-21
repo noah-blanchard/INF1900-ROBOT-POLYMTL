@@ -4,6 +4,12 @@
  */
 #include "Navigation.h"
 
+volatile bool delayElapsed = false;
+ISR(TIMER2_COMPA_vect)
+{
+    delayElapsed = true;
+}
+
 /**
  * @brief Validates the speed value to ensure it is within the range of 0 to Wheel::MAX_COMPARE_VALUE.
  * @param speed The speed value to validate.
@@ -30,6 +36,17 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
     PORTD |= (1 << PD4);
     PORTD &= ~(1 << PD6);
     PORTD &= ~(1 << PD7);
+
+    _nextMove.x = 0;
+    _nextMove.y = 0;
+    _nextMove.orientation = Orientation::SOUTH;
+
+    TimerConfig timerConfig;
+    timerConfig.timer = 2;
+    timerConfig.prescaler = 256;
+    timerConfig.delay_ms = 1000;
+
+    _delayTimerModule = Timer(timerConfig);
 }
 
 /**
@@ -248,6 +265,49 @@ void Navigation::followTrip(Move *trip)
     }
 }
 
+void Navigation::_timerOn()
+{
+    cli();
+    _delayTimerModule.reset();
+    _delayTimerModule.enable();
+    sei();
+}
+
+void Navigation::_timerOff()
+{
+    cli();
+    _delayTimerModule.reset();
+    _delayTimerModule.disable();
+    sei();
+}
+
+void Navigation::_chooseForwardMove()
+{
+    //_tripState = NavigationState::FORWARD;
+    // some place have no crossroad and need to use FORWARD_DELAY
+    // x = 1, y = 0, 1 3, 5 2, 6, 2
+    // so put state to forward delay if we have one of these positions
+    if ((_nextMove.x == 1 && _nextMove.y == 0) ||
+        (_nextMove.x == 1 && _nextMove.y == 3) ||
+        (_nextMove.x == 5 && _nextMove.y == 2) ||
+        (_nextMove.x == 6 && _nextMove.y == 2))
+    {
+        _timerOn();
+        _tripState = NavigationState::FORWARD_DELAY;
+    }
+    else
+    {
+        _tripState = NavigationState::FORWARD;
+    }
+}
+
+void Navigation::_updateCurrentPosition()
+{
+    _currentPosition[0] = _nextMove.x;
+    _currentPosition[1] = _nextMove.y;
+    _currentOrientation = _nextMove.orientation;
+}
+
 void Navigation::_nextMove(Move nextMove)
 {
     // so here we need to compare the current position and orientation with next move
@@ -255,10 +315,12 @@ void Navigation::_nextMove(Move nextMove)
     // if it's not the same, state turn right or left depending on the orientation
     // for example, if current is south and next is east, turn left
     // if current is south and next is west, turn right
+    _updateCurrentPosition();
+    _nextMove = nextMove;
 
     if (_currentOrientation == nextMove.orientation)
     {
-        _tripState = NavigationState::FORWARD;
+        _chooseForwardMove();
     }
     else
     {
@@ -268,14 +330,10 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::EAST)
             {
-                _currentOrientation = Orientation::EAST;
-                _currentPosition[0]++;
                 _tripState = NavigationState::TURN_RIGHT;
             }
             else if (nextMove.orientation == Orientation::WEST)
             {
-                _currentOrientation = Orientation::WEST;
-                _currentPosition[0]--;
                 _tripState = NavigationState::TURN_LEFT;
             }
             break;
@@ -284,14 +342,10 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::SOUTH)
             {
-                _currentOrientation = Orientation::SOUTH;
-                _currentPosition[1]++;
                 _tripState = NavigationState::TURN_RIGHT;
             }
             else if (nextMove.orientation == Orientation::NORTH)
             {
-                _currentOrientation = Orientation::NORTH;
-                _currentPosition[1]--;
                 _tripState = NavigationState::TURN_LEFT;
             }
             break;
@@ -300,13 +354,10 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::WEST)
             {
-                _currentOrientation = Orientation::WEST;
-                _currentPosition[0]--;
                 _tripState = NavigationState::TURN_RIGHT;
             }
             else if (nextMove.orientation == Orientation::EAST)
             {
-                _currentOrientation = Orientation::EAST;
                 _tripState = NavigationState::TURN_LEFT;
             }
             break;
@@ -315,14 +366,10 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::NORTH)
             {
-                _currentOrientation = Orientation::NORTH;
-                _currentPosition[1]++;
                 _tripState = NavigationState::TURN_RIGHT;
             }
             else if (nextMove.orientation == Orientation::SOUTH)
             {
-                _currentOrientation = Orientation::SOUTH;
-                _currentPosition[1]--;
                 _tripState = NavigationState::TURN_LEFT;
             }
             break;
@@ -367,6 +414,40 @@ void Navigation::_moveForward(uint16_t speed)
         _tripState = NavigationState::NEXT_MOVE;
         break;
     }
+    }
+}
+
+void Navigation::_moveForwardDelay()
+{
+    // so here we will user timer 2 to trigger interrupt and stop moving forward in this case
+
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    switch (lineMakerFlag)
+    {
+    case LineMakerFlag::NO_ADJUSTMENT:
+    {
+        go(speed, false);
+        break;
+    }
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+    {
+        adjustLeft();
+        break;
+    }
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    {
+        adjustRight();
+        break;
+    }
+    }
+
+    if (delayElapsed)
+    {
+        stop();
+        _timerOff();
+        delayElapsed = false;
+        _tripState = NavigationState::NEXT_MOVE;
     }
 }
 

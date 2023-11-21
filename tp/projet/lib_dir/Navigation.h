@@ -2,14 +2,17 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "Wheel.h"
 #include "LineMaker.h"
 #include "Types.h"
+#include "Timer.h"
 
 enum class NavigationState
 {
     NEXT_MOVE,
     FORWARD,
+    FORWARD_DELAY,
     TURN_RIGHT,
     TURN_LEFT,
 };
@@ -44,13 +47,21 @@ private:
     // trip movements
     void _nextMove(Move nextMove);
     void _moveForward(uint16_t speed); // will just follow the line until the next crossroad
+    void _moveForwardDelay(uint16_t speed);
     void _turnRight();
     void _turnLeft();
+
+    void _chooseForwardMove();
+    void _updateCurrentPosition();
+    void _timerOn();
+    void _timerOff();
 
     // trip variables
     uint8_t _currentPosition[2];
     Orientation _currentOrientation;
     LineMaker _lineMakerModule;
+    Move _nextMove;
+    Timer _delayTimerModule;
 
     // wheel setups
     void _forward();
