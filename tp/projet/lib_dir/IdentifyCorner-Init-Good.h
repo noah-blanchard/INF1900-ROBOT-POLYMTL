@@ -5,7 +5,6 @@
 #include <avr/interrupt.h>
 #include "Navigation.h"
 #include "LineMaker.h"
-#include "sound.h"
 #include "lcm_so1602dtr_m_fw.h"
 
 
@@ -26,8 +25,6 @@ enum class IdentifyCornerState
     GO_BACK,
     TURN_SECOND_LINE,
     GO_FORWARD_SECOND_LINE,
-    GO_FORWARD_THIRD_LINE,
-    TURN_THIRD_LINE,
 };
 class IdentifyCorner
 {
@@ -42,12 +39,10 @@ private:
     Navigation _navModule;
     LineMaker _lineMakerModule;
     LCM _display;
-    Sound _sound;
 
     uint8_t _intersectionCount = 0;
     uint8_t _firstLineCount = 0;
     uint8_t _secondLineCount = 0;
-
 
     // routines
     void _goForward();
@@ -55,14 +50,8 @@ private:
     void _goBack();
     void _turnSecondLine();
     void _goForwardSecondLine();
-    void _turnThirdLine();
-    void _goForwardThirdLine();
-    bool _simpleCompareMAtch();
-    void makeSound();
-    bool _furtherCompareMatch();
 
     bool isRight = false;
-    bool _sidefirst = false;
 
     void _displayCurrentIntersectionCount();
 

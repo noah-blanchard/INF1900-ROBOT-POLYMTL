@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/gigl/inf1900-0626/tp/projet/lib_dir",
-      "program": "/home/gigl/inf1900-0626/tp/projet/lib_dir/build/Debug/outDebug",
+      "cwd": "/usagers2/maalc/Bureau/projetFinal/inf1900-0626/tp/projet/lib_dir",
+      "program": "/usagers2/maalc/Bureau/projetFinal/inf1900-0626/tp/projet/lib_dir/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
