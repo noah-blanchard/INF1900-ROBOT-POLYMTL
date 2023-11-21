@@ -27,7 +27,7 @@ Robot::Robot()
 
     _delayTimerModule = Timer(timerConfig);
     //_currentState = State::MODE_SELECTION;
-    _currentState = State::IDENTIFY_CORNER; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    _currentState = State::MAKE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
 }
 
 Robot::~Robot()

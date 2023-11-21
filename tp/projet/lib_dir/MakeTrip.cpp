@@ -11,8 +11,8 @@
 #define DEMO_DDR	DDRC // `Data Direction Register' AVR occup� par l'aff.
 #define DEMO_PORT	PORTC // Port AVR occup� par l'afficheur
 
-uint8_t lineSeleted = 1;
-uint8_t columnSeleted = 1;
+uint8_t lineSeleted = 0;
+uint8_t columnSeleted = 0;
 volatile uint8_t selectChoice = false;
 volatile uint8_t validateChoice = false;
 
@@ -41,66 +41,76 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 	disp.clear();
 	w();
 	char buf[25];
-	selection select = selection::INITIAL;
+	selection select = selection::selectLine;
 	while(true)
 	{
 		switch(select)
 		{
-			case selection::INITIAL:
-				lineSeleted = 1;
-				// print line on LCD
- 				disp << "LINE";
-				w();
-				sprintf(buf, "%d", lineSeleted);
-				disp = buf;
-				w();
+			// case selection::INITIAL:
+			// 	// print line on LCD
+ 			// 	disp << "LINE";
+			// 	w();
+			// 	sprintf(buf, "%d", lineSeleted+1);
+			// 	disp = buf;
+			// 	w();
 
-				select = selection::selectLine;
-            break;
+			// 	select = selection::selectLine;
+            // break;
 
 
 			case selection::selectLine:
+			sprintf(buf, "Line : %d", lineSeleted+1);
+					disp = buf;
 				while(!validateChoice)
 				{
+					
 					if(selectChoice)
 					{
 						// ====> section critique ===> block interruptions
 						lineSeleted = (lineSeleted +1) % 4;
-						// upgrade Line on LCD
 						sprintf(buf, "Line : %d", lineSeleted+1);
-						disp = buf;
+					disp = buf;
+						// upgrade Line on LCD
+						
+						
 						w();
+						selectChoice = false;
 					}
-					selectChoice = false;
+					
 				}
-				validateChoice = false;
 				
+				_delay_ms(1000);
 				select = selection::selectColumn;
 				// Print line validated on LCD
-				disp << "COLUMN";
-				w();
-				sprintf(buf, "Column : %d", columnSeleted+1);
-				disp = buf;
-				w();
+				// disp << "COLUMN";
+				// w();
+				// sprintf(buf, "Column : %d", columnSeleted+1);
+				// disp = buf;
+				// w();
             break;
 
 			case selection::selectColumn:
-				columnSeleted = 1;
-
+				validateChoice = false;
+				sprintf(buf, "%d", columnSeleted+1);
+				disp = buf;
 				while(!validateChoice)
 				{
+					
+					
 					if(selectChoice)
 					{
-						// ====> section critique ===> block interruptions
 						columnSeleted = (columnSeleted +1) % 7;
-						// upgrade column on LCD
+						// ====> section critique ===> block interruptions
 						sprintf(buf, "%d", columnSeleted+1);
 						disp = buf;
-						w();
+						// upgrade column on LCD
+						
+						
+						selectChoice = false;
 					}
-					selectChoice = false;
+					
 				}
-				validateChoice = false;
+				//validateChoice = false;
 				select = selection::confirmChoices;
 				// Print choices on LCD
 				disp << "C L";
