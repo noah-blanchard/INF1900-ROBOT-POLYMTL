@@ -156,13 +156,21 @@ bool IdentifyCorner::_simpleCompareMAtch()
     // add case 1-1 (right left and left right)
     _displayCurrentIntersectionCount();
     _delay_ms(5000);
-    if(((_firstLineCount == 3) and (_secondLineCount == 2)) ||((_firstLineCount == 2) and (_secondLineCount == 3)) )
+    if((_firstLineCount == 3) and (_secondLineCount == 2))
     {
         makeSound();
         _delay_ms(2000);
         _displayCurrentIntersectionCount();
         return true;
-    } else if( (_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
+    } 
+    else if((_firstLineCount == 2) and (_secondLineCount == 3))
+    {
+         
+        _displayCurrentIntersectionCount();
+        makeSound();
+        return true;
+    }
+    else if( (_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
     {
          // LCBV
         _displayCurrentIntersectionCount();
