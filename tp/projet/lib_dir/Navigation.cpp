@@ -557,8 +557,8 @@ void Navigation::_turnRight()
     case LineMakerFlag::NO_LINE:
     {
         // if we don't detect the line, we need to turn right until we detect it
-        goRightWheel(_TURN_SPEED, true);
-        goLeftWheel(_BASE_SPEED, false);
+        goRightWheel(_BASE_SPEED, true);
+        goLeftWheel(_TURN_SPEED, false);
         break;
     }
     case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -590,8 +590,8 @@ void Navigation::_turnLeft()
     case LineMakerFlag::NO_LINE:
     {
         // if we don't detect the line, we need to turn left until we detect it
-        goLeftWheel(_TURN_SPEED, true);
-        goRightWheel(_BASE_SPEED, false);
+        goRightWheel(_TURN_SPEED, false);
+        goLeftWheel(_BASE_SPEED, true);
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
