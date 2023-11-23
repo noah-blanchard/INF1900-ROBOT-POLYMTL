@@ -64,7 +64,17 @@ LineMakerFlag LineMaker::getDetectionFlag()
     LineMakerFlag flag = LineMakerFlag::NO_LINE;
 
     // first if there's outer left bit on, always send outer_left_detection
-    if ((sensorData & (INNER_RIGHT | MIDDLE)) == (INNER_RIGHT | MIDDLE) || sensorData == INNER_RIGHT)
+    // if only outer right detect, or outer right + inner right OR outer right + inner right + middle => right cross
+    if ((sensorData & OUTER_LEFT) == OUTER_LEFT || (sensorData & (OUTER_LEFT | INNER_LEFT)) == (OUTER_LEFT | INNER_LEFT) || (sensorData & (OUTER_LEFT | INNER_LEFT | MIDDLE)) == (OUTER_LEFT | INNER_LEFT | MIDDLE))
+    {
+        flag = LineMakerFlag::OUTER_LEFT_DETECTION;
+    }
+    // if only outer left detect, or outer left + inner left OR outer left + inner left + middle => left cross
+    else if ((sensorData & OUTER_LEFT) == OUTER_LEFT || (sensorData & (OUTER_LEFT | INNER_LEFT)) == (OUTER_LEFT | INNER_LEFT) || (sensorData & (OUTER_LEFT | INNER_LEFT | MIDDLE)) == (OUTER_LEFT | INNER_LEFT | MIDDLE))
+    {
+        flag = LineMakerFlag::OUTER_RIGHT_DETECTION;
+    }
+    else if ((sensorData & (INNER_RIGHT | MIDDLE)) == (INNER_RIGHT | MIDDLE) || sensorData == INNER_RIGHT)
     {
         flag = LineMakerFlag::RIGHT_ADJUSTMENT;
     }
