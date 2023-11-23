@@ -297,11 +297,15 @@ void Navigation::_chooseForwardMove()
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
     {
+        _display = "FORWARD DELAY";
+        _delay_ms(2500);
         _timerOn();
         _tripState = NavigationState::FORWARD_DELAY;
     }
     else
     {
+        _display = "FORWARD NORMAL";
+        _delay_ms(2500);
         _tripState = NavigationState::FORWARD;
     }
 }
@@ -327,8 +331,6 @@ void Navigation::_nextMove(Move nextMove)
 
     if (_currentOrientation == nextMove.orientation)
     {
-        _display = "FORWARD";
-        _delay_ms(2500);
         _chooseForwardMove();
     }
     else
