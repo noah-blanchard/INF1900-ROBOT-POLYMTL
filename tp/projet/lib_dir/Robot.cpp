@@ -21,7 +21,7 @@ Robot::Robot()
     sei();
     //_currentState = State::MODE_SELECTION;
     //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
-    _currentState = State::NAVIGATE_TRIP;
+    _currentState = State::IDENTIFY_CORNER;
     // _moveArray init for test
     _moveArray[0].orientation = Orientation::EAST;
     _moveArray[0].x = 1;
@@ -35,9 +35,15 @@ Robot::Robot()
     _moveArray[2].x = 2;
     _moveArray[2].y = 1;
 
-    _moveArray[3].orientation = Orientation::FINISHED;
-    _moveArray[3].x = 2;
+    _moveArray[3].orientation = Orientation::WEST;
+    _moveArray[3].x = 1;
     _moveArray[3].y = 1;
+    _moveArray[4].orientation = Orientation::SOUTH;
+    _moveArray[4].x = 1;
+    _moveArray[4].y = 2;
+    _moveArray[5].orientation = Orientation::FINISHED;
+    _moveArray[5].x = 1;
+    _moveArray[5].y = 2;
 }
 
 Robot::~Robot()
