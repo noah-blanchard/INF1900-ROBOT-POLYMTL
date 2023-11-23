@@ -440,13 +440,13 @@ void Navigation::_moveForward(uint16_t speed)
         _delay_ms(50);
         break;
     }
-    case LineMakerFlag::OUTER_LEFT_DETECT:
+    case LineMakerFlag::OUTER_LEFT_DETECTION:
     {
         _tripIndex++;
         _tripState = NavigationState::NEXT_MOVE;
         break;
     }
-    case LineMakerFlag::OUTER_RIGHT_DETECT:
+    case LineMakerFlag::OUTER_LEFT_DETECTION:
     {
         _tripIndex++;
         _tripState = NavigationState::NEXT_MOVE;
