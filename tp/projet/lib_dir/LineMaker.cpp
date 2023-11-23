@@ -63,52 +63,85 @@ LineMakerFlag LineMaker::getDetectionFlag()
     uint8_t sensorData = _retrieveSensorData();
     LineMakerFlag flag = LineMakerFlag::NO_LINE;
 
-    if (sensorData == ALL)
+    // first if there's outer left bit on, always send outer_left_detection
+    if (sensorData & OUTER_LEFT)
     {
-        flag = LineMakerFlag::FULL_CROSSROAD;
+        flag = LineMakerFlag::OUTER_LEFT_DETECTION;
     }
-    else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION || (sensorData & (LEFT_INTERSECTION | INNER_RIGHT) == (LEFT_INTERSECTION | INNER_RIGHT)))
+    else if (sensorData & OUTER_RIGHT)
     {
-        flag = LineMakerFlag::LEFT_CROSSROAD;
+        flag = LineMakerFlag::OUTER_RIGHT_DETECTION;
     }
-
-    else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION || (sensorData & (RIGHT_INTERSECTION | INNER_LEFT) == (RIGHT_INTERSECTION | INNER_LEFT)))
-    {
-        flag = LineMakerFlag::RIGHT_CROSSROAD;
-    }
-    else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & INNER_LEFT_MIDDLE) == INNER_LEFT_MIDDLE || (sensorData & INNER_OUTER_LEFT) == INNER_OUTER_LEFT)
-    {
-        flag = LineMakerFlag::RIGHT_ADJUSTMENT;
-    }
-    else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & INNER_RIGHT_MIDDLE) == INNER_RIGHT_MIDDLE || (sensorData & INNER_OUTER_RIGHT) == INNER_OUTER_RIGHT)
-    {
-        flag = LineMakerFlag::LEFT_ADJUSTMENT;
-    }
-
-    // outer_left_detect
-    else if (sensorData == INNER_LEFT_MIDDLE || sensorData == INNER_LEFT || sensorData == OUTER_LEFT)
-    {
-        flag = LineMakerFlag::OUTER_LEFT_DETECT;
-    }
-
-    // outer_right_detect
-    else if (sensorData == INNER_RIGHT_MIDDLE || sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT)
-    {
-        flag = LineMakerFlag::OUTER_RIGHT_DETECT;
-    }
-
-    else if (sensorData == NONE)
-    {
-        flag = LineMakerFlag::NO_LINE;
-    }
-
+    // else if only middle bit on
     else if (sensorData == MIDDLE)
     {
         flag = LineMakerFlag::NO_ADJUSTMENT;
     }
+    // else if middle bit and inner left, or only innfer left => left adjustment
+    else if ((sensorData & INNER_LEFT) == INNER_LEFT || sensorData == INNER_LEFT)
+    {
+        flag = LineMakerFlag::LEFT_ADJUSTMENT;
+    }
+    // else if middle bit and inner right, or only innfer right => right adjustment
+    else if ((sensorData & INNER_RIGHT) == INNER_RIGHT || sensorData == INNER_RIGHT)
+    {
+        flag = LineMakerFlag::RIGHT_ADJUSTMENT;
+    }
 
     return flag;
 }
+
+// LineMakerFlag LineMaker::getDetectionFlag()
+// {
+//     uint8_t sensorData = _retrieveSensorData();
+//     LineMakerFlag flag = LineMakerFlag::NO_LINE;
+
+//     if (sensorData == ALL)
+//     {
+//         flag = LineMakerFlag::FULL_CROSSROAD;
+//     }
+//     else if ((sensorData & LEFT_INTERSECTION) == LEFT_INTERSECTION || (sensorData & (LEFT_INTERSECTION | INNER_RIGHT) == (LEFT_INTERSECTION | INNER_RIGHT)))
+//     {
+//         flag = LineMakerFlag::LEFT_CROSSROAD;
+//     }
+
+//     else if ((sensorData & RIGHT_INTERSECTION) == RIGHT_INTERSECTION || (sensorData & (RIGHT_INTERSECTION | INNER_LEFT) == (RIGHT_INTERSECTION | INNER_LEFT)))
+//     {
+//         flag = LineMakerFlag::RIGHT_CROSSROAD;
+//     }
+//     else if (sensorData == INNER_LEFT || sensorData == OUTER_LEFT || (sensorData & INNER_LEFT_MIDDLE) == INNER_LEFT_MIDDLE || (sensorData & INNER_OUTER_LEFT) == INNER_OUTER_LEFT)
+//     {
+//         flag = LineMakerFlag::RIGHT_ADJUSTMENT;
+//     }
+//     else if (sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT || (sensorData & INNER_RIGHT_MIDDLE) == INNER_RIGHT_MIDDLE || (sensorData & INNER_OUTER_RIGHT) == INNER_OUTER_RIGHT)
+//     {
+//         flag = LineMakerFlag::LEFT_ADJUSTMENT;
+//     }
+
+//     // outer_left_detect
+//     else if (sensorData == INNER_LEFT_MIDDLE || sensorData == INNER_LEFT || sensorData == OUTER_LEFT)
+//     {
+//         flag = LineMakerFlag::OUTER_LEFT_DETECT;
+//     }
+
+//     // outer_right_detect
+//     else if (sensorData == INNER_RIGHT_MIDDLE || sensorData == INNER_RIGHT || sensorData == OUTER_RIGHT)
+//     {
+//         flag = LineMakerFlag::OUTER_RIGHT_DETECT;
+//     }
+
+//     else if (sensorData == NONE)
+//     {
+//         flag = LineMakerFlag::NO_LINE;
+//     }
+
+//     else if (sensorData == MIDDLE)
+//     {
+//         flag = LineMakerFlag::NO_ADJUSTMENT;
+//     }
+
+//     return flag;
+// }
 
 uint8_t LineMaker::_retrieveSensorData()
 {
