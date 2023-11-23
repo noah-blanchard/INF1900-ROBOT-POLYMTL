@@ -293,7 +293,7 @@ void Navigation::_chooseForwardMove()
     // x = 1, y = 0, 1 3, 5 2, 6, 2
     // so put state to forward delay if we have one of these positions
     _initForward();
-    
+
     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
@@ -471,39 +471,49 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
-    switch (lineMakerFlag)
-    {
-    case LineMakerFlag::NO_ADJUSTMENT:
-    {
-        go(speed, false);
-        break;
-    }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
-    {
-        adjustLeft();
-        _delay_ms(150);
-        stop();
-        _delay_ms(70);
-        break;
-    }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-    {
-        adjustRight();
-        _delay_ms(150);
-        stop();
-        _delay_ms(70);
-        break;
-    }
-    }
+    // make a for loop to make that it does the following during 8000 ms
 
-    if (delayElapsed)
+    for (uint16_t i = 0; i < 8000/220; i++)
     {
-        stop();
-        _timerOff();
-        _tripIndex++;
-        delayElapsed = false;
-        _tripState = NavigationState::NEXT_MOVE;
+
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_ADJUSTMENT:
+        {
+            go(speed, false);
+            _delay_ms(220);
+            break;
+        }
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
+        {
+            adjustLeft();
+            _delay_ms(150);
+            stop();
+            _delay_ms(70);
+            break;
+        }
+        case LineMakerFlag::LEFT_ADJUSTMENT:
+        {
+            adjustRight();
+            _delay_ms(150);
+            stop();
+            _delay_ms(70);
+            break;
+        }
+        }
     }
+    stop();
+    _tripIndex++;
+    _tripState = NavigationState::NEXT_MOVE;
+
+    // if (delayElapsed)
+    // {
+    //     stop();
+    //     _timerOff();
+    //     _tripIndex++;
+    //     delayElapsed = false;
+    //     _tripState = NavigationState::NEXT_MOVE;
+    // }
 }
 
 void Navigation::_initForward()
