@@ -460,7 +460,7 @@ void IdentifyCorner::_turnSecondLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensoradjustRightData();
+    LineMakerFlag sensor = _lineMakerModule
 
     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
     {
