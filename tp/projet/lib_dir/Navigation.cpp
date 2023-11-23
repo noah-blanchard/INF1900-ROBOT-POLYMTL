@@ -415,6 +415,7 @@ void Navigation::_moveForward(uint16_t speed)
     // if we are not, we need to keep following the line
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+    _display = "MOVE FORWARD NOW";
 
     switch (lineMakerFlag)
     {
