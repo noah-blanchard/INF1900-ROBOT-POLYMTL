@@ -243,7 +243,7 @@ void Navigation::followTrip(Move *trip)
         {
         case NavigationState::NEXT_MOVE:
         {
-            _nextMove(trip[tripIndex++]);
+            _nextMove(trip[tripIndex]);
             break;
         }
         case NavigationState::FORWARD:
