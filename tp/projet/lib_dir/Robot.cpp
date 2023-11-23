@@ -21,7 +21,7 @@ Robot::Robot()
     sei();
     //_currentState = State::MODE_SELECTION;
     //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
-    _currentState = State::FOLLOW_LINE;
+    _currentState = State::NAVIGATE_TRIP;
     // _moveArray init for test
     _moveArray[0].orientation = Orientation::EAST;
     _moveArray[0].x = 1;
@@ -103,8 +103,8 @@ void Robot::runRoutine()
 
 void Robot::_followLineRoutine()
 {
-    LineMakerFlag _lineMakerModule = _lineMakerModule.getDetectionFlag();
-    switch (_lineMakerModule)
+    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    switch (flag)
     {
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
