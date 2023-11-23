@@ -432,7 +432,7 @@ void Navigation::_moveForward(uint16_t speed)
         go(speed, false);
         break;
     }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustLeft();
         _delay_ms(200);
@@ -440,7 +440,7 @@ void Navigation::_moveForward(uint16_t speed)
         _delay_ms(50);
         break;
     }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustRight();
         _delay_ms(200);
@@ -476,7 +476,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         go(speed, false);
         break;
     }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustLeft();
         _delay_ms(200);
@@ -484,7 +484,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         _delay_ms(50);
         break;
     }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustRight();
         _delay_ms(200);
@@ -550,7 +550,7 @@ void Navigation::_turnRight()
         goLeftWheel(_BASE_SPEED, false);
         break;
     }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
@@ -583,7 +583,7 @@ void Navigation::_turnLeft()
         goRightWheel(_BASE_SPEED, false);
         break;
     }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
