@@ -519,26 +519,26 @@ void Navigation::_initForward()
 void Navigation::_initTurnRight()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(1200);
+    _delay_ms(1800);
     stop();
     _delay_ms(100);
     // then turn a bit right for 1 second
     goRightWheel(_BASE_SPEED, true);
     goLeftWheel(_BASE_SPEED, false);
-    _delay_ms(700);
+    _delay_ms(1200);
     stop();
 }
 
 void Navigation::_initTurnLeft()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(1200);
+    _delay_ms(1800);
     stop();
     _delay_ms(100);
     // then turn a bit left for 1 second
     goRightWheel(_BASE_SPEED, false);
     goLeftWheel(_BASE_SPEED, true);
-    _delay_ms(700);
+    _delay_ms(1200);
     stop();
 }
 void Navigation::_turnRight()
