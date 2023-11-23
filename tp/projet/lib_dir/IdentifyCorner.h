@@ -60,6 +60,10 @@ private:
     void _turnAround();
     void _goBack();
     void _turnSecondLine();
+    void _turnBackFirstLine();
+    void _turnBackSecondLine();
+    void _goBackSecondLine();
+    void _goBackThirdLine();
     void _goForwardSecondLine();
     void _turnThirdLine();
     void _goForwardThirdLine();

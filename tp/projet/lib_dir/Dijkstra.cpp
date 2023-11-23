@@ -131,7 +131,7 @@ Dijkstra::~Dijkstra()
 
 void Dijkstra::run(uint8_t* destination, Move *moveArray)
 {
-    _destination = destination;
+    _destination = *destination;
     _emptyDijkstraResult();
     _dijkstra();
 
@@ -183,7 +183,7 @@ void Dijkstra::run(uint8_t* destination, Move *moveArray)
         lastX = nextX;
         lastY = nextY;
 
-        moveArray[index].orientation = lastOrientation;
+        moveArray[index].orientation = nextOrientation;
         moveArray[index].x = nextX;
         moveArray[index].y = nextY;
 

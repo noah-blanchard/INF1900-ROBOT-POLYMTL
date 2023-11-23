@@ -1,3 +1,4 @@
+#pragma once
 #include <avr/io.h>
 
 #define OUTER_LEFT_SENSOR PA2
