@@ -507,26 +507,26 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 void Navigation::_initTurnRight()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(200);
+    _delay_ms(500);
     stop();
     _delay_ms(100);
     // then turn a bit right for 1 second
     goRightWheel(_TURN_SPEED, true);
     goLeftWheel(_BASE_SPEED, false);
-    _delay_ms(600);
+    _delay_ms(1200);
     stop();
 }
 
 void Navigation::_initTurnLeft()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(200);
+    _delay_ms(500);
     stop();
     _delay_ms(100);
     // then turn a bit left for 1 second
     goRightWheel(_BASE_SPEED, false);
     goLeftWheel(_TURN_SPEED, true);
-    _delay_ms(600);
+    _delay_ms(1200);
     stop();
 }
 void Navigation::_turnRight()
