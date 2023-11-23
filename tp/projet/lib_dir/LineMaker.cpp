@@ -65,7 +65,7 @@ LineMakerFlag LineMaker::getDetectionFlag()
 
     if (sensorData == ALL)
     {
-        flag = LineMakerFlag::FULL_CROSSRAD;
+        flag = LineMakerFlag::FULL_CROSSROAD;
     }
 
     // first if there's outer left bit on, always send outer_left_detection
