@@ -437,17 +437,17 @@ void Navigation::_moveForward(uint16_t speed)
     case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustLeft();
-        _delay_ms(200);
+        _delay_ms(300);
         stop();
-        _delay_ms(50);
+        _delay_ms(10);
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustRight();
-        _delay_ms(200);
+        _delay_ms(300);
         stop();
-        _delay_ms(50);
+        _delay_ms(10);
         break;
     }
     case LineMakerFlag::OUTER_LEFT_DETECTION:
@@ -481,17 +481,17 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustLeft();
-        _delay_ms(200);
+        _delay_ms(300);
         stop();
-        _delay_ms(50);
+        _delay_ms(10);
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustRight();
-        _delay_ms(200);
+        _delay_ms(300);
         stop();
-        _delay_ms(50);
+        _delay_ms(10);
         break;
     }
     }
