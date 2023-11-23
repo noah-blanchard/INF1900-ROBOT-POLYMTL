@@ -43,7 +43,7 @@ private:
     NavigationState _tripState = NavigationState::NEXT_MOVE;
 
     static const uint8_t _BASE_SPEED = 90;
-    static const uint8_t _TURN_SPEED = 150;
+    static const uint8_t _TURN_SPEED = 130;
     static const uint8_t _ADJUST_OFFSET = 50;
 
     // trip movements
