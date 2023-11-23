@@ -29,7 +29,7 @@ uint16_t Navigation::_validateSpeed(uint16_t speed)
  * @brief Constructs a new Navigation object and initializes the DDRD register.
  *
  */
-Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
+Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC)
 {
     DDRD = (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
     PORTD |= (1 << PD5);
