@@ -34,6 +34,10 @@ Robot::Robot()
     _moveArray[2].orientation = Orientation::SOUTH;
     _moveArray[2].x = 1;
     _moveArray[2].y = 2;
+
+    _moveArray[3].orientation = Orientation::FINISHED;
+    _moveArray[3].x = 1;
+    _moveArray[3].y = 2;
 }
 
 Robot::~Robot()
@@ -142,7 +146,7 @@ void Robot::_turnAtCrossroadRoutine()
 void Robot::_calculatePathRoutine()
 {
     _dijkstraModule.run(_destination, _moveArray);
-    //disp << "PATH CALCULATED";
+    // disp << "PATH CALCULATED";
     //_customDelay(2000);
     _currentState = State::NAVIGATE_TRIP;
 }
