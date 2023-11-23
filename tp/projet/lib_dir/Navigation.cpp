@@ -214,7 +214,7 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    goRightWheel(150, false);
+    goRightWheel(140, false);
     goLeftWheel(80, false);
 }
 
@@ -225,7 +225,7 @@ void Navigation::adjustRight()
 void Navigation::adjustLeft()
 {
     goRightWheel(80, false);
-    goLeftWheel(150, false);
+    goLeftWheel(140, false);
 }
 
 // FOLLOW TRIP IMPLEMENTATION
@@ -437,17 +437,17 @@ void Navigation::_moveForward(uint16_t speed)
     case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustLeft();
-        _delay_ms(100);
+        _delay_ms(150);
         stop();
-        _delay_ms(30);
+        _delay_ms(70);
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustRight();
-        _delay_ms(100);
+        _delay_ms(150);
         stop();
-        _delay_ms(30);
+        _delay_ms(70);
         break;
     }
     case LineMakerFlag::OUTER_LEFT_DETECTION:
@@ -481,17 +481,17 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustLeft();
-        _delay_ms(300);
+        _delay_ms(150);
         stop();
-        _delay_ms(10);
+        _delay_ms(70);
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustRight();
-        _delay_ms(300);
+        _delay_ms(150);
         stop();
-        _delay_ms(10);
+        _delay_ms(70);
         break;
     }
     }
@@ -509,7 +509,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 void Navigation::_initForward()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(900);
+    _delay_ms(400);
     stop();
     _delay_ms(100);
 }

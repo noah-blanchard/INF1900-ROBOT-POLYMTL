@@ -70,12 +70,12 @@ LineMakerFlag LineMaker::getDetectionFlag()
 
     // first if there's outer left bit on, always send outer_left_detection
     // if only outer right detect, or outer right + inner right OR outer right + inner right + middle => right cross
-    else if ((sensorData & OUTER_LEFT) == OUTER_LEFT || (sensorData & (OUTER_LEFT | INNER_LEFT)) == (OUTER_LEFT | INNER_LEFT) || (sensorData & (OUTER_LEFT | INNER_LEFT | MIDDLE)) == (OUTER_LEFT | INNER_LEFT | MIDDLE))
+    else if (/*(sensorData & OUTER_LEFT) == OUTER_LEFT || (sensorData & (OUTER_LEFT | INNER_LEFT)) == (OUTER_LEFT | INNER_LEFT) ||*/ (sensorData & (OUTER_LEFT | INNER_LEFT | MIDDLE)) == (OUTER_LEFT | INNER_LEFT | MIDDLE))
     {
         flag = LineMakerFlag::OUTER_LEFT_DETECTION;
     }
     // if only outer left detect, or outer left + inner left OR outer left + inner left + middle => left cross
-    else if ((sensorData & OUTER_RIGHT) == OUTER_RIGHT || (sensorData & (OUTER_RIGHT | INNER_RIGHT)) == (OUTER_RIGHT | INNER_RIGHT) || (sensorData & (OUTER_RIGHT | INNER_RIGHT | MIDDLE)) == (OUTER_RIGHT | INNER_RIGHT | MIDDLE))
+    else if (/*(sensorData & OUTER_RIGHT) == OUTER_RIGHT || (sensorData & (OUTER_RIGHT | INNER_RIGHT)) == (OUTER_RIGHT | INNER_RIGHT) ||*/ (sensorData & (OUTER_RIGHT | INNER_RIGHT | MIDDLE)) == (OUTER_RIGHT | INNER_RIGHT | MIDDLE))
     {
         flag = LineMakerFlag::OUTER_RIGHT_DETECTION;
     }
