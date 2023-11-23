@@ -44,7 +44,7 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC
     TimerConfig timerConfig;
     timerConfig.timer = 2;
     timerConfig.prescaler = 256;
-    timerConfig.delay_ms = 1000;
+    timerConfig.delay_ms = 6000;
 
     _delayTimerModule = Timer(timerConfig);
 }
