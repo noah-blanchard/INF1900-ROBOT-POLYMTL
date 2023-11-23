@@ -61,6 +61,8 @@ private:
     // trip variables
     uint8_t _currentPosition[2];
     Orientation _currentOrientation;
+    uint8_t _tripIndex = 0;
+
     LineMaker _lineMakerModule;
     Move _nextMoveValue;
     Timer _delayTimerModule;
