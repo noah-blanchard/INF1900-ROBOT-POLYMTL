@@ -302,14 +302,11 @@ void Navigation::_chooseForwardMove()
         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
     {
         _display = "FORWARD DELAY";
-        _delay_ms(2500);
-        _timerOn();
         _tripState = NavigationState::FORWARD_DELAY;
     }
     else
     {
         _display = "FORWARD NORMAL";
-        _delay_ms(2500);
         _tripState = NavigationState::FORWARD;
     }
 }
@@ -332,7 +329,6 @@ void Navigation::_nextMove(Move nextMove)
     _updateCurrentPosition();
     _nextMoveValue = nextMove;
     _display = "NEXT MOVE";
-    _delay_ms(1500);
 
     if (_currentOrientation == nextMove.orientation)
     {
@@ -341,7 +337,6 @@ void Navigation::_nextMove(Move nextMove)
     else
     {
         _display = "TURN";
-        _delay_ms(2500);
         switch (_currentOrientation)
         {
         case Orientation::NORTH:
@@ -351,14 +346,12 @@ void Navigation::_nextMove(Move nextMove)
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
-                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::WEST)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
-                _delay_ms(2500);
             }
             break;
         }
@@ -369,14 +362,12 @@ void Navigation::_nextMove(Move nextMove)
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
-                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::NORTH)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
-                _delay_ms(2500);
             }
             break;
         }
@@ -386,15 +377,12 @@ void Navigation::_nextMove(Move nextMove)
             {
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
-                _display = "TURN RIGHT";
-                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::EAST)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
-                _delay_ms(2500);
             }
             break;
         }
@@ -405,14 +393,12 @@ void Navigation::_nextMove(Move nextMove)
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
-                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::SOUTH)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
-                _delay_ms(2500);
             }
             break;
         }
@@ -478,13 +464,13 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         case LineMakerFlag::NO_ADJUSTMENT:
         {
             go(speed, false);
-            _delay_ms(220);
+
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
         {
             adjustLeft();
-break;
+            break;
         }
         case LineMakerFlag::LEFT_ADJUSTMENT:
         {
@@ -567,7 +553,6 @@ void Navigation::_turnRight()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
-        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
@@ -600,7 +585,6 @@ void Navigation::_turnLeft()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
-        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
