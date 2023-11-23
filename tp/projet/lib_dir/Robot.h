@@ -7,12 +7,13 @@
 // Library Imports
 #include "Timer.h"
 #include "MakeTrip.h"
-//#include "IdentifyCorner.h"
+#include "IdentifyCorner.h"
 #include "Dijkstra.h"
 #include "Navigation.h"
 #include "InfraRedSensor.h"
 #include "Communication.h"
 #include "Bouton.h"
+
 
 // Define the clock speed
 #define F_CPU 8000000UL
@@ -64,7 +65,7 @@ private:
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
     MakeTrip _maketripModule;
-    //IdentifyCorner _identifyCornerModule;
+    IdentifyCorner _identifyCornerModule;
     Dijkstra _dijkstraModule;
 
     State _currentState;

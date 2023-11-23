@@ -20,8 +20,8 @@ Robot::Robot()
     _selectButton.setRisingEdge();
     sei();
     //_currentState = State::MODE_SELECTION;
-    _currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
-
+    //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    _currentState = State::IDENTIFY_CORNER;
     // _moveArray init for test
     _moveArray[0].orientation = Orientation::EAST;
     _moveArray[0].x = 1;
@@ -56,7 +56,7 @@ void Robot::runRoutine()
     case State::IDENTIFY_CORNER:
     {
         //_identifyCornerRoutine();
-        //_identifyCornerModule.identificationProcess(_beginning);
+        _identifyCornerModule.identificationProcess(_beginning);
         break;
     }
     case State::MAKE_TRIP:

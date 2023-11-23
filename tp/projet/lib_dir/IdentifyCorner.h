@@ -70,6 +70,8 @@ private:
     bool _simpleCompareMAtch();
     void makeSound();
     bool _furtherCompareMatch();
+    void  _turnAroundSecondLine();
+    void  _turnAroundThirdLine();
 
     bool isRight = false;
     bool _sidefirst = false;
