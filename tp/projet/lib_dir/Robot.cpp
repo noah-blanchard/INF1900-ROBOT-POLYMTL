@@ -24,20 +24,20 @@ Robot::Robot()
 
     // _moveArray init for test
     _moveArray[0].orientation = Orientation::EAST;
-    _moveArray[0].x = 0;
-    _moveArray[0].y = 1;
+    _moveArray[0].x = 1;
+    _moveArray[0].y = 0;
 
     _moveArray[1].orientation = Orientation::EAST;
-    _moveArray[1].x = 0;
-    _moveArray[1].y = 2;
+    _moveArray[1].x = 2;
+    _moveArray[1].y = 0;
 
     _moveArray[2].orientation = Orientation::SOUTH;
-    _moveArray[2].x = 1;
-    _moveArray[2].y = 2;
+    _moveArray[2].x = 2;
+    _moveArray[2].y = 1;
 
     _moveArray[3].orientation = Orientation::FINISHED;
-    _moveArray[3].x = 1;
-    _moveArray[3].y = 2;
+    _moveArray[3].x = 2;
+    _moveArray[3].y = 1;
 }
 
 Robot::~Robot()
