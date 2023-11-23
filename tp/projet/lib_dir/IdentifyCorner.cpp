@@ -274,7 +274,7 @@ void IdentifyCorner::_turnAround()
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -304,7 +304,7 @@ void IdentifyCorner::_turnAroundSecondLine()
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -334,7 +334,7 @@ void IdentifyCorner::_turnAroundThirdLine()
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -486,7 +486,7 @@ void IdentifyCorner::_turnBackFirstLine()
 
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-    // if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    // if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::NO_ADJUSTMENT)
     // {
     //     _delay_ms(1000);
     //     _navModule.stop();
@@ -495,7 +495,7 @@ void IdentifyCorner::_turnBackFirstLine()
     // }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _delay_ms(1000);
         _navModule.stop();
@@ -523,7 +523,7 @@ void IdentifyCorner::_turnBackSecondLine()
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _delay_ms(1000);
         _navModule.stop();
@@ -621,7 +621,7 @@ void IdentifyCorner::_turnThirdLine()
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -932,7 +932,7 @@ void IdentifyCorner::_goForwardThirdLine()
 
 //     uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-//     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+//     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::NO_ADJUSTMENT)
 //     {
 //         _navModule.stop();
 //         _delay_ms(1000);
@@ -992,7 +992,7 @@ void IdentifyCorner::_goForwardThirdLine()
 
 //     uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-//     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+//     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::NO_ADJUSTMENT)
 //     {
 //         _navModule.stop();
 //         _delay_ms(1000);
@@ -1089,7 +1089,7 @@ void IdentifyCorner::_goForwardThirdLine()
 
 //     uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-//     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+//     if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::NO_ADJUSTMENT)
 //     {
 //         _navModule.stop();
 //         _delay_ms(1000);
