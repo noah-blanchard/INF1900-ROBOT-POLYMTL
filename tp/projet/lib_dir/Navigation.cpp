@@ -328,6 +328,7 @@ void Navigation::_nextMove(Move nextMove)
     // if it's not the same, state turn right or left depending on the orientation
     // for example, if current is south and next is east, turn left
     // if current is south and next is west, turn right
+    stop();
     _updateCurrentPosition();
     _nextMoveValue = nextMove;
     _display = "NEXT MOVE";
