@@ -37,9 +37,9 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1)
     PORTD &= ~(1 << PD6);
     PORTD &= ~(1 << PD7);
 
-    _nextMove.x = 0;
-    _nextMove.y = 0;
-    _nextMove.orientation = Orientation::SOUTH;
+    _nextMoveValue.x = 0;
+    _nextMoveValue.y = 0;
+    _nextMoveValue.orientation = Orientation::SOUTH;
 
     TimerConfig timerConfig;
     timerConfig.timer = 2;
@@ -261,6 +261,11 @@ void Navigation::followTrip(Move *trip)
             _turnLeft();
             break;
         }
+        case NavigationState::FORWARD_DELAY:
+        {
+            _moveForwardDelay(_BASE_SPEED);
+            break;
+        }
         }
     }
 }
@@ -287,10 +292,10 @@ void Navigation::_chooseForwardMove()
     // some place have no crossroad and need to use FORWARD_DELAY
     // x = 1, y = 0, 1 3, 5 2, 6, 2
     // so put state to forward delay if we have one of these positions
-    if ((_nextMove.x == 1 && _nextMove.y == 0) ||
-        (_nextMove.x == 1 && _nextMove.y == 3) ||
-        (_nextMove.x == 5 && _nextMove.y == 2) ||
-        (_nextMove.x == 6 && _nextMove.y == 2))
+    if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
+        (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
+        (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
+        (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
     {
         _timerOn();
         _tripState = NavigationState::FORWARD_DELAY;
@@ -303,9 +308,9 @@ void Navigation::_chooseForwardMove()
 
 void Navigation::_updateCurrentPosition()
 {
-    _currentPosition[0] = _nextMove.x;
-    _currentPosition[1] = _nextMove.y;
-    _currentOrientation = _nextMove.orientation;
+    _currentPosition[0] = _nextMoveValue.x;
+    _currentPosition[1] = _nextMoveValue.y;
+    _currentOrientation = _nextMoveValue.orientation;
 }
 
 void Navigation::_nextMove(Move nextMove)
@@ -316,7 +321,7 @@ void Navigation::_nextMove(Move nextMove)
     // for example, if current is south and next is east, turn left
     // if current is south and next is west, turn right
     _updateCurrentPosition();
-    _nextMove = nextMove;
+    _nextMoveValue = nextMove;
 
     if (_currentOrientation == nextMove.orientation)
     {
@@ -423,7 +428,7 @@ void Navigation::_moveForward(uint16_t speed)
     }
 }
 
-void Navigation::_moveForwardDelay()
+void Navigation::_moveForwardDelay(uint16_t speed)
 {
     // so here we will user timer 2 to trigger interrupt and stop moving forward in this case
 

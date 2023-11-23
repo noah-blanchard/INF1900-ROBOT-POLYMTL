@@ -129,7 +129,7 @@ Dijkstra::~Dijkstra()
 {
 }
 
-void Dijkstra::run(uint8_t destination, Move *moveArray)
+void Dijkstra::run(uint8_t* destination, Move *moveArray)
 {
     _destination = destination;
     _emptyDijkstraResult();

@@ -1,3 +1,4 @@
+#pragma once
 #include <avr/io.h>
 #include "Types.h"
 
@@ -9,7 +10,7 @@ class Dijkstra
 public:
     Dijkstra();
     ~Dijkstra();
-    void run(uint8_t destination, Move *moveArray);
+    void run(uint8_t* destination, Move *moveArray);
 
 private:
     const uint8_t _ADJ_MATRIX[N_NOEUDS][N_NOEUDS];
@@ -18,4 +19,4 @@ private:
 
     void _emptyDijkstraResult();
     void _dijkstra();
-}
+};

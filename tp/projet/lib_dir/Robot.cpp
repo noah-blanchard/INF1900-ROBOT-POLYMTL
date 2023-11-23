@@ -142,7 +142,7 @@ void Robot::_turnAtCrossroadRoutine()
 void Robot::_calculatePathRoutine()
 {
     _dijkstraModule.run(_destination, _moveArray);
-    disp << "PATH CALCULATED";
+    //disp << "PATH CALCULATED";
     //_customDelay(2000);
     _currentState = State::NAVIGATE_TRIP;
 }

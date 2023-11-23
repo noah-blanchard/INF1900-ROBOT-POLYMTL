@@ -42,6 +42,7 @@ private:
     NavigationState _tripState = NavigationState::NEXT_MOVE;
 
     static const uint8_t _BASE_SPEED = 180;
+    static const uint8_t _TURN_SPEED = 140;
     static const uint8_t _ADJUST_OFFSET = 50;
 
     // trip movements
@@ -60,7 +61,7 @@ private:
     uint8_t _currentPosition[2];
     Orientation _currentOrientation;
     LineMaker _lineMakerModule;
-    Move _nextMove;
+    Move _nextMoveValue;
     Timer _delayTimerModule;
 
     // wheel setups
