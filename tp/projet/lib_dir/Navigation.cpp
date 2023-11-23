@@ -525,13 +525,13 @@ void Navigation::_turnRight()
         goLeftWheel(_BASE_SPEED, false);
         break;
     }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
         _delay_ms(1000);
-        _tripState = NavigationState::NEXT_MOVE;
+        _chooseForwardMove();
         break;
     }
     }
@@ -567,13 +567,13 @@ void Navigation::_turnLeft()
         goRightWheel(_BASE_SPEED, false);
         break;
     }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
         _delay_ms(1000);
-        _tripState = NavigationState::NEXT_MOVE;
+        _chooseForwardMove();
         break;
     }
     }
