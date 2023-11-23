@@ -233,7 +233,7 @@ void Navigation::adjustLeft()
 void Navigation::followTrip(Move *trip)
 {
     // uint8_t tripIndex = 0;
-    _currentOrientation = Orientation::SOUTH;
+    _currentOrientation = Orientation::EAST;
     _currentPosition[0] = 0; // 0 being x
     _currentPosition[1] = 0; // 1 being y
 
@@ -454,7 +454,7 @@ void Navigation::_moveForward(uint16_t speed)
         _tripState = NavigationState::NEXT_MOVE;
         break;
     }
-    case LineMakerFlag::OUTER_LEFT_DETECTION:
+    case LineMakerFlag::OUTER_RIGHT_DETECTION:
     {
         _tripIndex++;
         _tripState = NavigationState::NEXT_MOVE;
