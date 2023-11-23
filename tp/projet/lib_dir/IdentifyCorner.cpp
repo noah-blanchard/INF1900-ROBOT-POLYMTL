@@ -23,7 +23,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
         case IdentifyCornerState::TURN_AROUND:
             _turnAround();
             break;
-        
+
         case IdentifyCornerState::TURN_AROUND_SECOND_LINE:
             _turnAroundSecondLine();
             break;
@@ -43,7 +43,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             _display = "GO_BACK sec line";
             _navModule.stop();
             break;
-        
+
         case IdentifyCornerState::GO_BACK_THIRD_LINE:
             _goBackThirdLine();
             _display = "GO_BACK third line";
@@ -56,7 +56,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             //_navModule.stop();
             break;
 
-         case IdentifyCornerState::TURN_BACK_FIRST_LINE:
+        case IdentifyCornerState::TURN_BACK_FIRST_LINE:
             _turnBackFirstLine();
             _display = "TURN BACK 1";
             //_navModule.stop();
@@ -70,8 +70,8 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 
         case IdentifyCornerState::GO_FORWARD_SECOND_LINE:
             _goForwardSecondLine();
-           // _display = "sec line";
-           break;
+            // _display = "sec line";
+            break;
 
         case IdentifyCornerState::TURN_THIRD_LINE:
             _turnThirdLine();
@@ -93,12 +93,12 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
     //            FirstLine       SecondLine
     // RCBH ==>   32
     // RCBV ==>  23
-    
-    // RCTV ===> 2 intersections right -------  1 left 
+
+    // RCTV ===> 2 intersections right -------  1 left
     // LCTH ====> 2 intersections right  ------ 1 left *
-    
+
     // LCBV ==> 1 First intersection is left --- 1*
-    // LCBH ===> 1 first intersection  is right --- 1* and 
+    // LCBH ===> 1 first intersection  is right --- 1* and
 
     // LCTV ===> 1 first intersection is left    --- 2*
     // RCTH ===> 1 first intersection is left ------ 2*
@@ -188,30 +188,30 @@ bool IdentifyCorner::_simpleCompareMAtch()
     // add case 1-1 (right left and left right)
     _displayCurrentIntersectionCount();
     _delay_ms(5000);
-    if((_firstLineCount == 3) and (_secondLineCount == 2))
+    if ((_firstLineCount == 3) and (_secondLineCount == 2))
     {
         makeSound();
         _delay_ms(2000);
         _displayCurrentIntersectionCount();
         return true;
-    } 
-    else if((_firstLineCount == 2) and (_secondLineCount == 3))
+    }
+    else if ((_firstLineCount == 2) and (_secondLineCount == 3))
     {
-         
+
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if( (_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
+    else if ((_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
     {
-         // LCBV
+        // LCBV
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if( (_firstLineCount == 1) and (_secondLineCount == 1 and !_sidefirst))
+    else if ((_firstLineCount == 1) and (_secondLineCount == 1 and !_sidefirst))
     {
-         // LCBH
+        // LCBH
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
@@ -221,46 +221,44 @@ bool IdentifyCorner::_simpleCompareMAtch()
 
 bool IdentifyCorner::_furtherCompareMatch()
 {
-    if(_firstLineCount == 3 and _secondLineCount == 1)
+    if (_firstLineCount == 3 and _secondLineCount == 1)
     {
         // LCTH -- good
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if(_firstLineCount == 1 and _secondLineCount == 3)
+    else if (_firstLineCount == 1 and _secondLineCount == 3)
     {
         // LCTV
-         _displayCurrentIntersectionCount();
+        _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if(_firstLineCount == 4 and _secondLineCount == 2)
+    else if (_firstLineCount == 4 and _secondLineCount == 2)
     {
         // RCTH
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if(_firstLineCount == 4 and _secondLineCount == 1)
+    else if (_firstLineCount == 4 and _secondLineCount == 1)
     {
-         // RCTV this case has to be covered;
-         
+        // RCTV this case has to be covered;
+
         //_displayCurrentIntersectionCount();
-        //makeSound();
+        // makeSound();
         _display.clear();
         _display << "not found";
         return false;
     }
-
 }
-
 
 // turn around should turn around
 void IdentifyCorner::_turnAround()
 {
     //_displayCurrentIntersectionCount();
-     _display.clear();
+    _display.clear();
     _display << "turn around";
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
@@ -274,9 +272,9 @@ void IdentifyCorner::_turnAround()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -290,7 +288,7 @@ void IdentifyCorner::_turnAround()
 void IdentifyCorner::_turnAroundSecondLine()
 {
     //_displayCurrentIntersectionCount();
-     _display.clear();
+    _display.clear();
     _display << "turn around";
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
@@ -304,9 +302,9 @@ void IdentifyCorner::_turnAroundSecondLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -319,7 +317,7 @@ void IdentifyCorner::_turnAroundSecondLine()
 void IdentifyCorner::_turnAroundThirdLine()
 {
     //_displayCurrentIntersectionCount();
-     _display.clear();
+    _display.clear();
     _display << "turn around";
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
@@ -333,9 +331,10 @@ void IdentifyCorner::_turnAroundThirdLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    // uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -349,7 +348,7 @@ void IdentifyCorner::_goBack()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    
+
     _navModule.go(140, false);
     switch (flag)
     {
@@ -380,7 +379,7 @@ void IdentifyCorner::_goBackSecondLine()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    
+
     _navModule.go(140, false);
     switch (flag)
     {
@@ -411,7 +410,7 @@ void IdentifyCorner::_goBackThirdLine()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    
+
     _navModule.go(140, false);
     switch (flag)
     {
@@ -442,7 +441,7 @@ void IdentifyCorner::_turnSecondLine()
 {
 
     // go forward for 1 second
-    
+
     _navModule.go(140, false);
     _delay_ms(1000);
     _navModule.stop();
@@ -460,20 +459,19 @@ void IdentifyCorner::_turnSecondLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    LineMakerFlag sensor = _lineMakerModule
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
-    {
-        _navModule.stop();
-        _delay_ms(1000);
-        _state = IdentifyCornerState::GO_FORWARD_SECOND_LINE;
-    }
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_LINE))
+        {
+            _navModule.stop();
+            _delay_ms(1000);
+            _state = IdentifyCornerState::GO_FORWARD_SECOND_LINE;
+        }
 }
 
 void IdentifyCorner::_turnBackFirstLine()
 {
 
-
     // turn around from left
     if (isRight)
     {
@@ -486,21 +484,30 @@ void IdentifyCorner::_turnBackFirstLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    // uint8_t sensor = _lineMakerModule._retrieveSensorData();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    // if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    // {
+    //     _delay_ms(1000);
+    //     _navModule.stop();
+    //     _display.clear();
+    //     _display << "i am back";
+    // }
+
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
     {
         _delay_ms(1000);
         _navModule.stop();
-         _display.clear();
-        _display << "i am back";
+        _delay_ms(1000);
+        _state = IdentifyCornerState::GO_BACK_FIRST_LINE;
     }
+    s
 }
 
 void IdentifyCorner::_turnBackSecondLine()
 {
 
-
     // turn around from left
     if (isRight)
     {
@@ -513,15 +520,16 @@ void IdentifyCorner::_turnBackSecondLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    // uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
     {
         _delay_ms(1000);
         _navModule.stop();
-         _display.clear();
+        _display.clear();
         _display << "back on sec line";
-         _state = IdentifyCornerState::GO_BACK_SECOND_LINE;
+        _state = IdentifyCornerState::GO_BACK_SECOND_LINE;
     }
 }
 
@@ -536,23 +544,23 @@ void IdentifyCorner::_goForwardSecondLine()
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
         _display << "simple";
-       //_state = IdentifyCornerState::TURN_AROUND;
-       if(_simpleCompareMAtch())
-       // it founds the right spot since the second line
-       {
+        //_state = IdentifyCornerState::TURN_AROUND;
+        if (_simpleCompareMAtch())
+        // it founds the right spot since the second line
+        {
             _display.clear();
             _display << "simple";
             //_delay_ms(5000);
             _state = IdentifyCornerState::TURN_AROUND_SECOND_LINE;
-       }
-       else
-       {
+        }
+        else
+        {
             _display.clear();
-           _display << "no simple";
-           _state = IdentifyCornerState::TURN_THIRD_LINE;
-      }
+            _display << "no simple";
+            _state = IdentifyCornerState::TURN_THIRD_LINE;
+        }
         break;
-   case LineMakerFlag::RIGHT_ADJUSTMENT:
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustLeft();
         _delay_ms(100);
@@ -592,7 +600,6 @@ void IdentifyCorner::_goForwardSecondLine()
         isRight = false;
         break;
     }
-
 }
 
 void IdentifyCorner::_turnThirdLine()
@@ -612,9 +619,9 @@ void IdentifyCorner::_turnThirdLine()
         _navModule.goLeftWheel(120, false);
     }
 
-    uint8_t sensor = _lineMakerModule._retrieveSensorData();
+    LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::MIDDLE)
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::MIDDLE)
     {
         _navModule.stop();
         _delay_ms(1000);
@@ -631,14 +638,14 @@ void IdentifyCorner::_goForwardThirdLine()
     {
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
-        if(_furtherCompareMatch())
+        if (_furtherCompareMatch())
         {
             makeSound();
             _delay_ms(2000);
             _displayCurrentIntersectionCount();
         }
         // Later start process go back to initial place here
-         _state = IdentifyCornerState::TURN_AROUND;
+        _state = IdentifyCornerState::TURN_AROUND;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustRight();
@@ -660,12 +667,12 @@ void IdentifyCorner::_goForwardThirdLine()
             _firstLineCount++;
             _blockIncrementation = true;
 
-            if(_furtherCompareMatch())
+            if (_furtherCompareMatch())
             {
                 makeSound();
-            
+
                 _displayCurrentIntersectionCount();
-                 _state = IdentifyCornerState::TURN_AROUND;
+                _state = IdentifyCornerState::TURN_AROUND;
             }
         }
         isRight = true;
@@ -677,20 +684,18 @@ void IdentifyCorner::_goForwardThirdLine()
         {
             _secondLineCount++;
             _blockIncrementation = true;
-             if(_furtherCompareMatch())
+            if (_furtherCompareMatch())
             {
                 makeSound();
-         
+
                 _displayCurrentIntersectionCount();
-                 _state = IdentifyCornerState::TURN_AROUND;
+                _state = IdentifyCornerState::TURN_AROUND;
             }
         }
         isRight = false;
         break;
     }
-
 }
-
 
 // void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 // {
@@ -719,7 +724,7 @@ void IdentifyCorner::_goForwardThirdLine()
 //             _display = "TURN_SECOND_LINE";
 //             //_navModule.stop();
 //             break;
-        
+
 //         case IdentifyCornerState::GO_FORWARD_SECOND_LINE:
 //             _goForwardSecondLine();
 //            // _display = "sec line";
@@ -745,12 +750,12 @@ void IdentifyCorner::_goForwardThirdLine()
 //     //            FirstLine       SecondLine
 //     // RCBH ==>   32
 //     // RCBV ==>  23
-    
-//     // RCTV ===> 2 intersections right -------  1 left 
+
+//     // RCTV ===> 2 intersections right -------  1 left
 //     // LCTH ====> 2 intersections right  ------ 1 left *
-    
+
 //     // LCBV ==> 1 First intersection is left --- 1*
-//     // LCBH ===> 1 first intersection  is right --- 1* and 
+//     // LCBH ===> 1 first intersection  is right --- 1* and
 
 //     // LCTV ===> 1 first intersection is left    --- 2*
 //     // RCTH ===> 1 first intersection is left ------ 2*
@@ -846,10 +851,10 @@ void IdentifyCorner::_goForwardThirdLine()
 //         _delay_ms(2000);
 //         _displayCurrentIntersectionCount();
 //         return true;
-//     } 
+//     }
 //     else if((_firstLineCount == 2) and (_secondLineCount == 3))
 //     {
-         
+
 //         _displayCurrentIntersectionCount();
 //         makeSound();
 //         return true;
@@ -897,7 +902,7 @@ void IdentifyCorner::_goForwardThirdLine()
 //     else if(_firstLineCount == 4 and _secondLineCount == 1)
 //     {
 //          // RCTV this case has to be covered;
-         
+
 //         //_displayCurrentIntersectionCount();
 //         //makeSound();
 //         _display.clear();
@@ -906,7 +911,6 @@ void IdentifyCorner::_goForwardThirdLine()
 //     }
 
 // }
-
 
 // // turn around should turn around
 // void IdentifyCorner::_turnAround()
@@ -942,7 +946,7 @@ void IdentifyCorner::_goForwardThirdLine()
 // {
 //     // do the same but don't increment, just go back until no line is detected (start position)
 //     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    
+
 //     _navModule.go(140, false);
 //     switch (flag)
 //     {
@@ -1134,7 +1138,7 @@ void IdentifyCorner::_goForwardThirdLine()
 //             if(_furtherCompareMatch())
 //             {
 //                 makeSound();
-            
+
 //                 _displayCurrentIntersectionCount();
 //                  _state = IdentifyCornerState::TURN_AROUND;
 //             }
@@ -1151,7 +1155,7 @@ void IdentifyCorner::_goForwardThirdLine()
 //              if(_furtherCompareMatch())
 //             {
 //                 makeSound();
-         
+
 //                 _displayCurrentIntersectionCount();
 //                  _state = IdentifyCornerState::TURN_AROUND;
 //             }
