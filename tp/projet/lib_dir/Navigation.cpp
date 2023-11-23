@@ -342,10 +342,14 @@ void Navigation::_nextMove(Move nextMove)
             if (nextMove.orientation == Orientation::EAST)
             {
                 _tripState = NavigationState::TURN_RIGHT;
+                _display = "TURN RIGHT";
+                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::WEST)
             {
                 _tripState = NavigationState::TURN_LEFT;
+                _display = "TURN LEFT";
+                _delay_ms(2500);
             }
             break;
         }
@@ -354,10 +358,14 @@ void Navigation::_nextMove(Move nextMove)
             if (nextMove.orientation == Orientation::SOUTH)
             {
                 _tripState = NavigationState::TURN_RIGHT;
+                _display = "TURN RIGHT";
+                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::NORTH)
             {
                 _tripState = NavigationState::TURN_LEFT;
+                _display = "TURN LEFT";
+                _delay_ms(2500);
             }
             break;
         }
@@ -366,10 +374,14 @@ void Navigation::_nextMove(Move nextMove)
             if (nextMove.orientation == Orientation::WEST)
             {
                 _tripState = NavigationState::TURN_RIGHT;
+                _display = "TURN RIGHT";
+                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::EAST)
             {
                 _tripState = NavigationState::TURN_LEFT;
+                _display = "TURN LEFT";
+                _delay_ms(2500);
             }
             break;
         }
@@ -378,10 +390,14 @@ void Navigation::_nextMove(Move nextMove)
             if (nextMove.orientation == Orientation::NORTH)
             {
                 _tripState = NavigationState::TURN_RIGHT;
+                _display = "TURN RIGHT";
+                _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::SOUTH)
             {
                 _tripState = NavigationState::TURN_LEFT;
+                _display = "TURN LEFT";
+                _delay_ms(2500);
             }
             break;
         }
