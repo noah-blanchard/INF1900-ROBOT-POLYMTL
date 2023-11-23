@@ -461,7 +461,7 @@ void IdentifyCorner::_turnSecondLine()
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_LINE))
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_LINE)
         {
             _navModule.stop();
             _delay_ms(1000);
@@ -500,9 +500,8 @@ void IdentifyCorner::_turnBackFirstLine()
         _delay_ms(1000);
         _navModule.stop();
         _delay_ms(1000);
-        _state = IdentifyCornerState::GO_BACK_FIRST_LINE;
+        _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
     }
-    s
 }
 
 void IdentifyCorner::_turnBackSecondLine()
@@ -529,7 +528,7 @@ void IdentifyCorner::_turnBackSecondLine()
         _navModule.stop();
         _display.clear();
         _display << "back on sec line";
-        _state = IdentifyCornerState::GO_BACK_SECOND_LINE;
+        _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
     }
 }
 
