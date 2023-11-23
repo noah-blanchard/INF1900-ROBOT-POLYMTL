@@ -232,7 +232,7 @@ void Navigation::adjustLeft()
 
 void Navigation::followTrip(Move *trip)
 {
-    //uint8_t tripIndex = 0;
+    // uint8_t tripIndex = 0;
     _currentOrientation = Orientation::SOUTH;
     _currentPosition[0] = 0; // 0 being x
     _currentPosition[1] = 0; // 1 being y
@@ -343,12 +343,14 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::EAST)
             {
+                _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
                 _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::WEST)
             {
+                _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
                 _delay_ms(2500);
@@ -359,12 +361,14 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::SOUTH)
             {
+                _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
                 _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::NORTH)
             {
+                _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
                 _delay_ms(2500);
@@ -375,12 +379,14 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::WEST)
             {
+                _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
                 _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::EAST)
             {
+                _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
                 _delay_ms(2500);
@@ -391,12 +397,14 @@ void Navigation::_nextMove(Move nextMove)
         {
             if (nextMove.orientation == Orientation::NORTH)
             {
+                _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
                 _delay_ms(2500);
             }
             else if (nextMove.orientation == Orientation::SOUTH)
             {
+                _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
                 _delay_ms(2500);
@@ -496,6 +504,31 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     }
 }
 
+void Navigation::_initTurnRight()
+{
+    go(_BASE_SPEED, false);
+    _delay_ms(200);
+    stop();
+    _delay_ms(100);
+    // then turn a bit right for 1 second
+    goRightWheel(_TURN_SPEED, true);
+    goLeftWheel(_BASE_SPEED, false);
+    _delay_ms(200);
+    stop();
+}
+
+void Navigation::_initTurnLeft()
+{
+    go(_BASE_SPEED, false);
+    _delay_ms(200);
+    stop();
+    _delay_ms(100);
+    // then turn a bit left for 1 second
+    goRightWheel(_BASE_SPEED, false);
+    goLeftWheel(_TURN_SPEED, true);
+    _delay_ms(200);
+    stop();
+}
 void Navigation::_turnRight()
 {
     // so here we need to turn right
@@ -505,15 +538,6 @@ void Navigation::_turnRight()
 
     // the first steps are for adjusting when arriving at the crossroad
     // first go forward for 1 and a half second
-    go(_BASE_SPEED, false);
-    _delay_ms(1500);
-    stop();
-    _delay_ms(100);
-    // then turn a bit right for 1 second
-    goRightWheel(_TURN_SPEED, true);
-    goLeftWheel(_BASE_SPEED, false);
-    _delay_ms(1000);
-    stop();
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 

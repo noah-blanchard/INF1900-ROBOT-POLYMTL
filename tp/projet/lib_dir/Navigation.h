@@ -52,6 +52,8 @@ private:
     void _moveForwardDelay(uint16_t speed);
     void _turnRight();
     void _turnLeft();
+    void _initTurnRight();
+    void _initTurnLeft();
 
     void _chooseForwardMove();
     void _updateCurrentPosition();
