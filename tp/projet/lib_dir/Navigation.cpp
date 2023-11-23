@@ -322,13 +322,19 @@ void Navigation::_nextMove(Move nextMove)
     // if current is south and next is west, turn right
     _updateCurrentPosition();
     _nextMoveValue = nextMove;
+    _display = "NEXT MOVE";
+    _delay_ms(1500);
 
     if (_currentOrientation == nextMove.orientation)
     {
+        _display = "FORWARD";
+        _delay_ms(2500);
         _chooseForwardMove();
     }
     else
     {
+        _display = "TURN";
+        _delay_ms(2500);
         switch (_currentOrientation)
         {
         case Orientation::NORTH:

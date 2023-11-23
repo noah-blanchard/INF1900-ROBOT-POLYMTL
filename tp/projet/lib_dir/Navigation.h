@@ -5,6 +5,7 @@
 #include <avr/interrupt.h>
 #include "Wheel.h"
 #include "LineMaker.h"
+#include "lcm_so1602dtr_m_fw.h"
 #include "Types.h"
 #include "Timer.h"
 
@@ -63,6 +64,7 @@ private:
     LineMaker _lineMakerModule;
     Move _nextMoveValue;
     Timer _delayTimerModule;
+    LCM _display;
 
     // wheel setups
     void _forward();
