@@ -292,6 +292,7 @@ void Navigation::_chooseForwardMove()
     // some place have no crossroad and need to use FORWARD_DELAY
     // x = 1, y = 0, 1 3, 5 2, 6, 2
     // so put state to forward delay if we have one of these positions
+    _initForward();
     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
