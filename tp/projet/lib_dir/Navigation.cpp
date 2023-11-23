@@ -237,7 +237,7 @@ void Navigation::followTrip(Move *trip)
     _currentPosition[0] = 0; // 0 being x
     _currentPosition[1] = 0; // 1 being y
 
-    while (trip[tripIndex].orientation != Orientation::FINISHED)
+    while (trip[_tripIndex].orientation != Orientation::FINISHED)
     {
         switch (_tripState)
         {
