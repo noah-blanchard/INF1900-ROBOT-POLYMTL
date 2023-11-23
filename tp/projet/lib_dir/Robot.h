@@ -9,8 +9,6 @@
 #include "MakeTrip.h"
 #include "IdentifyCorner.h"
 #include "Dijkstra.h"
-// #include "LineMaker.h"
-// #include "Navigation.h"
 #include "InfraRedSensor.h"
 #include "Communication.h"
 #include "Bouton.h"
