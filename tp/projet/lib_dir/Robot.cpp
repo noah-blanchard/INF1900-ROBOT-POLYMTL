@@ -52,7 +52,7 @@ void Robot::runRoutine()
     case State::IDENTIFY_CORNER:
     {
         //_identifyCornerRoutine();
-        _identifyCornerModule.identificationProcess(_beginning);
+        //_identifyCornerModule.identificationProcess(_beginning);
         break;
     }
     case State::MAKE_TRIP:
