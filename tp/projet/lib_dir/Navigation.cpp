@@ -513,7 +513,7 @@ void Navigation::_initTurnRight()
     // then turn a bit right for 1 second
     goRightWheel(_TURN_SPEED, true);
     goLeftWheel(_BASE_SPEED, false);
-    _delay_ms(200);
+    _delay_ms(600);
     stop();
 }
 
@@ -526,7 +526,7 @@ void Navigation::_initTurnLeft()
     // then turn a bit left for 1 second
     goRightWheel(_BASE_SPEED, false);
     goLeftWheel(_TURN_SPEED, true);
-    _delay_ms(200);
+    _delay_ms(600);
     stop();
 }
 void Navigation::_turnRight()
