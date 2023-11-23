@@ -63,9 +63,14 @@ LineMakerFlag LineMaker::getDetectionFlag()
     uint8_t sensorData = _retrieveSensorData();
     LineMakerFlag flag = LineMakerFlag::NO_LINE;
 
+    if (sensorData == ALL)
+    {
+        flag = LineMakerFlag::FULL_CROSSRAD;
+    }
+
     // first if there's outer left bit on, always send outer_left_detection
     // if only outer right detect, or outer right + inner right OR outer right + inner right + middle => right cross
-    if ((sensorData & OUTER_LEFT) == OUTER_LEFT || (sensorData & (OUTER_LEFT | INNER_LEFT)) == (OUTER_LEFT | INNER_LEFT) || (sensorData & (OUTER_LEFT | INNER_LEFT | MIDDLE)) == (OUTER_LEFT | INNER_LEFT | MIDDLE))
+    else if ((sensorData & OUTER_LEFT) == OUTER_LEFT || (sensorData & (OUTER_LEFT | INNER_LEFT)) == (OUTER_LEFT | INNER_LEFT) || (sensorData & (OUTER_LEFT | INNER_LEFT | MIDDLE)) == (OUTER_LEFT | INNER_LEFT | MIDDLE))
     {
         flag = LineMakerFlag::OUTER_LEFT_DETECTION;
     }

@@ -54,6 +54,7 @@ private:
     void _turnLeft();
     void _initTurnRight();
     void _initTurnLeft();
+    void _initForward();
 
     void _chooseForwardMove();
     void _updateCurrentPosition();

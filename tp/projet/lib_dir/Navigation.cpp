@@ -504,6 +504,14 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     }
 }
 
+void Navigation::_initForward()
+{
+    go(_BASE_SPEED, false);
+    _delay_ms(900);
+    stop();
+    _delay_ms(100);
+}
+
 void Navigation::_initTurnRight()
 {
     go(_BASE_SPEED, false);
