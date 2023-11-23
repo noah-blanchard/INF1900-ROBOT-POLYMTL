@@ -397,11 +397,17 @@ void Navigation::_moveForward(uint16_t speed)
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustLeft();
+        _delay_ms(200);
+        stop();
+        _delay_ms(50);
         break;
     }
     case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustRight();
+        _delay_ms(200);
+        stop();
+        _delay_ms(50);
         break;
     }
     case LineMakerFlag::OUTER_LEFT_DETECT:

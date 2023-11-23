@@ -442,6 +442,11 @@ void IdentifyCorner::_turnSecondLine()
 {
 
     // go forward for 1 second
+    
+    _navModule.go(140, false);
+    _delay_ms(1000);
+    _navModule.stop();
+    _delay_ms(1000);
 
     // turn around from left
     if (isRight)
