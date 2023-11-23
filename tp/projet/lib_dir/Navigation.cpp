@@ -570,16 +570,7 @@ void Navigation::_turnLeft()
     // turn left until we detect the line
 
     // the first steps are for adjusting when arriving at the crossroad
-    // first go forward for 1 and a half second
-    go(_BASE_SPEED, false);
-    _delay_ms(1500);
-    stop();
-    _delay_ms(100);
-    // then turn a bit left for 1 second
-    goLeftWheel(_TURN_SPEED, true);
-    goRightWheel(_BASE_SPEED, false);
-    _delay_ms(1000);
-    stop();
+    // first go forward for 1 and a half second;
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
