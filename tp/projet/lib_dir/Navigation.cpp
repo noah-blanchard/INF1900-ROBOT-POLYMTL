@@ -444,11 +444,17 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     case LineMakerFlag::LEFT_ADJUSTMENT:
     {
         adjustLeft();
+        _delay_ms(200);
+        stop();
+        _delay_ms(50);
         break;
     }
     case LineMakerFlag::RIGHT_ADJUSTMENT:
     {
         adjustRight();
+        _delay_ms(200);
+        stop();
+        _delay_ms(50);
         break;
     }
     }
@@ -474,6 +480,7 @@ void Navigation::_turnRight()
     go(_BASE_SPEED, false);
     _delay_ms(1500);
     stop();
+    _delay_ms(100);
     // then turn a bit right for 1 second
     goRightWheel(_TURN_SPEED, true);
     goLeftWheel(_BASE_SPEED, false);
@@ -515,6 +522,7 @@ void Navigation::_turnLeft()
     go(_BASE_SPEED, false);
     _delay_ms(1500);
     stop();
+    _delay_ms(100);
     // then turn a bit left for 1 second
     goLeftWheel(_TURN_SPEED, true);
     goRightWheel(_BASE_SPEED, false);
