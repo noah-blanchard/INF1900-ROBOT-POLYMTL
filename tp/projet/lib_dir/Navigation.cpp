@@ -214,8 +214,9 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    goRightWheel(140, false);
-    goLeftWheel(80, false);
+    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
+    goLeftWheel(_BASE_SPEED, false);
+    _delay_ms(10);
 }
 
 /**
@@ -224,8 +225,9 @@ void Navigation::adjustRight()
  */
 void Navigation::adjustLeft()
 {
-    goRightWheel(80, false);
-    goLeftWheel(140, false);
+    goRightWheel(_BASE_SPEED, false);
+    goLeftWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
+    _delay_ms(10)
 }
 
 // FOLLOW TRIP IMPLEMENTATION
@@ -473,7 +475,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
     // make a for loop to make that it does the following during 8000 ms
 
-    for (uint16_t i = 0; i < 8000/220; i++)
+    for (uint16_t i = 0; i < 8000 / 220; i++)
     {
 
         switch (lineMakerFlag)
