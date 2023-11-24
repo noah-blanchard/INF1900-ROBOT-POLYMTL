@@ -259,13 +259,11 @@ void IdentifyCorner::_turnAround()
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+        _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+        _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
@@ -289,13 +287,11 @@ void IdentifyCorner::_turnAroundSecondLine()
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+        _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+       _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
@@ -318,13 +314,11 @@ void IdentifyCorner::_turnAroundThirdLine()
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+       _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+       _navModule.turnRight();
     }
 
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
@@ -427,13 +421,11 @@ void IdentifyCorner::_turnSecondLine()
     // turn around from left
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+       _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+       _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
@@ -452,13 +444,11 @@ void IdentifyCorner::_turnBackFirstLine()
     // turn around from left
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+        _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+        _navModule.turnRight();
     }
 
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
@@ -487,13 +477,11 @@ void IdentifyCorner::_turnBackSecondLine()
     // turn around from left
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+        _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+        _navModule.turnRight();
     }
 
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
@@ -584,13 +572,11 @@ void IdentifyCorner::_turnThirdLine()
     // turn around from left
     if (isRight)
     {
-        _navModule.goRightWheel(120, false);
-        _navModule.goLeftWheel(140, true);
+        _navModule.turnLeft();
     }
     else
     {
-        _navModule.goRightWheel(140, true);
-        _navModule.goLeftWheel(120, false);
+       _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();

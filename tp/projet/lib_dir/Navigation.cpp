@@ -230,13 +230,13 @@ void Navigation::adjustLeft()
     _delay_ms(10);
 }
 
-void Navigation::_turnWheelLeft()
+void Navigation::turnLeft()
 {
     goRightWheel(_TURN_SPEED, false);
     goLeftWheel(_BASE_SPEED, true);
 }
 
-void Navigation::_turnWheelRight()
+void Navigation::turnRight()
 {
     goRightWheel(_BASE_SPEED, true);
     goLeftWheel(_TURN_SPEED, false);
@@ -529,7 +529,7 @@ void Navigation::_initTurnRight()
     stop();
     _delay_ms(100);
     // then turn a bit right for 1 second
-    _turnWheelRight();
+    turnRight();
     _delay_ms(2200);
     stop();
 }
@@ -541,7 +541,7 @@ void Navigation::_initTurnLeft()
     stop();
     _delay_ms(100);
     // then turn a bit left for 1 second
-    _turnWheelLeft();
+    turnLeft();
     _delay_ms(2200);
     stop();
 }
@@ -562,7 +562,7 @@ void Navigation::_turnRight()
     case LineMakerFlag::NO_LINE:
     {
         // if we don't detect the line, we need to turn right until we detect it
-        _turnWheelRight();
+        turnRight();
         break;
     }
     case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -594,7 +594,7 @@ void Navigation::_turnLeft()
     case LineMakerFlag::NO_LINE:
     {
         // if we don't detect the line, we need to turn left until we detect it
-        _turnWheelLeft();
+        turnLeft();
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
