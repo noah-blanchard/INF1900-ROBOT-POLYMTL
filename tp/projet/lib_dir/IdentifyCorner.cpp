@@ -135,7 +135,7 @@ void IdentifyCorner::_goForward()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        _navModule.adjustLeft();
+        _navModule.adjustRight();
         isRight = true;
         break;
     }
@@ -147,7 +147,7 @@ void IdentifyCorner::_goForward()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        _navModule.adjustRight();
+        _navModule.adjustLeft();
         isRight = false;
         break;
 
@@ -546,7 +546,7 @@ void IdentifyCorner::_goForwardSecondLine()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        _navModule.adjustLeft();
+        _navModule.adjustRight();
         isRight = true;
         break;
     }
@@ -558,7 +558,7 @@ void IdentifyCorner::_goForwardSecondLine()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        _navModule.adjustRight();
+        _navModule.adjustLeft();
         isRight = false;
         break;
     }
@@ -632,7 +632,7 @@ void IdentifyCorner::_goForwardThirdLine()
                 _state = IdentifyCornerState::TURN_AROUND;
             }
         }
-        _navModule.adjustLeft();
+        _navModule.adjustRight();
         isRight = true;
         break;
     }
@@ -650,7 +650,7 @@ void IdentifyCorner::_goForwardThirdLine()
                 _state = IdentifyCornerState::TURN_AROUND;
             }
         }
-        _navModule.adjustRight();
+        _navModule.adjustLeft();
         isRight = false;
         break;
     }
