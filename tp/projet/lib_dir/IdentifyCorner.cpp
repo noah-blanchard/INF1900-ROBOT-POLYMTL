@@ -291,7 +291,7 @@ void IdentifyCorner::_turnAroundSecondLine()
     }
     else
     {
-       _navModule.turnRight();
+        _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
@@ -314,11 +314,11 @@ void IdentifyCorner::_turnAroundThirdLine()
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
-       _navModule.turnLeft();
+        _navModule.turnLeft();
     }
     else
     {
-       _navModule.turnRight();
+        _navModule.turnRight();
     }
 
     // uint8_t sensor = _lineMakerModule._retrieveSensorData();
@@ -421,21 +421,21 @@ void IdentifyCorner::_turnSecondLine()
     // turn around from left
     if (isRight)
     {
-       _navModule.turnLeft();
+        _navModule.turnLeft();
     }
     else
     {
-       _navModule.turnRight();
+        _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
 
-    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_LINE)
-        {
-            _navModule.stop();
-            _delay_ms(1000);
-            _state = IdentifyCornerState::GO_FORWARD_SECOND_LINE;
-        }
+    if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
+    {
+        _navModule.stop();
+        _delay_ms(1000);
+        _state = IdentifyCornerState::GO_FORWARD_SECOND_LINE;
+    }
 }
 
 void IdentifyCorner::_turnBackFirstLine()
@@ -576,7 +576,7 @@ void IdentifyCorner::_turnThirdLine()
     }
     else
     {
-       _navModule.turnRight();
+        _navModule.turnRight();
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
