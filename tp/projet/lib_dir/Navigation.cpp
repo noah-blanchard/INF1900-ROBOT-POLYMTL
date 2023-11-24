@@ -524,7 +524,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
 void Navigation::_initForward()
 {
-    adjustForward();
+    //adjustForward();
 }
 
 void Navigation::_initTurnRight()
@@ -535,7 +535,7 @@ void Navigation::_initTurnRight()
     _delay_ms(200);
     // then turn a bit right for 1 second
     turnRight();
-    _delay_ms(400);
+    _delay_ms(800);
     stop();
 }
 
