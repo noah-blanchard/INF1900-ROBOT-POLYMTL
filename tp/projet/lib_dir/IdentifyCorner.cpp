@@ -314,7 +314,7 @@ void IdentifyCorner::_turnAroundThirdLine()
     _display.clear();
     _display << "turn around";
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
-    if (!isRight)
+    if (isRight)
     {
         _navModule.turnLeft();
     }
@@ -554,7 +554,7 @@ void IdentifyCorner::_turnThirdLine()
     // go forward for 1 second
 
     // turn around from left
-    if (isRight)
+    if (!isRight)
     {
         _navModule.turnLeft();
     }
