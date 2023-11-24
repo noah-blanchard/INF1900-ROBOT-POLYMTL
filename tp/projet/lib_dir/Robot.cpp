@@ -8,7 +8,7 @@
 //     customDelayElapsed = true;
 // }
 
-Robot::Robot()
+Robot::Robot() : _display(&DDRC, &PORTC)
 {
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
@@ -173,9 +173,13 @@ void Robot::_turnAtCrossroadRoutine()
 
 void Robot::_calculatePathRoutine()
 {
+    _display = "I WILL CALCULATE";
+    _delay_ms(1500);
     _dijkstraModule.run(16, _moveArray);
     // disp << "PATH CALCULATED";
     //_customDelay(2000);
+    _display = "FINISHED";
+    _delay_ms(2000);
     _currentState = State::NAVIGATE_TRIP;
 }
 

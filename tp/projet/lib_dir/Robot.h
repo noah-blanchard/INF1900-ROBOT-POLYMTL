@@ -61,6 +61,7 @@ private:
     Bouton _selectButton;
 
     Timer _delayTimerModule;
+    LCM _display;
     LineMaker _lineMakerModule;
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
