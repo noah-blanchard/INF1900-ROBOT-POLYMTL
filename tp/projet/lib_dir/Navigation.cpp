@@ -524,7 +524,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
 void Navigation::_initForward()
 {
-    //adjustForward();
+    // adjustForward();
 }
 
 void Navigation::_initTurnRight()
@@ -575,7 +575,6 @@ void Navigation::_turnRight()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
-        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
@@ -607,7 +606,6 @@ void Navigation::_turnLeft()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
-        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
