@@ -530,7 +530,7 @@ void Navigation::_initForward()
 void Navigation::_initTurnRight()
 {
     go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1000);
+    _delay_ms(1800);
     stop();
     _delay_ms(200);
     // then turn a bit right for 1 second
@@ -542,12 +542,12 @@ void Navigation::_initTurnRight()
 void Navigation::_initTurnLeft()
 {
     go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1000);
+    _delay_ms(1800);
     stop();
     _delay_ms(200);
     // then turn a bit left for 1 second
     turnLeft();
-    _delay_ms(400);
+    _delay_ms(800);
     stop();
 }
 void Navigation::_turnRight()
