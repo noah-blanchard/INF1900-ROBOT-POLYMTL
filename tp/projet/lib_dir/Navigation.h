@@ -32,6 +32,8 @@ public:
 
     void adjustRight();
     void adjustLeft();
+    void turnRight();
+    void turnLeft();
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
     void followTrip(Move *trip);
@@ -78,8 +80,6 @@ private:
     void _rightForward();
     void _leftBackward();
     void _rightBackward();
-    void _turnWheelRight();
-    void _turnWheelLeft();
 
     static uint16_t _validateSpeed(uint16_t speed);
 };
