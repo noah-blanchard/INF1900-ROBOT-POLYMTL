@@ -157,7 +157,7 @@ void Dijkstra::run(uint8_t destination, Move *moveArray)
     uint8_t lastY = 0;
 
     uint8_t index = 0;
-    while (_dijkstraResult[index] != -1)
+    while (_dijkstraResult[index] != 255)
     {
         uint8_t nextX = _dijkstraResult[index] % 7;
         uint8_t nextY = _dijkstraResult[index] / 7;
@@ -200,7 +200,7 @@ void Dijkstra::_emptyDijkstraResult()
 {
     for (uint8_t i = 0; i < 28; ++i)
     {
-        _dijkstraResult[i] = 0;
+        _dijkstraResult[i] = 255;
     }
 }
 
@@ -266,5 +266,5 @@ void Dijkstra::_dijkstra()
     }
 
     // put a -1 at the end of the array so we know where it ends
-    _dijkstraResult[cheminIndex + 1] = -1;
+    _dijkstraResult[cheminIndex + 1] = 255;
 }
