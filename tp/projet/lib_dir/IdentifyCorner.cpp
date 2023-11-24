@@ -345,7 +345,7 @@ void IdentifyCorner::_goBack()
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
         _navModule.go(140, false);
-        _delay_ms(1000);
+        _delay_ms(2000);
         _navModule.stop();
         _delay_ms(1000);
         _state = IdentifyCornerState::TURN_SECOND_LINE;
@@ -370,7 +370,7 @@ void IdentifyCorner::_goBackSecondLine()
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
         _navModule.go(140, false);
-        _delay_ms(1000);
+        _delay_ms(2000);
         _navModule.stop();
         _delay_ms(1000);
         _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
@@ -394,7 +394,7 @@ void IdentifyCorner::_goBackThirdLine()
     case LineMakerFlag::NO_LINE:
         _navModule.stop();
         _navModule.go(140, false);
-        _delay_ms(1000);
+        _delay_ms(2000);
         _navModule.stop();
         _delay_ms(1000);
         _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
@@ -412,11 +412,6 @@ void IdentifyCorner::_turnSecondLine()
 {
 
     // go forward for 1 second
-
-    _navModule.go(140, false);
-    _delay_ms(1000);
-    _navModule.stop();
-    _delay_ms(1000);
 
     // turn around from left
     if (isRight)
