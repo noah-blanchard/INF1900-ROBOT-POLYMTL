@@ -112,7 +112,7 @@ void IdentifyCorner::_goForward()
     _display.clear();
     _display << "GO FORWARD";
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(140, false);
+    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
 
@@ -344,7 +344,7 @@ void IdentifyCorner::_goBack()
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
 
-    _navModule.go(140, false);
+    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
@@ -368,7 +368,7 @@ void IdentifyCorner::_goBackSecondLine()
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
 
-    _navModule.go(140, false);
+    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
@@ -391,7 +391,7 @@ void IdentifyCorner::_goBackThirdLine()
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
 
-    _navModule.go(140, false);
+    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
@@ -498,7 +498,7 @@ void IdentifyCorner::_goForwardSecondLine()
 {
     // go forward until no line is detected
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(140, false);
+    _navModule.go(Navigation::_BASE_SPEED, false);
     _display = "sec line";
     switch (flag)
     {
@@ -593,7 +593,7 @@ void IdentifyCorner::_goForwardThirdLine()
 {
     // go forward until no line is detected
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(140, false);
+    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
@@ -728,7 +728,7 @@ void IdentifyCorner::_goForwardThirdLine()
 //     _display.clear();
 //     _display << "GO FORWARD";
 //     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-//     _navModule.go(140, false);
+//     _navModule.go(Navigation::_BASE_SPEED, false);
 //     switch (flag)
 //     {
 
@@ -881,11 +881,11 @@ void IdentifyCorner::_goForwardThirdLine()
 //     if (isRight)
 //     {
 //         _navModule.goRightWheel(120, false);
-//         _navModule.goLeftWheel(140, true);
+//         _navModule.goLeftWheel(Navigation::_BASE_SPEED, true);
 //     }
 //     else
 //     {
-//         _navModule.goRightWheel(140, true);
+//         _navModule.goRightWheel(Navigation::_BASE_SPEED, true);
 //         _navModule.goLeftWheel(120, false);
 //     }
 
@@ -906,12 +906,12 @@ void IdentifyCorner::_goForwardThirdLine()
 //     // do the same but don't increment, just go back until no line is detected (start position)
 //     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
 
-//     _navModule.go(140, false);
+//     _navModule.go(Navigation::_BASE_SPEED, false);
 //     switch (flag)
 //     {
 //     case LineMakerFlag::NO_LINE:
 //         _navModule.stop();
-//         _navModule.go(140, false);
+//         _navModule.go(Navigation::_BASE_SPEED, false);
 //         _delay_ms(1000);
 //         _navModule.stop();
 //         _delay_ms(1000);
@@ -941,11 +941,11 @@ void IdentifyCorner::_goForwardThirdLine()
 //     if (isRight)
 //     {
 //         _navModule.goRightWheel(120, false);
-//         _navModule.goLeftWheel(140, true);
+//         _navModule.goLeftWheel(Navigation::_BASE_SPEED, true);
 //     }
 //     else
 //     {
-//         _navModule.goRightWheel(140, true);
+//         _navModule.goRightWheel(Navigation::_BASE_SPEED, true);
 //         _navModule.goLeftWheel(120, false);
 //     }
 
@@ -963,7 +963,7 @@ void IdentifyCorner::_goForwardThirdLine()
 // {
 //     // go forward until no line is detected
 //     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-//     _navModule.go(140, false);
+//     _navModule.go(Navigation::_BASE_SPEED, false);
 //     _display = "sec line";
 //     switch (flag)
 //     {
@@ -1038,11 +1038,11 @@ void IdentifyCorner::_goForwardThirdLine()
 //     if (isRight)
 //     {
 //         _navModule.goRightWheel(120, false);
-//         _navModule.goLeftWheel(140, true);
+//         _navModule.goLeftWheel(Navigation::_BASE_SPEED, true);
 //     }
 //     else
 //     {
-//         _navModule.goRightWheel(140, true);
+//         _navModule.goRightWheel(Navigation::_BASE_SPEED, true);
 //         _navModule.goLeftWheel(120, false);
 //     }
 
@@ -1060,7 +1060,7 @@ void IdentifyCorner::_goForwardThirdLine()
 // {
 //     // go forward until no line is detected
 //     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-//     _navModule.go(140, false);
+//     _navModule.go(Navigation::_BASE_SPEED, false);
 //     switch (flag)
 //     {
 //     case LineMakerFlag::NO_LINE:
