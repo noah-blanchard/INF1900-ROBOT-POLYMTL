@@ -37,17 +37,18 @@ public:
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
     void followTrip(Move *trip);
-
+    static const uint8_t _BASE_SPEED = 100;
+    static const uint8_t _BACK_SPEED = 130;
+    static const uint8_t _TURN_SPEED = 130;
+    static const uint8_t _ADJUST_OFFSET = 50;
+    
 private:
     Wheel _leftWheel;
     Wheel _rightWheel;
 
     NavigationState _tripState = NavigationState::NEXT_MOVE;
 
-    static const uint8_t _BASE_SPEED = 100;
-    static const uint8_t _BACK_SPEED = 130;
-    static const uint8_t _TURN_SPEED = 130;
-    static const uint8_t _ADJUST_OFFSET = 50;
+    
 
     // trip movements
     void _nextMove(Move nextMove);
