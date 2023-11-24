@@ -449,7 +449,6 @@ void IdentifyCorner::_turnBackFirstLine()
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
-        _delay_ms(1000);
         _navModule.stop();
         _delay_ms(1000);
         _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
