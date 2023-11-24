@@ -230,6 +230,14 @@ void Navigation::adjustLeft()
     _delay_ms(10);
 }
 
+void Navigation::adjustForward()
+{
+    go(_BASE_SPEED, false);
+    _delay_ms(2000);
+    stop();
+    _delay_ms(200);
+}
+
 void Navigation::turnLeft()
 {
     goRightWheel(_TURN_SPEED, false);

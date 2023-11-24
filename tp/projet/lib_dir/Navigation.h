@@ -32,6 +32,7 @@ public:
 
     void adjustRight();
     void adjustLeft();
+    void adjustForward();
     void turnRight();
     void turnLeft();
 
