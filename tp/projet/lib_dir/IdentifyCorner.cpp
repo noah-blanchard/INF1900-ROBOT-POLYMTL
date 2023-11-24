@@ -160,11 +160,16 @@ void IdentifyCorner::_goForward()
         }
         break;
     case LineMakerFlag::NO_LINE:
+    {
+        _navModule.go(Navigation::_BASE_SPEED, false);
+        _delay_ms(1500);
         _navModule.stop();
+        _delay_ms(200);
         _state = IdentifyCornerState::TURN_AROUND;
         break;
     }
-    //_displayCurrentIntersectionCount();
+        //_displayCurrentIntersectionCount();
+    }
 }
 
 void IdentifyCorner::makeSound()
@@ -343,11 +348,10 @@ void IdentifyCorner::_goBack()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
+        _navModule.go(Navigation::_BASE_SPEED, false);
+        _delay_ms(1500);
         _navModule.stop();
-        _navModule.go(140, false);
-        _delay_ms(2000);
-        _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(200);
         _state = IdentifyCornerState::TURN_SECOND_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -368,11 +372,10 @@ void IdentifyCorner::_goBackSecondLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
+        _navModule.go(Navigation::_BASE_SPEED, false);
+        _delay_ms(1500);
         _navModule.stop();
-        _navModule.go(140, false);
-        _delay_ms(2000);
-        _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(200);
         _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -392,11 +395,10 @@ void IdentifyCorner::_goBackThirdLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
+        _navModule.go(Navigation::_BASE_SPEED, false);
+        _delay_ms(1500);
         _navModule.stop();
-        _navModule.go(140, false);
-        _delay_ms(2000);
-        _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(200);
         _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -501,7 +503,10 @@ void IdentifyCorner::_goForwardSecondLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
+        _navModule.go(Navigation::_BASE_SPEED, false);
+        _delay_ms(1500);
         _navModule.stop();
+        _delay_ms(200);
         _display << "simple";
         //_state = IdentifyCornerState::TURN_AROUND;
         if (_simpleCompareMAtch())
@@ -592,7 +597,10 @@ void IdentifyCorner::_goForwardThirdLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
+        _navModule.go(Navigation::_BASE_SPEED, false);
+        _delay_ms(1500);
         _navModule.stop();
+        _delay_ms(200);
         if (_furtherCompareMatch())
         {
             makeSound();

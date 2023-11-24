@@ -233,12 +233,12 @@ void Navigation::adjustLeft()
 void Navigation::turnLeft()
 {
     goRightWheel(_TURN_SPEED, false);
-    goLeftWheel(_BASE_SPEED, true);
+    goLeftWheel(_BACK_SPEED, true);
 }
 
 void Navigation::turnRight()
 {
-    goRightWheel(_BASE_SPEED, true);
+    goRightWheel(_BACK_SPEED, true);
     goLeftWheel(_TURN_SPEED, false);
 }
 
@@ -602,7 +602,7 @@ void Navigation::_turnLeft()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
-           _delay_ms(1000);
+        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
