@@ -119,17 +119,11 @@ void IdentifyCorner::_goForward()
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustLeft();
-        _delay_ms(100);
-        _navModule.stop();
-        _delay_ms(30);
         break;
 
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustRight();
-        _delay_ms(100);
-        _navModule.stop();
-        _delay_ms(30);
         break;
 
     case LineMakerFlag::OUTER_RIGHT_DETECTION:
@@ -364,15 +358,9 @@ void IdentifyCorner::_goBack()
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustRight();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _navModule.adjustLeft();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     }
 }
@@ -394,16 +382,9 @@ void IdentifyCorner::_goBackSecondLine()
         _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
-        _navModule.adjustRight();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _navModule.adjustLeft();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     }
 }
@@ -426,15 +407,9 @@ void IdentifyCorner::_goBackThirdLine()
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustRight();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _navModule.adjustLeft();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     }
 }
@@ -564,17 +539,13 @@ void IdentifyCorner::_goForwardSecondLine()
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustLeft();
-        _delay_ms(100);
-        _navModule.stop();
-        _delay_ms(30);
+
         break;
 
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _blockIncrementation = false;
         _navModule.adjustRight();
-        _delay_ms(100);
-        _navModule.stop();
-        _delay_ms(30);
+
         break;
 
     case LineMakerFlag::OUTER_RIGHT_DETECTION:
@@ -652,15 +623,9 @@ void IdentifyCorner::_goForwardThirdLine()
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustRight();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
     case LineMakerFlag::RIGHT_ADJUSTMENT:
         _navModule.adjustLeft();
-        _delay_ms(200);
-        _navModule.stop();
-        _delay_ms(70);
         break;
 
     case LineMakerFlag::OUTER_RIGHT_DETECTION:

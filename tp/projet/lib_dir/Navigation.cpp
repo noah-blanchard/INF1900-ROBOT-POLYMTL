@@ -338,6 +338,7 @@ void Navigation::_nextMove(Move nextMove)
     // for example, if current is south and next is east, turn left
     // if current is south and next is west, turn right
     stop();
+    _delay_ms(1000);
     _updateCurrentPosition();
     _nextMoveValue = nextMove;
     _display = "NEXT MOVE";
@@ -524,7 +525,7 @@ void Navigation::_initForward()
 void Navigation::_initTurnRight()
 {
     go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1800);
+    _delay_ms(1600);
     stop();
     _delay_ms(100);
     // then turn a bit right for 1 second
@@ -536,7 +537,7 @@ void Navigation::_initTurnRight()
 void Navigation::_initTurnLeft()
 {
     go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1800);
+    _delay_ms(1600);
     stop();
     _delay_ms(100);
     // then turn a bit left for 1 second
@@ -569,6 +570,7 @@ void Navigation::_turnRight()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
+        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
@@ -600,6 +602,7 @@ void Navigation::_turnLeft()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
+           _delay_ms(1000);
         _chooseForwardMove();
         break;
     }

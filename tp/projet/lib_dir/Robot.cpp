@@ -35,9 +35,15 @@ Robot::Robot()
     _moveArray[2].x = 2;
     _moveArray[2].y = 1;
 
-    _moveArray[3].orientation = Orientation::FINISHED;
-    _moveArray[3].x = 2;
+    _moveArray[3].orientation = Orientation::WEST;
+    _moveArray[3].x = 1;
     _moveArray[3].y = 1;
+    _moveArray[4].orientation = Orientation::SOUTH;
+    _moveArray[4].x = 1;
+    _moveArray[4].y = 2;
+    _moveArray[5].orientation = Orientation::FINISHED;
+    _moveArray[5].x = 1;
+    _moveArray[5].y = 2;
 }
 
 Robot::~Robot()
