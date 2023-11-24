@@ -10,7 +10,7 @@ class Dijkstra
 public:
     Dijkstra();
     ~Dijkstra();
-    void run(uint8_t* destination, Move *moveArray);
+    void run(uint8_t destination, Move *moveArray);
 
 private:
     uint8_t _ADJ_MATRIX[N_NOEUDS][N_NOEUDS];
