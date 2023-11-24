@@ -71,13 +71,15 @@ private:
     Timer _delayTimerModule;
     LCM _display;
 
-    // wheel setups
+    // wheel controls
     void _forward();
     void _backward();
     void _leftForward();
     void _rightForward();
     void _leftBackward();
     void _rightBackward();
+    void _turnWheelRight();
+    void _turnWheelLeft();
 
     static uint16_t _validateSpeed(uint16_t speed);
 };

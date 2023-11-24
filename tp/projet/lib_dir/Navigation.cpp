@@ -230,6 +230,18 @@ void Navigation::adjustLeft()
     _delay_ms(10);
 }
 
+void Navigation::_turnWheelLeft()
+{
+    goRightWheel(_TURN_SPEED, false);
+    goLeftWheel(_BASE_SPEED, true);
+}
+
+void Navigation::_turnWheelRight()
+{
+    goRightWheel(_BASE_SPEED, true);
+    goLeftWheel(_TURN_SPEED, false);
+}
+
 // FOLLOW TRIP IMPLEMENTATION
 
 void Navigation::followTrip(Move *trip)
@@ -464,18 +476,25 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         case LineMakerFlag::NO_ADJUSTMENT:
         {
             go(speed, false);
-
+            _delay_ms(110);
+            stop();
+            _delay_ms(110);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
         {
             adjustLeft();
+            _delay_ms(110);
+            stop();
+            _delay_ms(110);
             break;
         }
         case LineMakerFlag::LEFT_ADJUSTMENT:
         {
             adjustRight();
-
+            _delay_ms(110);
+            stop();
+            _delay_ms(110);
             break;
         }
         }
@@ -509,8 +528,7 @@ void Navigation::_initTurnRight()
     stop();
     _delay_ms(100);
     // then turn a bit right for 1 second
-    goRightWheel(_BASE_SPEED, true);
-    goLeftWheel(_BASE_SPEED, false);
+    _turnWheelRight();
     _delay_ms(2200);
     stop();
 }
@@ -522,9 +540,8 @@ void Navigation::_initTurnLeft()
     stop();
     _delay_ms(100);
     // then turn a bit left for 1 second
-    goRightWheel(_BASE_SPEED, false);
-    goLeftWheel(_BASE_SPEED, true);
-    _delay_ms(1800);
+    _turnWheelLeft();
+    _delay_ms(2200);
     stop();
 }
 void Navigation::_turnRight()
@@ -544,8 +561,7 @@ void Navigation::_turnRight()
     case LineMakerFlag::NO_LINE:
     {
         // if we don't detect the line, we need to turn right until we detect it
-        goRightWheel(_BASE_SPEED, true);
-        goLeftWheel(_TURN_SPEED, false);
+        _turnWheelRight();
         break;
     }
     case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -576,8 +592,7 @@ void Navigation::_turnLeft()
     case LineMakerFlag::NO_LINE:
     {
         // if we don't detect the line, we need to turn left until we detect it
-        goRightWheel(_TURN_SPEED, false);
-        goLeftWheel(_BASE_SPEED, true);
+        _turnWheelLeft();
         break;
     }
     case LineMakerFlag::LEFT_ADJUSTMENT:
