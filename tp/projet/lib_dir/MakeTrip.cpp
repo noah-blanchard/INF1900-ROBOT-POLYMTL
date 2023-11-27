@@ -39,31 +39,31 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 	
 	LCM disp(&DDRC, &PORTC);
 	disp.clear();
-	w();
+	//w();
 	char buf[25];
 	selection select = selection::SELECTLINE;
-	while(true)
+	while(select != selection::FINISH)
 	{
 		switch(select)
 		{
 			case selection::SELECTLINE:
 			sprintf(buf, "Line : %d", lineSeleted+1);
 			disp = buf;
-				while(!validateChoice)
+				if(selectChoice)
 				{
-					
-					if(selectChoice)
-					{
 						lineSeleted = (lineSeleted +1) % 4;
 						sprintf(buf, "Line : %d", lineSeleted+1);
 						disp = buf;
 						selectChoice = false;
-					}
-					
 				}
-				validateChoice = false;
-				selectChoice = false;
-				select = selection::SELECTCOLUMN;
+				
+				if(validateChoice)
+				{
+					validateChoice = false;
+					selectChoice = false;
+					select = selection::SELECTCOLUMN;
+				}
+					
 				
             break;
 
@@ -71,24 +71,28 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 				disp.clear();
 				sprintf(buf, "Col : %d", columnSeleted+1);
 				disp = buf;
-				while(!validateChoice)
+				
+				if(selectChoice)
 				{
-					if(selectChoice)
-					{
 						columnSeleted = (columnSeleted +1) % 7;
 						sprintf(buf, "Col : %d", columnSeleted+1);
 						disp = buf;
 						selectChoice = false;
-					}
-					
 				}
+
+				if(validateChoice)
+				{
 				validateChoice = false;
 				selectChoice = false;
 				select = selection::CONFIRMCHOICES;
 				disp.clear();
 				sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
 				disp = buf;
-				w();
+				}
+				//disp.clear();
+				//sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
+				//disp = buf;
+				//w();
 
             break;
 
@@ -97,7 +101,8 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 				{
 					sprintf(buf, "L %d - C %d", lineSeleted+1,columnSeleted+1);
 					disp = buf;
-					w();
+					select = selection::FINISH;
+					//w();
 				}
 
 				if(selectChoice)
@@ -112,5 +117,6 @@ void MakeTrip::selectDestination(uint8_t* _destination)
             break;
 		}
 	}
+	disp = "HQHQ";
 }
 

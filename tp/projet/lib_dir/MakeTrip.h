@@ -21,7 +21,8 @@ enum class selection
 {
 	SELECTLINE, 
 	SELECTCOLUMN,
-	CONFIRMCHOICES
+	CONFIRMCHOICES,
+	FINISH
 };
 
 
