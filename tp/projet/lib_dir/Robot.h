@@ -14,7 +14,6 @@
 #include "Communication.h"
 #include "Bouton.h"
 
-
 // Define the clock speed
 #define F_CPU 8000000UL
 
@@ -72,8 +71,8 @@ private:
     State _currentState;
     State _previousState;
 
-    // uint8_t _currentPosition[2];
-    // Orientation _currentOrientation;
+    uint8_t _currentPosition[2];
+    Orientation _currentOrientation;
 
     // move array
     Move _moveArray[28];

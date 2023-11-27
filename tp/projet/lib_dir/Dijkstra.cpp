@@ -2,8 +2,16 @@
 
 Dijkstra::Dijkstra()
 {
-
+    _resetAdjMatrix();
     // initialisation à MAX de la matrice d'adjacence
+}
+
+Dijkstra::~Dijkstra()
+{
+}
+
+void Dijkstra::_resetAdjMatrix()
+{
     for (uint8_t i = 0; i < 28; ++i)
     {
         for (uint8_t j = 0; j < 28; ++j)
@@ -124,14 +132,27 @@ Dijkstra::Dijkstra()
     _ADJ_MATRIX[27][20] = 1;
     _ADJ_MATRIX[27][26] = 1;
 }
-
-Dijkstra::~Dijkstra()
+// this function will remove a possible position (the one passed as a parameter)
+// so it will set the value of any connection to this position to 255
+void Dijkstra::removeNode(uint8_t x, uint8_t y)
 {
+    uint8_t noeud = _getNodeNumber(x, y);
+    for (uint8_t i = 0; i < N_NOEUDS; i++)
+    {
+        _ADJ_MATRIX[noeud][i] = 255;
+        _ADJ_MATRIX[i][noeud] = 255;
+    }
 }
 
-void Dijkstra::run(uint8_t destination, Move *moveArray)
+uint8_t Dijkstra::_getNodeNumber(uint8_t x, uint8_t y)
 {
-    _destination = destination;
+    return y * 7 + x;
+}
+
+void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
+{
+    _destination = _getNodeNumber(destination[0], destination[1]);
+    _start = _getNodeNumber(start[0], start[1]);
     _emptyDijkstraResult();
     _dijkstra();
 
@@ -217,8 +238,11 @@ void Dijkstra::_dijkstra()
         noeudVisite[i] = false;
     }
 
-    poids[0] = 0; // Partir du noeud 0
-    noeudPrecedent[0] = 0;
+    // poids[0] = 0; // Partir du noeud 0
+    // partir du noeud _start
+    poids[_start] = 0;
+    // noeudPrecedent[0] = 0;
+    noeudPrecedent[_start] = 0;
 
     for (uint8_t i = 0; i < N_NOEUDS - 1; i++)
     {
@@ -265,6 +289,6 @@ void Dijkstra::_dijkstra()
         _dijkstraResult[cheminIndex - i - 1] = temp;
     }
 
-    // put a -1 at the end of the array so we know where it ends
+    // put a 255 at the end of the array so we know where it ends
     _dijkstraResult[cheminIndex + 1] = 255;
 }

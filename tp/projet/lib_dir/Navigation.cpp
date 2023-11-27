@@ -29,7 +29,7 @@ uint16_t Navigation::_validateSpeed(uint16_t speed)
  * @brief Constructs a new Navigation object and initializes the DDRD register.
  *
  */
-Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC)
+Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC)
 {
     DDRD = (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
     PORTD |= (1 << PD5);
@@ -41,12 +41,19 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC
     _nextMoveValue.y = 0;
     _nextMoveValue.orientation = Orientation::SOUTH;
 
+    _currentOrientation = Orientation::EAST;
+    _currentPosition[0] = 0; // 0 being x
+    _currentPosition[1] = 0; // 1 being y
+
     TimerConfig timerConfig;
     timerConfig.timer = 2;
     timerConfig.prescaler = 256;
     timerConfig.delay_ms = 6000;
 
     _delayTimerModule = Timer(timerConfig);
+
+    _currentOrientation = robotOrientation;
+    _currentPosition = robotPosition;
 }
 
 /**
@@ -252,20 +259,20 @@ void Navigation::turnRight()
 
 // FOLLOW TRIP IMPLEMENTATION
 
-void Navigation::followTrip(Move *trip)
+Move Navigation::followTrip(Move *trip)
 {
-    // uint8_t tripIndex = 0;
-    _currentOrientation = Orientation::EAST;
-    _currentPosition[0] = 0; // 0 being x
-    _currentPosition[1] = 0; // 1 being y
+    _tripIndex = 0;
+    _trip = trip;
 
-    while (trip[_tripIndex].orientation != Orientation::FINISHED)
+    // uint8_t tripIndex = 0;
+
+    while (_trip[_tripIndex].orientation != Orientation::FINISHED)
     {
         switch (_tripState)
         {
         case NavigationState::NEXT_MOVE:
         {
-            _nextMove(trip[_tripIndex]);
+            _nextMove(_trip[_tripIndex]);
             break;
         }
         case NavigationState::FORWARD:
@@ -283,13 +290,44 @@ void Navigation::followTrip(Move *trip)
             _turnLeft();
             break;
         }
+        case NavigationState::MEET_POST:
+        {
+            _meetPost();
+            break;
+        }
         case NavigationState::FORWARD_DELAY:
         {
             _moveForwardDelay(_BASE_SPEED);
             break;
         }
+        case NavigationState::ERROR:
+        {
+            stop();
+            if (_nextMove.orientation == Orientation::SOUTH)
+            {
+                _currentOrientation = Orientation::NORTH
+            }
+            else if (_nextMove.orientation == Orientation::NORTH)
+            {
+                _currentOrientation = Orientation::SOUTH
+            }
+            else if (_nextMove.orientation == Orientation::WEST)
+            {
+                _currentOrientation = Orientation::EAST
+            }
+            else if (_nextMove.orientation == Orientation::EAST)
+            {
+                _currentOrientation = Orientation::WEST
+            }
+            _currentPosition[0] = _nextMove.x;
+            _currentPosition[1] = _nextMove.y;
+            return _trip[_tripIndex];
+            break;
+        }
         }
     }
+
+    return _trip[_tripIndex];
 }
 
 void Navigation::_timerOn()
@@ -434,38 +472,49 @@ void Navigation::_moveForward(uint16_t speed)
     // if we are, we need to update the current position and orientation
     // if we are not, we need to keep following the line
 
-    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-    _display = "MOVE FORWARD NOW";
+    // check if ir module detects
+    if (_irModule.isObstacleDetected())
+    {
+        stop();
+        _delay_ms(1000);
+        _tripState = NavigationState::MEET_POST;
+    }
+    else
+    {
 
-    switch (lineMakerFlag)
-    {
-    case LineMakerFlag::NO_ADJUSTMENT:
-    {
-        go(speed, false);
-        break;
-    }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
-    {
-        adjustLeft();
-        break;
-    }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-    {
-        adjustRight();
-        break;
-    }
-    case LineMakerFlag::OUTER_LEFT_DETECTION:
-    {
-        _tripIndex++;
-        _tripState = NavigationState::NEXT_MOVE;
-        break;
-    }
-    case LineMakerFlag::OUTER_RIGHT_DETECTION:
-    {
-        _tripIndex++;
-        _tripState = NavigationState::NEXT_MOVE;
-        break;
-    }
+        LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+        _display = "MOVE FORWARD NOW";
+
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_ADJUSTMENT:
+        {
+            go(speed, false);
+            break;
+        }
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
+        {
+            adjustLeft();
+            break;
+        }
+        case LineMakerFlag::LEFT_ADJUSTMENT:
+        {
+            adjustRight();
+            break;
+        }
+        case LineMakerFlag::OUTER_LEFT_DETECTION:
+        {
+            _tripIndex++;
+            _tripState = NavigationState::NEXT_MOVE;
+            break;
+        }
+        case LineMakerFlag::OUTER_RIGHT_DETECTION:
+        {
+            _tripIndex++;
+            _tripState = NavigationState::NEXT_MOVE;
+            break;
+        }
+        }
     }
 }
 
@@ -479,6 +528,14 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
     for (uint16_t i = 0; i < 8000 / 220; i++)
     {
+        // check if ir module detects, bREKZ OUT OF THE LOOP
+        if (_irModule.isObstacleDetected())
+        {
+            stop();
+            _delay_ms(1000);
+            _tripState = NavigationState::MEET_POST;
+            break;
+        }
 
         switch (lineMakerFlag)
         {
@@ -609,5 +666,96 @@ void Navigation::_turnLeft()
         _chooseForwardMove();
         break;
     }
+    }
+}
+
+void Navigation::_meetPost()
+{
+    // turn around 180 degrees until a line is detected
+
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    switch (lineMakerFlag)
+    {
+    case LineMakerFlag::NO_LINE:
+    {
+        // if we don't detect the line, we need to turn right until we detect it
+        turnRight();
+        break;
+    }
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+    {
+        // if we detect the line on the left, it means we met the line
+        // so stop moving and go to forward state
+        stop();
+        _nextMoveValue = _trip[_tripIndex - 1];
+        _delay_ms(1000);
+        _tripState = NavigationState::GO_BACK;
+
+        break;
+    }
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+    {
+        // if we detect the line on the left, it means we met the line
+        // so stop moving and go to forward state
+        stop();
+        _nextMoveValue = _trip[_tripIndex - 1];
+        _delay_ms(1000);
+        _tripState = NavigationState::GO_BACK;
+        break;
+    }
+    case LineMakerFlag::NO_ADJUSTMENT:
+    {
+        // if we detect the line on the left, it means we met the line
+        // so stop moving and go to forward state
+        stop();
+        _nextMoveValue = _trip[_tripIndex - 1];
+        _delay_ms(1000);
+        _tripState = NavigationState::GO_BACK;
+        break;
+    }
+    }
+}
+
+void Navigation::_goBack()
+{
+    if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
+        (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
+        (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
+        (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
+    {
+        // _display = "FORWARD DELAY";
+        // _tripState = NavigationState::FORWARD_DELAY;
+    }
+    else
+    {
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_ADJUSTMENT:
+        {
+            go(speed, false);
+            break;
+        }
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
+        {
+            adjustLeft();
+            break;
+        }
+        case LineMakerFlag::LEFT_ADJUSTMENT:
+        {
+            adjustRight();
+            break;
+        }
+        case LineMakerFlag::OUTER_LEFT_DETECTION:
+        {
+            _tripState = NavigationState::ERROR;
+            break;
+        }
+        case LineMakerFlag::OUTER_RIGHT_DETECTION:
+        {
+            _tripState = NavigationState::ERROR;
+            break;
+        }
+        }
     }
 }

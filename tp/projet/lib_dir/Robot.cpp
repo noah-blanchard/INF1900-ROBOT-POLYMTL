@@ -8,7 +8,7 @@
 //     customDelayElapsed = true;
 // }
 
-Robot::Robot() : _display(&DDRC, &PORTC)
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, _currentOrientation)
 {
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
@@ -19,12 +19,22 @@ Robot::Robot() : _display(&DDRC, &PORTC)
     _selectButton.enableInterrupt();
     _selectButton.setRisingEdge();
     sei();
+
+    _beginning[0] = 0;
+    _beginning[1] = 0;
+
+    _currentOrientation = Orientation::SOUTH;
+    _currentPosition[0] = 0;
+    _currentPosition[1] = 0;
+
+    // _beginning[0] = 0;
+    // _beginning[1] = 0;
     //_currentState = State::MODE_SELECTION;
     //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
     //_currentState = State::NAVIGATE_TRIP;
     _currentState = State::CALCULATE_PATH;
 
-   //_currentState = State::MAKE_TRIP;
+    //_currentState = State::MAKE_TRIP;
     // _moveArray init for test
 
     // _moveArray[0].orientation = Orientation::EAST;
@@ -175,9 +185,12 @@ void Robot::_calculatePathRoutine()
 {
     _display = "I WILL CALCULATE";
     _delay_ms(1500);
-    _dijkstraModule.run(16, _moveArray);
-    // disp << "PATH CALCULATED";
-    //_customDelay(2000);
+
+    /// chaneg this with the result of Make Trip selection
+    _destination[0] = 2;
+    _destination[1] = 2;
+
+    _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
     _delay_ms(2000);
     _currentState = State::NAVIGATE_TRIP;
@@ -185,7 +198,15 @@ void Robot::_calculatePathRoutine()
 
 void Robot::_navigateTripRoutine()
 {
-    _navModule.followTrip(_moveArray);
+    Move tripResult = _navModule.followTrip(_moveArray, 16); // returns the last move of the trip ! will return the one with a post if invalid
+    if (_currentOrientation != Orientation::FINISHED)
+    {
+        // means we havent reached thend end => recalculate the path !
+        _beginning[0] = _currentPosition[0];
+        _beginning[1] = _currentPosition[1];
+        _dijkstraModule.removeNode(_currentPosition[0], _currentPosition[1]);
+        _currentState = State::CALCULATE_PATH;
+    }
 }
 
 // void Robot::_pause()

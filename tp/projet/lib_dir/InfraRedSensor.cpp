@@ -9,20 +9,23 @@
 //     canRead = true;
 // }
 
-InfraRedSensor::InfraRedSensor() {
+InfraRedSensor::InfraRedSensor()
+{
     //_analogicConverter.enableADCInterrupt();
-
 }
 
-InfraRedSensor::~InfraRedSensor() {
+InfraRedSensor::~InfraRedSensor()
+{
     //_analogicConverter.disableADCInterrupt();
 }
 
-uint8_t InfraRedSensor::getDistance(){
-    uint8_t distanceLevel = _analogicConverter.lecture(PA0) >> PRECISION_BITSHIFT;
+uint8_t InfraRedSensor::_getDistance()
+{
+    uint8_t distanceLevel = _analogicConverter.lecture(AN_PORT) >> PRECISION_BITSHIFT;
     return distanceLevel;
 }
 
-bool InfraRedSensor::isObstacleDetected() {
-    return getDistance() >= _distanceReferenceValue;
+bool InfraRedSensor::isObstacleDetected()
+{
+    return _getDistance() >= _distanceReferenceValue;
 }

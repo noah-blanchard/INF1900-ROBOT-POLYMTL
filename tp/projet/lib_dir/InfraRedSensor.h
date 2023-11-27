@@ -4,19 +4,21 @@
 
 #include "can.h"
 
-class InfraRedSensor {
+class InfraRedSensor
+{
 public:
     InfraRedSensor();
     ~InfraRedSensor();
-
-    uint8_t getDistance();
     bool isObstacleDetected();
+
 private:
-    
     static const uint8_t _distanceReferenceValue = 230;
     static const uint8_t PRECISION_BITSHIFT = 2;
+    static const uint8_t AN_PORT = PA0;
 
     uint16_t _distance;
+
+    uint8_t _getDistance();
 
     can _analogicConverter;
 };

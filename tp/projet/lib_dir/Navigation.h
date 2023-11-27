@@ -8,6 +8,8 @@
 #include "lcm_so1602dtr_m_fw.h"
 #include "Types.h"
 #include "Timer.h"
+#include "InfraRedSensor.h"
+#include "Dijkstra.h"
 
 enum class NavigationState
 {
@@ -16,12 +18,15 @@ enum class NavigationState
     FORWARD_DELAY,
     TURN_RIGHT,
     TURN_LEFT,
+    MEET_POST,
+    ERROR,
+    GO_BACK
 };
 
 class Navigation
 {
 public:
-    Navigation();
+    Navigation(uint8_t *robotPosition, Orientation *robotOrientation);
 
     void go(uint16_t speed, bool backward);
     void goLeftWheel(uint16_t speed, bool backward);
@@ -37,24 +42,24 @@ public:
     void turnLeft();
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
-    void followTrip(Move *trip);
+    uint8_t followTrip(Move *trip);
     static const uint8_t _BASE_SPEED = 130;
     static const uint8_t _BACK_SPEED = 150;
     static const uint8_t _TURN_SPEED = 150;
     static const uint8_t _ADJUST_OFFSET = 70;
-    
+
 private:
     Wheel _leftWheel;
     Wheel _rightWheel;
 
     NavigationState _tripState = NavigationState::NEXT_MOVE;
 
-    
-
     // trip movements
     void _nextMove(Move nextMove);
-    void _moveForward(uint16_t speed); // will just follow the line until the next crossroad
-    void _moveForwardDelay(uint16_t speed);
+    void _moveForward(uint16_t speed);      // will just follow the line until the next crossroad
+    void _moveForwardDelay(uint16_t speed); /// will go forward for a specific delay (used for places with no crossroad)
+    void _meetPost();
+    void _goBack();
     void _turnRight();
     void _turnLeft();
     void _initTurnRight();
@@ -67,13 +72,15 @@ private:
     void _timerOff();
 
     // trip variables
-    uint8_t _currentPosition[2];
-    Orientation _currentOrientation;
+    Move *_trip;
+    uint8_t *_currentPosition;
+    Orientation *_currentOrientation;
     uint8_t _tripIndex = 0;
 
     LineMaker _lineMakerModule;
     Move _nextMoveValue;
     Timer _delayTimerModule;
+    InfraRedSensor _irModule;
     LCM _display;
 
     // wheel controls
