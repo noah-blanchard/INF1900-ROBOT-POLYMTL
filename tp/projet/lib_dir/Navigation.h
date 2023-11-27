@@ -44,10 +44,10 @@ public:
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
     Move followTrip(Move *trip);
-    static const uint8_t _BASE_SPEED = 130;
-    static const uint8_t _BACK_SPEED = 150;
-    static const uint8_t _TURN_SPEED = 150;
-    static const uint8_t _ADJUST_OFFSET = 70;
+    static const uint8_t _BASE_SPEED = 100;
+    static const uint8_t _BACK_SPEED = 120;
+    static const uint8_t _TURN_SPEED = 120;
+    static const uint8_t _ADJUST_OFFSET = 50;
 
 private:
     Wheel _leftWheel;
