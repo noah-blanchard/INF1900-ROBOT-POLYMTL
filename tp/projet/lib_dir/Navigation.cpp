@@ -25,7 +25,7 @@ uint16_t Navigation::_validateSpeed(uint16_t speed)
     return speed;
 }
 
-Navigation::Navigation(): _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC)
+Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC)
 {
     DDRD = (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
     PORTD |= (1 << PD5);
@@ -659,6 +659,7 @@ void Navigation::_turnRight()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
+        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
@@ -690,6 +691,7 @@ void Navigation::_turnLeft()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
+        _delay_ms(1000);
         _chooseForwardMove();
         break;
     }
