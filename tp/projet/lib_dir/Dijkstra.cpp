@@ -176,15 +176,16 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
 
     uint8_t indexR = 0;
     uint8_t indexM = 0;
-    while (_dijkstraResult[indexR] != -1)
+    while (_dijkstraResult[indexR] != 255)
     {
         uint8_t result = _dijkstraResult[indexR];
         uint8_t nextX = _dijkstraResult[indexR] % 7;
         uint8_t nextY = _dijkstraResult[indexR] / 7;
         Orientation nextOrientation = Orientation::NORTH;
-        indexR++;
+indexR++;
         if (lastX == nextX && lastY == nextY)
         {
+            
             continue;
         }
         else if (lastX < nextX)
@@ -293,5 +294,5 @@ void Dijkstra::_dijkstra()
     }
 
     // put a 255 at the end of the array so we know where it ends
-    _dijkstraResult[cheminIndex + 1] = 255;
+    _dijkstraResult[cheminIndex] = 255;
 }
