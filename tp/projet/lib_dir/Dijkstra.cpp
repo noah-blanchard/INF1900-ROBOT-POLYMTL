@@ -86,21 +86,21 @@ void Dijkstra::_resetAdjMatrix()
 
     _ADJ_MATRIX[17][10] = 5;
     _ADJ_MATRIX[17][16] = 1;
-    _ADJ_MATRIX[17][18] = 1;
+    _ADJ_MATRIX[17][18] = 5;
     _ADJ_MATRIX[17][24] = 1;
 
     _ADJ_MATRIX[18][11] = 5;
-    _ADJ_MATRIX[18][17] = 1;
-    _ADJ_MATRIX[18][19] = 1;
-    _ADJ_MATRIX[18][25] = 2;
+    _ADJ_MATRIX[18][17] = 5;
+    //_ADJ_MATRIX[18][19] = 1;
+    _ADJ_MATRIX[18][25] = 5;
 
     _ADJ_MATRIX[19][12] = 1;
-    _ADJ_MATRIX[19][18] = 1;
-    _ADJ_MATRIX[19][20] = 1;
-    _ADJ_MATRIX[19][26] = 5;
+    //_ADJ_MATRIX[19][18] = 1;
+    //_ADJ_MATRIX[19][20] = 1;
+    _ADJ_MATRIX[19][26] = 1;
 
     _ADJ_MATRIX[20][13] = 1;
-    _ADJ_MATRIX[20][19] = 1;
+    //_ADJ_MATRIX[20][19] = 1;
     _ADJ_MATRIX[20][21] = 1;
     _ADJ_MATRIX[20][27] = 1;
 
@@ -119,7 +119,7 @@ void Dijkstra::_resetAdjMatrix()
     _ADJ_MATRIX[24][23] = 1;
     _ADJ_MATRIX[24][25] = 1;
 
-    _ADJ_MATRIX[25][18] = 2;
+    _ADJ_MATRIX[25][18] = 5;
     _ADJ_MATRIX[25][24] = 1;
     _ADJ_MATRIX[25][26] = 2;
 
@@ -171,18 +171,24 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
     // if last y < next y, orientation is SOUTH
     // if last y > next y, orientation is NORTH
 
-    // do it now
-    uint8_t lastX = 0;
-    uint8_t lastY = 0;
+    uint8_t lastX = start[0];
+    uint8_t lastY = start[1];
 
-    uint8_t index = 0;
-    while (_dijkstraResult[index] != 255)
+    uint8_t indexR = 0;
+    uint8_t indexM = 0;
+    while (_dijkstraResult[indexR] != -1)
     {
-        uint8_t nextX = _dijkstraResult[index] % 7;
-        uint8_t nextY = _dijkstraResult[index] / 7;
+        uint8_t result = _dijkstraResult[indexR];
+        uint8_t nextX = _dijkstraResult[indexR] % 7;
+        uint8_t nextY = _dijkstraResult[indexR] / 7;
         Orientation nextOrientation = Orientation::NORTH;
 
-        if (lastX < nextX)
+        if (lastX == nextX && lastY == nextY)
+        {
+            indexR++;
+            continue;
+        }
+        else if (lastX < nextX)
         {
             nextOrientation = Orientation::EAST;
         }
@@ -202,17 +208,17 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
         lastX = nextX;
         lastY = nextY;
 
-        moveArray[index].orientation = nextOrientation;
-        moveArray[index].x = nextX;
-        moveArray[index].y = nextY;
+        moveArray[indexM].orientation = nextOrientation;
+        moveArray[indexM].x = nextX;
+        moveArray[indexM].y = nextY;
 
-        index++;
+        indexM++;
     }
 
     // put ORIENTATION FINISHED at the end of the array and last x last y
-    moveArray[index].orientation = Orientation::FINISHED;
-    moveArray[index].x = lastX;
-    moveArray[index].y = lastY;
+    moveArray[indexM].orientation = Orientation::FINISHED;
+    moveArray[indexM].x = lastX;
+    moveArray[indexM].y = lastY;
 }
 
 void Dijkstra::_emptyDijkstraResult()
