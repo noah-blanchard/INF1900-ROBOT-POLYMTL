@@ -590,7 +590,7 @@ void Navigation::_initTurnRight()
     if (!_firstMove)
     {
         go(_BASE_SPEED + _ADJUST_OFFSET, false);
-        _delay_ms(1650);
+        _delay_ms(1450);
     }
     else
     {
@@ -609,7 +609,7 @@ void Navigation::_initTurnLeft()
     if (!_firstMove)
     {
         go(_BASE_SPEED + _ADJUST_OFFSET, false);
-        _delay_ms(1650);
+        _delay_ms(1450);
     }
     else
     {
