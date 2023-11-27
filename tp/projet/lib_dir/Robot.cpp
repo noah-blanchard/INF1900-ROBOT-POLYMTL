@@ -192,6 +192,44 @@ void Robot::_calculatePathRoutine()
 
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
+    _delay_ms(1500);
+    Orientation moveOrientation = _moveArray[0].orientation;
+    switch (moveOrientation)
+    {
+    case Orientation::NORTH:
+        _currentOrientation = Orientation::NORTH;
+        _display = "NORTH";
+        break;
+    case Orientation::EAST:
+        _currentOrientation = Orientation::EAST;
+        _display = "EAST";
+        break;
+    case Orientation::SOUTH:
+        _currentOrientation = Orientation::SOUTH;
+        _display = "SOUTH";
+        break;
+    case Orientation::WEST:
+        _currentOrientation = Orientation::WEST;
+        _display = "WEST";
+        break;
+    }
+    _delay_ms(2000);
+    // now display same way but _currentOrientation
+    switch (_currentOrientation)
+    {
+    case Orientation::NORTH:
+        _display = "NORTH";
+        break;
+    case Orientation::EAST:
+        _display = "EAST";
+        break;
+    case Orientation::SOUTH:
+        _display = "SOUTH";
+        break;
+    case Orientation::WEST:
+        _display = "WEST";
+        break;
+    }
     _delay_ms(2000);
     _currentState = State::NAVIGATE_TRIP;
 }
@@ -204,7 +242,7 @@ void Robot::_navigateTripRoutine()
         char buffer[28];
 
         // means we havent reached thend end => recalculate the path !
-        //sprintf
+        // sprintf
         _beginning[0] = _currentPosition[0];
         _beginning[1] = _currentPosition[1];
         sprintf(buffer, "b1 %d  b2 %d", _beginning[0], _beginning[1]);
