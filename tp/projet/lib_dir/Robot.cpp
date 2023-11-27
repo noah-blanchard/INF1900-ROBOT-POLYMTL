@@ -187,8 +187,8 @@ void Robot::_calculatePathRoutine()
     _delay_ms(1500);
 
     /// change this with the result of Make Trip selection
-    _destination[0] = 0;
-    _destination[1] = 1;
+    _destination[0] = 6;
+    _destination[1] = 3;
 
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
@@ -201,10 +201,19 @@ void Robot::_navigateTripRoutine()
     Move tripResult = _navModule.followTrip(_moveArray); // returns the last move of the trip ! will return the one with a post if invalid
     if (_currentOrientation != Orientation::FINISHED)
     {
+        char buffer[28];
+
         // means we havent reached thend end => recalculate the path !
+        //sprintf
         _beginning[0] = _currentPosition[0];
         _beginning[1] = _currentPosition[1];
-        _dijkstraModule.removeNode(_currentPosition[0], _currentPosition[1]);
+        sprintf(buffer, "b1 %d  b2 %d", _beginning[0], _beginning[1]);
+        _display = buffer;
+        _delay_ms(2000);
+        sprintf(buffer, "b1 %d  b2 %d", tripResult.x, tripResult.y);
+        _display = buffer;
+        _delay_ms(2000);
+        _dijkstraModule.removeNode(tripResult.x, tripResult.y);
         _currentState = State::CALCULATE_PATH;
     }
 }

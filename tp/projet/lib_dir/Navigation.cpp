@@ -147,7 +147,7 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed);
+    _leftWheel.setCompareValue(speed-20);
     _rightWheel.setCompareValue(speed);
 }
 
@@ -252,7 +252,7 @@ void Navigation::adjustLeft()
 void Navigation::adjustForward()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(2000);
+    _delay_ms(1750);
     stop();
     _delay_ms(200);
 }
@@ -275,6 +275,7 @@ Move Navigation::followTrip(Move *trip)
 {
     _tripIndex = 0;
     _trip = trip;
+    _tripState = NavigationState::NEXT_MOVE;
 
     // uint8_t tripIndex = 0;
 
@@ -364,7 +365,6 @@ void Navigation::_chooseForwardMove()
     // some place have no crossroad and need to use FORWARD_DELAY
     // x = 1, y = 0, 1 3, 5 2, 6, 2
     // so put state to forward delay if we have one of these positions
-    _initForward();
 
     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
@@ -378,6 +378,7 @@ void Navigation::_chooseForwardMove()
     {
         _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
+         _initForward();
     }
 }
 
@@ -403,8 +404,6 @@ void Navigation::_nextMove(Move nextMove)
 
     if (*_currentOrientation == _nextMoveValue.orientation)
     {
-        display = "TEST";
-        _delay_ms(8000);
         _chooseForwardMove();
     }
     else
@@ -490,6 +489,7 @@ void Navigation::_moveForward(uint16_t speed)
     if (_irModule.isObstacleDetected())
     {
         stop();
+        _display = "POTITO";
         _delay_ms(1000);
         _tripState = NavigationState::MEET_POST;
     }
@@ -595,7 +595,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
 void Navigation::_initForward()
 {
-    // adjustForward();
+    adjustForward();
 }
 
 void Navigation::_initTurnRight()
@@ -705,89 +705,94 @@ void Navigation::_meetPost()
     // turn around 180 degrees until a line is detected
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+    _nextMoveValue = _trip[_tripIndex - 1];
+    stop();
+    _display = "OKOKOKOK";
+    _delay_ms(1000);
+     _tripState = NavigationState::ERROR;
 
-    switch (lineMakerFlag)
-    {
-    case LineMakerFlag::NO_LINE:
-    {
-        // if we don't detect the line, we need to turn right until we detect it
-        turnRight();
-        break;
-    }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
-    {
-        // if we detect the line on the left, it means we met the line
-        // so stop moving and go to forward state
-        stop();
-        _nextMoveValue = _trip[_tripIndex - 1];
-        _delay_ms(1000);
-        _tripState = NavigationState::GO_BACK;
+    // switch (lineMakerFlag)
+    // {
+    // case LineMakerFlag::NO_LINE:
+    // {
+    //     // if we don't detect the line, we need to turn right until we detect it
+    //     turnRight();
+    //     break;
+    // }
+    // case LineMakerFlag::RIGHT_ADJUSTMENT:
+    // {
+    //     // if we detect the line on the left, it means we met the line
+    //     // so stop moving and go to forward state
+    //     stop();
+    //     _nextMoveValue = _trip[_tripIndex - 1];
+    //     _delay_ms(1000);
+    //     _tripState = NavigationState::GO_BACK;
 
-        break;
-    }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-    {
-        // if we detect the line on the left, it means we met the line
-        // so stop moving and go to forward state
-        stop();
-        _nextMoveValue = _trip[_tripIndex - 1];
-        _delay_ms(1000);
-        _tripState = NavigationState::GO_BACK;
-        break;
-    }
-    case LineMakerFlag::NO_ADJUSTMENT:
-    {
-        // if we detect the line on the left, it means we met the line
-        // so stop moving and go to forward state
-        stop();
-        _nextMoveValue = _trip[_tripIndex - 1];
-        _delay_ms(1000);
-        _tripState = NavigationState::GO_BACK;
-        break;
-    }
-    }
+    //     break;
+    // }
+    // case LineMakerFlag::LEFT_ADJUSTMENT:
+    // {
+    //     // if we detect the line on the left, it means we met the line
+    //     // so stop moving and go to forward state
+    //     stop();
+    //     _nextMoveValue = _trip[_tripIndex - 1];
+    //     _delay_ms(1000);
+    //     _tripState = NavigationState::ERROR;
+    //     break;
+    // }
+    // case LineMakerFlag::NO_ADJUSTMENT:
+    // {
+    //     // if we detect the line on the left, it means we met the line
+    //     // so stop moving and go to forward state
+    //     stop();
+    //     _nextMoveValue = _trip[_tripIndex - 1];
+    //     _delay_ms(1000);
+    //     _tripState = NavigationState::GO_BACK;
+    //     break;
+    // }
+    // }
 }
 
-void Navigation::_goBack()
-{
-    if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
-        (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
-        (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
-        (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
-    {
-        // _display = "FORWARD DELAY";
-        // _tripState = NavigationState::FORWARD_DELAY;
-    }
-    else
-    {
-        LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-        switch (lineMakerFlag)
-        {
-        case LineMakerFlag::NO_ADJUSTMENT:
-        {
-            go(_BASE_SPEED, false);
-            break;
-        }
-        case LineMakerFlag::RIGHT_ADJUSTMENT:
-        {
-            adjustLeft();
-            break;
-        }
-        case LineMakerFlag::LEFT_ADJUSTMENT:
-        {
-            adjustRight();
-            break;
-        }
-        case LineMakerFlag::OUTER_LEFT_DETECTION:
-        {
-            _tripState = NavigationState::ERROR;
-            break;
-        }
-        case LineMakerFlag::OUTER_RIGHT_DETECTION:
-        {
-            _tripState = NavigationState::ERROR;
-            break;
-        }
-        }
-    }
-}
+// void Navigation::_goBack()
+// {
+//     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
+//         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
+//         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
+//         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
+//     {
+//         // _display = "FORWARD DELAY";
+//         // _tripState = NavigationState::FORWARD_DELAY;
+//     }
+//     else
+//     {
+//         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+//         switch (lineMakerFlag)
+//         {
+//         case LineMakerFlag::NO_ADJUSTMENT:
+//         {
+//             go(_BASE_SPEED, false);
+//             break;
+//         }
+//         case LineMakerFlag::RIGHT_ADJUSTMENT:
+//         {
+//             adjustLeft();
+//             break;
+//         }
+//         case LineMakerFlag::LEFT_ADJUSTMENT:
+//         {
+//             adjustRight();
+//             break;
+//         }
+//         case LineMakerFlag::OUTER_LEFT_DETECTION:
+//         {
+//             _tripState = NavigationState::ERROR;
+//             break;
+//         }
+//         case LineMakerFlag::OUTER_RIGHT_DETECTION:
+//         {
+//             _tripState = NavigationState::ERROR;
+//             break;
+//         }
+//         }
+//     }
+// }
