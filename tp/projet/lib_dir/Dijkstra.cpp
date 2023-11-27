@@ -78,7 +78,6 @@ void Dijkstra::_resetAdjMatrix()
     _ADJ_MATRIX[15][8] = 1;
     _ADJ_MATRIX[15][14] = 2;
     _ADJ_MATRIX[15][16] = 1;
-    _ADJ_MATRIX[15][22] = 1;
 
     _ADJ_MATRIX[16][9] = 5;
     _ADJ_MATRIX[16][15] = 1;
@@ -109,7 +108,6 @@ void Dijkstra::_resetAdjMatrix()
     _ADJ_MATRIX[21][20] = 1;
     _ADJ_MATRIX[21][22] = 1;
 
-    _ADJ_MATRIX[22][15] = 1;
     _ADJ_MATRIX[22][21] = 1;
     _ADJ_MATRIX[22][23] = 1;
 
