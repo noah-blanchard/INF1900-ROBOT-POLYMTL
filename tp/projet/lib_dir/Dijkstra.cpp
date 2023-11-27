@@ -182,10 +182,9 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
         uint8_t nextX = _dijkstraResult[indexR] % 7;
         uint8_t nextY = _dijkstraResult[indexR] / 7;
         Orientation nextOrientation = Orientation::NORTH;
-
+        indexR++;
         if (lastX == nextX && lastY == nextY)
         {
-            indexR++;
             continue;
         }
         else if (lastX < nextX)
