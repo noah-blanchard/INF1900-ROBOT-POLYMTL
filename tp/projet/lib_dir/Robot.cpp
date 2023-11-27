@@ -8,7 +8,7 @@
 //     customDelayElapsed = true;
 // }
 
-Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, _currentOrientation)
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation)
 {
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);

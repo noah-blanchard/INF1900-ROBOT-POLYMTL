@@ -25,6 +25,22 @@ uint16_t Navigation::_validateSpeed(uint16_t speed)
     return speed;
 }
 
+Navigation::Navigation(): _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC)
+{
+    DDRD = (1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7);
+    PORTD |= (1 << PD5);
+    PORTD |= (1 << PD4);
+    PORTD &= ~(1 << PD6);
+    PORTD &= ~(1 << PD7);
+
+    TimerConfig timerConfig;
+    timerConfig.timer = 2;
+    timerConfig.prescaler = 256;
+    timerConfig.delay_ms = 6000;
+
+    _delayTimerModule = Timer(timerConfig);
+}
+
 /**
  * @brief Constructs a new Navigation object and initializes the DDRD register.
  *
@@ -40,10 +56,6 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
     _nextMoveValue.x = 0;
     _nextMoveValue.y = 0;
     _nextMoveValue.orientation = Orientation::SOUTH;
-
-    _currentOrientation = Orientation::EAST;
-    _currentPosition[0] = 0; // 0 being x
-    _currentPosition[1] = 0; // 1 being y
 
     TimerConfig timerConfig;
     timerConfig.timer = 2;
@@ -303,24 +315,24 @@ Move Navigation::followTrip(Move *trip)
         case NavigationState::ERROR:
         {
             stop();
-            if (_nextMove.orientation == Orientation::SOUTH)
+            if (_nextMoveValue.orientation == Orientation::SOUTH)
             {
-                _currentOrientation = Orientation::NORTH
+                *_currentOrientation = Orientation::NORTH;
             }
-            else if (_nextMove.orientation == Orientation::NORTH)
+            else if (_nextMoveValue.orientation == Orientation::NORTH)
             {
-                _currentOrientation = Orientation::SOUTH
+                *_currentOrientation = Orientation::SOUTH;
             }
-            else if (_nextMove.orientation == Orientation::WEST)
+            else if (_nextMoveValue.orientation == Orientation::WEST)
             {
-                _currentOrientation = Orientation::EAST
+                *_currentOrientation = Orientation::EAST;
             }
-            else if (_nextMove.orientation == Orientation::EAST)
+            else if (_nextMoveValue.orientation == Orientation::EAST)
             {
-                _currentOrientation = Orientation::WEST
+                *_currentOrientation = Orientation::WEST;
             }
-            _currentPosition[0] = _nextMove.x;
-            _currentPosition[1] = _nextMove.y;
+            _currentPosition[0] = _nextMoveValue.x;
+            _currentPosition[1] = _nextMoveValue.y;
             return _trip[_tripIndex];
             break;
         }
@@ -373,7 +385,7 @@ void Navigation::_updateCurrentPosition()
 {
     _currentPosition[0] = _nextMoveValue.x;
     _currentPosition[1] = _nextMoveValue.y;
-    _currentOrientation = _nextMoveValue.orientation;
+    *_currentOrientation = _nextMoveValue.orientation;
 }
 
 void Navigation::_nextMove(Move nextMove)
@@ -389,14 +401,14 @@ void Navigation::_nextMove(Move nextMove)
     _nextMoveValue = nextMove;
     _display = "NEXT MOVE";
 
-    if (_currentOrientation == nextMove.orientation)
+    if (*_currentOrientation == nextMove.orientation)
     {
         _chooseForwardMove();
     }
     else
     {
         _display = "TURN";
-        switch (_currentOrientation)
+        switch (*_currentOrientation)
         {
         case Orientation::NORTH:
         {
@@ -744,11 +756,12 @@ void Navigation::_goBack()
     }
     else
     {
+        LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
         switch (lineMakerFlag)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(speed, false);
+            go(_BASE_SPEED, false);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:

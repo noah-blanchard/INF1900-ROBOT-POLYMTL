@@ -26,6 +26,7 @@ enum class NavigationState
 class Navigation
 {
 public:
+    Navigation();
     Navigation(uint8_t *robotPosition, Orientation *robotOrientation);
 
     void go(uint16_t speed, bool backward);
@@ -42,7 +43,7 @@ public:
     void turnLeft();
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
-    uint8_t followTrip(Move *trip);
+    Move followTrip(Move *trip);
     static const uint8_t _BASE_SPEED = 130;
     static const uint8_t _BACK_SPEED = 150;
     static const uint8_t _TURN_SPEED = 150;
@@ -73,6 +74,7 @@ private:
 
     // trip variables
     Move *_trip;
+    Move _nextMoveValue;
     uint8_t *_currentPosition;
     Orientation *_currentOrientation;
     uint8_t _tripIndex = 0;
@@ -80,7 +82,6 @@ private:
 
     // Modules
     LineMaker _lineMakerModule;
-    Move _nextMoveValue;
     Timer _delayTimerModule;
     InfraRedSensor _irModule;
     LCM _display;
