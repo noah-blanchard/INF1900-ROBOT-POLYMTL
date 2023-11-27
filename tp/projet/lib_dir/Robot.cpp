@@ -212,6 +212,9 @@ void Robot::_calculatePathRoutine()
         _currentOrientation = Orientation::WEST;
         _display = "WEST";
         break;
+    default:
+        _display="NOT FOUND";
+        break;
     }
     _delay_ms(2000);
     // now display same way but _currentOrientation
@@ -229,7 +232,12 @@ void Robot::_calculatePathRoutine()
     case Orientation::WEST:
         _display = "WEST";
         break;
+        default:
+    _display="NOT FOUND";
+        break;
+    
     }
+
     _delay_ms(2000);
     _currentState = State::NAVIGATE_TRIP;
 }
