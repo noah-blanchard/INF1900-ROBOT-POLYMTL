@@ -76,7 +76,7 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 					if(selectChoice)
 					{
 						columnSeleted = (columnSeleted +1) % 7;
-						sprintf(buf, "%d", columnSeleted+1);
+						sprintf(buf, "Col : %d", columnSeleted+1);
 						disp = buf;
 						selectChoice = false;
 					}
@@ -86,17 +86,15 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 				selectChoice = false;
 				select = selection::CONFIRMCHOICES;
 				disp.clear();
-				sprintf(buf, "%d %d", lineSeleted+1,columnSeleted+1);
+				sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
 				disp = buf;
 				w();
-				disp << "ok ?";
 
             break;
 
 			case selection::CONFIRMCHOICES:
 				if(validateChoice)
 				{
-					disp << "C L";
 					sprintf(buf, "L %d - C %d", lineSeleted+1,columnSeleted+1);
 					disp = buf;
 					w();
