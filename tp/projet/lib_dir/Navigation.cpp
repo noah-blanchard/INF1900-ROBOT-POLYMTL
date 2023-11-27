@@ -586,11 +586,18 @@ void Navigation::_initForward()
 
 void Navigation::_initTurnRight()
 {
-    go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1650);
+    // if it is not the first move, go forward for a bit, then turn
+    if (!_firstMove)
+    {
+        go(_BASE_SPEED + _ADJUST_OFFSET, false);
+        _delay_ms(1650);
+    }
+    else
+    {
+        _firstMove = false;
+    }
     stop();
     _delay_ms(200);
-    // then turn a bit right for 1 second
     turnRight();
     _delay_ms(800);
     stop();
@@ -598,8 +605,16 @@ void Navigation::_initTurnRight()
 
 void Navigation::_initTurnLeft()
 {
-    go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1650);
+    // if it is not the first move, go forward for a bit, then turn
+    if (!_firstMove)
+    {
+        go(_BASE_SPEED + _ADJUST_OFFSET, false);
+        _delay_ms(1650);
+    }
+    else
+    {
+        _firstMove = false;
+    }
     stop();
     _delay_ms(200);
     // then turn a bit left for 1 second

@@ -146,7 +146,7 @@ void Dijkstra::removeNode(uint8_t x, uint8_t y)
 
 uint8_t Dijkstra::_getNodeNumber(uint8_t x, uint8_t y)
 {
-    return y * 7 + x;
+    return y * COL_NUMBERS + x;
 }
 
 void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)

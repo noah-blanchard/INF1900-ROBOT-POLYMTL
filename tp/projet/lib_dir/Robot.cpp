@@ -186,7 +186,7 @@ void Robot::_calculatePathRoutine()
     _display = "I WILL CALCULATE";
     _delay_ms(1500);
 
-    /// chaneg this with the result of Make Trip selection
+    /// change this with the result of Make Trip selection
     _destination[0] = 2;
     _destination[1] = 2;
 

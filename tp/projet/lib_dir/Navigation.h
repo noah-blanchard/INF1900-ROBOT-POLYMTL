@@ -76,7 +76,9 @@ private:
     uint8_t *_currentPosition;
     Orientation *_currentOrientation;
     uint8_t _tripIndex = 0;
+    bool _firstMove = true;
 
+    // Modules
     LineMaker _lineMakerModule;
     Move _nextMoveValue;
     Timer _delayTimerModule;

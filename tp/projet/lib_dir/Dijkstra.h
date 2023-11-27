@@ -4,6 +4,7 @@
 
 const uint8_t POIDS_MAX = 255;
 const uint8_t N_NOEUDS = 28;
+const uint8_t COL_NUMBERS = 7;
 
 class Dijkstra
 {
