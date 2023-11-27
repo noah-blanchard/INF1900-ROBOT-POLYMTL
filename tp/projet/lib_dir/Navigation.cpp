@@ -401,8 +401,10 @@ void Navigation::_nextMove(Move nextMove)
     _nextMoveValue = nextMove;
     _display = "NEXT MOVE";
 
-    if (*_currentOrientation == nextMove.orientation)
+    if (*_currentOrientation == _nextMoveValue.orientation)
     {
+        display = "TEST";
+        _delay_ms(8000);
         _chooseForwardMove();
     }
     else
@@ -412,13 +414,13 @@ void Navigation::_nextMove(Move nextMove)
         {
         case Orientation::NORTH:
         {
-            if (nextMove.orientation == Orientation::EAST)
+            if (_nextMoveValue.orientation == Orientation::EAST)
             {
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
             }
-            else if (nextMove.orientation == Orientation::WEST)
+            else if (_nextMoveValue.orientation == Orientation::WEST)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
@@ -428,13 +430,13 @@ void Navigation::_nextMove(Move nextMove)
         }
         case Orientation::EAST:
         {
-            if (nextMove.orientation == Orientation::SOUTH)
+            if (_nextMoveValue.orientation == Orientation::SOUTH)
             {
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
             }
-            else if (nextMove.orientation == Orientation::NORTH)
+            else if (_nextMoveValue.orientation == Orientation::NORTH)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
@@ -444,12 +446,12 @@ void Navigation::_nextMove(Move nextMove)
         }
         case Orientation::SOUTH:
         {
-            if (nextMove.orientation == Orientation::WEST)
+            if (_nextMoveValue.orientation == Orientation::WEST)
             {
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
             }
-            else if (nextMove.orientation == Orientation::EAST)
+            else if (_nextMoveValue.orientation == Orientation::EAST)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
@@ -459,13 +461,13 @@ void Navigation::_nextMove(Move nextMove)
         }
         case Orientation::WEST:
         {
-            if (nextMove.orientation == Orientation::NORTH)
+            if (_nextMoveValue.orientation == Orientation::NORTH)
             {
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
                 _display = "TURN RIGHT";
             }
-            else if (nextMove.orientation == Orientation::SOUTH)
+            else if (_nextMoveValue.orientation == Orientation::SOUTH)
             {
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
