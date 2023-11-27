@@ -187,8 +187,8 @@ void Robot::_calculatePathRoutine()
     _delay_ms(1500);
 
     /// change this with the result of Make Trip selection
-    _destination[0] = 2;
-    _destination[1] = 3;
+    _destination[0] = 0;
+    _destination[1] = 1;
 
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
