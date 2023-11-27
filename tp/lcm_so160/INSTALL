@@ -1,0 +1,15 @@
+Aucun Makefile n'est fourni puisque ce dernier dépend habituellement de la
+plateforme de destination et de différents programmes, tel que le programmeur.
+Afin de compiler et d'intaller le pilote, le framework (et la démonstration
+au besoin), assurez-vous simplement d'ajouter les fichiers `*.cpp' à la liste
+des sources C++ de votre propre Makefile.
+
+AUSSI, prenez soin de bien spécifier la fréquence du CPU du microcontrôleur
+visé, à l'aide de la définition `F_CPU'. Habituellement, il ne suffit que
+d'ajouter le flag "-DF_CPU=<fréquence>UL" à gcc/g++. Pour un microcontrôleur
+à 8 MHz, par exemple, on ajouterait "-DF_CPU=8000000UL". Il est généralement
+possible de simplement ajouter ce flag aux `CPPFLAGS' d'un Makefile,
+par exemple:
+
+CPPFLAGS += -DF_CPU=8000000UL
+

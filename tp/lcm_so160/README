@@ -1,0 +1,16 @@
+Voici le pilote et le framework pour système muni d'un ATmega16 (ou autre puce
+compatible) de l'afficheur LCD Lumex LCM-SO1602DTR/M. Ce package contient les
+fichiers source suivants :
+
+	* customprocs.cpp :        Fonctions/utilités générales (surtout pour le
+	                           traitement de chaînes).
+	* demo.cpp :               Démonstration des méthodes du framework
+	                           contenant un point de départ (`main').
+	* lcm_so1602dtr_m.cpp :    Pilote de l'afficheur.
+	* lcm_so1602dtr_m_fw.cpp : Classe du framework.
+
+Bien qu'une documentation ne soit pas fournie ici, vous pouvez vous référer
+au fichier de démonstration (`demo.cpp') afin de balayer l'ensemble des
+méthodes fournies par le framework. Chaque "sous-démonstration" du fichier
+est chapeauté d'un commentaire expliquant le résultat.
+
