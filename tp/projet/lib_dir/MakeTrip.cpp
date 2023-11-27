@@ -41,92 +41,74 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 	disp.clear();
 	w();
 	char buf[25];
-	selection select = selection::selectLine;
+	selection select = selection::SELECTLINE;
 	while(true)
 	{
 		switch(select)
 		{
-			// case selection::INITIAL:
-			// 	// print line on LCD
- 			// 	disp << "LINE";
-			// 	w();
-			// 	sprintf(buf, "%d", lineSeleted+1);
-			// 	disp = buf;
-			// 	w();
-
-			// 	select = selection::selectLine;
-            // break;
-
-
-			case selection::selectLine:
+			case selection::SELECTLINE:
 			sprintf(buf, "Line : %d", lineSeleted+1);
-					disp = buf;
+			disp = buf;
 				while(!validateChoice)
 				{
 					
 					if(selectChoice)
 					{
-						// ====> section critique ===> block interruptions
 						lineSeleted = (lineSeleted +1) % 4;
 						sprintf(buf, "Line : %d", lineSeleted+1);
-					disp = buf;
-						// upgrade Line on LCD
-						
-						
-						w();
+						disp = buf;
 						selectChoice = false;
 					}
 					
 				}
+				validateChoice = false;
+				selectChoice = false;
+				select = selection::SELECTCOLUMN;
 				
-				_delay_ms(1000);
-				select = selection::selectColumn;
-				// Print line validated on LCD
-				// disp << "COLUMN";
-				// w();
-				// sprintf(buf, "Column : %d", columnSeleted+1);
-				// disp = buf;
-				// w();
             break;
 
-			case selection::selectColumn:
-				validateChoice = false;
-				sprintf(buf, "%d", columnSeleted+1);
+			case selection::SELECTCOLUMN:
+				disp.clear();
+				sprintf(buf, "Col : %d", columnSeleted+1);
 				disp = buf;
 				while(!validateChoice)
 				{
-					
-					
 					if(selectChoice)
 					{
 						columnSeleted = (columnSeleted +1) % 7;
-						// ====> section critique ===> block interruptions
 						sprintf(buf, "%d", columnSeleted+1);
 						disp = buf;
-						// upgrade column on LCD
-						
-						
 						selectChoice = false;
 					}
 					
 				}
-				//validateChoice = false;
-				select = selection::confirmChoices;
-				// Print choices on LCD
-				disp << "C L";
+				validateChoice = false;
+				selectChoice = false;
+				select = selection::CONFIRMCHOICES;
+				disp.clear();
 				sprintf(buf, "%d %d", lineSeleted+1,columnSeleted+1);
 				disp = buf;
 				w();
+				disp << "ok ?";
 
             break;
 
-			case selection::confirmChoices:
+			case selection::CONFIRMCHOICES:
 				if(validateChoice)
 				{
 					disp << "C L";
-					sprintf(buf, "%d %d", lineSeleted+1,columnSeleted+1);
+					sprintf(buf, "L %d - C %d", lineSeleted+1,columnSeleted+1);
 					disp = buf;
 					w();
+				}
+
+				if(selectChoice)
+				{
+					lineSeleted = 1;
+					columnSeleted=1;
+					validateChoice = false;
+					selectChoice = false;
+					select = selection::SELECTLINE;
 				}
 				
             break;

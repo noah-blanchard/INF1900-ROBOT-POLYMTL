@@ -19,10 +19,9 @@ void static inline w(void) {
 
 enum class selection
 {
-	INITIAL, 
-	selectLine, 
-	selectColumn,
-	confirmChoices
+	SELECTLINE, 
+	SELECTCOLUMN,
+	CONFIRMCHOICES
 };
 
 
