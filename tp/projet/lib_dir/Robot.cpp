@@ -38,8 +38,6 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
 
     _currentState = State::IDENTIFY_CORNER;
 
-
-
     // _moveArray init for test
 
     // _moveArray[0].orientation = Orientation::EAST;
@@ -167,23 +165,23 @@ void Robot::_meetCrossroadRoutine()
 
 void Robot::_turnAtCrossroadRoutine()
 {
-    // for the moment let's only turn to the right until the linemaker sens the "leftAdjustment" flag
-    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    switch (flag)
-    {
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-    {
-        _navModule.stop();
-        _currentState = State::FOLLOW_LINE;
-        break;
-    }
-    default:
-    {
-        _navModule.goRightWheel(_TURN_SPEED, true);
-        _navModule.goLeftWheel(_TURN_SPEED, false);
-        break;
-    }
-    }
+    // // for the moment let's only turn to the right until the linemaker sens the "leftAdjustment" flag
+    // LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    // switch (flag)
+    // {
+    // case LineMakerFlag::LEFT_ADJUSTMENT:
+    // {
+    //     _navModule.stop();
+    //     _currentState = State::FOLLOW_LINE;
+    //     break;
+    // }
+    // default:
+    // {
+    //     _navModule.goRightWheel(_TURN_SPEED, true);
+    //     _navModule.goLeftWheel(_TURN_SPEED, false);
+    //     break;
+    // }
+    // }
 }
 
 void Robot::_calculatePathRoutine()
@@ -199,6 +197,8 @@ void Robot::_calculatePathRoutine()
     _display = "FINISHED";
     _delay_ms(1500);
     Orientation moveOrientation = _moveArray[0].orientation;
+    _display = "NEXT ORIENTATION";
+    _delay_ms(3000);
     switch (moveOrientation)
     {
     case Orientation::NORTH:
@@ -218,32 +218,10 @@ void Robot::_calculatePathRoutine()
         _display = "WEST";
         break;
     default:
-        _display="NOT FOUND";
+        _display = "NOT FOUND";
         break;
     }
-    _delay_ms(2000);
-    // now display same way but _currentOrientation
-    switch (_currentOrientation)
-    {
-    case Orientation::NORTH:
-        _display = "NORTH";
-        break;
-    case Orientation::EAST:
-        _display = "EAST";
-        break;
-    case Orientation::SOUTH:
-        _display = "SOUTH";
-        break;
-    case Orientation::WEST:
-        _display = "WEST";
-        break;
-        default:
-    _display="NOT FOUND";
-        break;
-    
-    }
-
-    _delay_ms(2000);
+    _delay_ms(3000);
     _currentState = State::NAVIGATE_TRIP;
 }
 

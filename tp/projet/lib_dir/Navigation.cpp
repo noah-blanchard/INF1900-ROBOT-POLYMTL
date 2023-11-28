@@ -316,25 +316,30 @@ Move Navigation::followTrip(Move *trip)
         case NavigationState::ERROR:
         {
             stop();
-            // if (_nextMoveValue.orientation == Orientation::SOUTH)
-            // {
-            //     *_currentOrientation = Orientation::NORTH;
-            // }
-            // else if (_nextMoveValue.orientation == Orientation::NORTH)
-            // {
-            //     *_currentOrientation = Orientation::SOUTH;
-            // }
-            // else if (_nextMoveValue.orientation == Orientation::WEST)
-            // {
-            //     *_currentOrientation = Orientation::EAST;
-            // }
-            // else if (_nextMoveValue.orientation == Orientation::EAST)
-            // {
-            //     *_currentOrientation = Orientation::WEST;
-            // }
             *_currentOrientation = _nextMoveValue.orientation;
             _currentPosition[0] = _nextMoveValue.x;
             _currentPosition[1] = _nextMoveValue.y;
+            _display = "CURR ORIENT :";
+            _delay_ms(3000);
+            switch (*_currentOrientation)
+            {
+            case Orientation::NORTH:
+                _display = "NORTH";
+                break;
+            case Orientation::EAST:
+                _display = "EAST";
+                break;
+            case Orientation::SOUTH:
+                _display = "SOUTH";
+                break;
+            case Orientation::WEST:
+                _display = "WEST";
+                break;
+            default:
+                _display = "NOT FOUND";
+                break;
+            }
+            _delay_ms(3000);
             return _trip[_tripIndex];
             break;
         }
