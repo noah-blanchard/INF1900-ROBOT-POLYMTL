@@ -20,14 +20,18 @@ volatile uint8_t validateChoice = false;
 ISR ( INT0_vect) {
 // select Choice
 selectChoice = true;
-EIFR |= (1 << INTF0) ;
+//EIFR |= (1 << INTF0) ;
+EIFR &= ~(1 << INTF0);
+
 
 }
 
 ISR ( INT1_vect) {
 // validate Choice
 validateChoice = true;
-EIFR |= (1 << INTF1) ;
+//EIFR |= (1 << INTF1) ;
+EIFR &= ~(1 << INTF1);
+
 
 }
 
