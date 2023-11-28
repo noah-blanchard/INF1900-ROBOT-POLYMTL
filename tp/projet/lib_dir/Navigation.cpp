@@ -60,7 +60,7 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
     TimerConfig timerConfig;
     timerConfig.timer = 2;
     timerConfig.prescaler = 256;
-    timerConfig.delay_ms = 6000;
+    timerConfig.delay_ms = 2000;
 
     _delayTimerModule = Timer(timerConfig);
 
@@ -378,6 +378,10 @@ void Navigation::_chooseForwardMove()
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
     {
+        cli();
+        _delayTimerModule.reset();
+        _delayTimerModule.enable();
+        sei();
         _display = "FORWARD DELAY";
         _tripState = NavigationState::FORWARD_DELAY;
     }
@@ -551,7 +555,6 @@ void Navigation::_moveForwardDelay(uint16_t speed)
             stop();
             _delay_ms(1000);
             _tripState = NavigationState::MEET_POST;
-            break;
         }
 
         switch (lineMakerFlag)
@@ -576,14 +579,17 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         }
         }
 
-    // if (delayElapsed)
-    // {
-    //     stop();
-    //     _timerOff();
-    //     _tripIndex++;
-    //     delayElapsed = false;
-    //     _tripState = NavigationState::NEXT_MOVE;
-    // }
+    if (delayElapsed)
+    {
+        stop();
+        cli();
+        _delayTimerModule.disable();
+        _delayTimerModule.reset();
+        sei();
+        _tripIndex++;
+        delayElapsed = false;
+        _tripState = NavigationState::NEXT_MOVE;
+    }
 }
 
 void Navigation::_initForward()
