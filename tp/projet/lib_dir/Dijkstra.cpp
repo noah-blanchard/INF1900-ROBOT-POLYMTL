@@ -55,7 +55,6 @@ void Dijkstra::_resetAdjMatrix()
 
     _ADJ_MATRIX[10][3] = 1;
     _ADJ_MATRIX[10][11] = 2;
-    _ADJ_MATRIX[10][17] = 5;
 
     _ADJ_MATRIX[11][10] = 2;
     _ADJ_MATRIX[11][12] = 1;
@@ -68,10 +67,8 @@ void Dijkstra::_resetAdjMatrix()
 
     _ADJ_MATRIX[13][6] = 1;
     _ADJ_MATRIX[13][12] = 1;
-    _ADJ_MATRIX[13][14] = 1;
     _ADJ_MATRIX[13][20] = 1;
 
-    _ADJ_MATRIX[14][13] = 1;
     _ADJ_MATRIX[14][15] = 2;
     _ADJ_MATRIX[14][21] = 5;
 
@@ -84,7 +81,6 @@ void Dijkstra::_resetAdjMatrix()
     _ADJ_MATRIX[16][17] = 1;
     _ADJ_MATRIX[16][23] = 1;
 
-    _ADJ_MATRIX[17][10] = 5;
     _ADJ_MATRIX[17][16] = 1;
     _ADJ_MATRIX[17][18] = 5;
     _ADJ_MATRIX[17][24] = 1;
@@ -101,11 +97,9 @@ void Dijkstra::_resetAdjMatrix()
 
     _ADJ_MATRIX[20][13] = 1;
     //_ADJ_MATRIX[20][19] = 1;
-    _ADJ_MATRIX[20][21] = 1;
     _ADJ_MATRIX[20][27] = 1;
 
     _ADJ_MATRIX[21][14] = 5;
-    _ADJ_MATRIX[21][20] = 1;
     _ADJ_MATRIX[21][22] = 1;
 
     _ADJ_MATRIX[22][21] = 1;
@@ -113,18 +107,16 @@ void Dijkstra::_resetAdjMatrix()
 
     _ADJ_MATRIX[23][16] = 1;
     _ADJ_MATRIX[23][22] = 1;
-    _ADJ_MATRIX[23][24] = 1;
 
     _ADJ_MATRIX[24][17] = 1;
-    _ADJ_MATRIX[24][23] = 1;
-    _ADJ_MATRIX[24][25] = 1;
+    _ADJ_MATRIX[24][25] = 2;
 
     _ADJ_MATRIX[25][18] = 5;
-    _ADJ_MATRIX[25][24] = 1;
-    _ADJ_MATRIX[25][26] = 2;
+    _ADJ_MATRIX[25][24] = 2;
+    _ADJ_MATRIX[25][26] = 5;
 
-    _ADJ_MATRIX[26][19] = 5;
-    _ADJ_MATRIX[26][25] = 2;
+    _ADJ_MATRIX[26][19] = 1;
+    _ADJ_MATRIX[26][25] = 5;
     _ADJ_MATRIX[26][27] = 1;
 
     _ADJ_MATRIX[27][20] = 1;
