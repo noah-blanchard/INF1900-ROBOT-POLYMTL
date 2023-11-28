@@ -252,7 +252,7 @@ void Navigation::adjustLeft()
 void Navigation::adjustForward()
 {
     go(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(1650);
+    _delay_ms(900);
     stop();
     _delay_ms(200);
 }
@@ -562,7 +562,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(speed, false);
+            go(_BASE_SPEED, false);
             _delay_ms(110);
             stop();
             _delay_ms(110);
