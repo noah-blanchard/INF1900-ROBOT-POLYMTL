@@ -626,27 +626,28 @@ void IdentifyCorner::_goForwardThirdLine()
         break;
     }
 
-    case LineMakerFlag::FULL_CROSSROAD:
-    {
-        if (!_blockIncrementation)
-        {
-            _firstLineCount = _firstLineCount + 2;
-            _secondLineCount++;
-            _blockIncrementation = true;
+    // case LineMakerFlag::FULL_CROSSROAD:
+    // {
 
-           /* if (_furtherCompareMatch())
-            {
-                makeSound();
+    //     if (!_blockIncrementation)
+    //     {
+    //         _firstLineCount = _firstLineCount + 2;
+    //         _secondLineCount++;
+    //         _blockIncrementation = true;
 
-                _displayCurrentIntersectionCount();
-                _state = IdentifyCornerState::TURN_AROUND;
-            }
-            */
-        }
-       // _navModule.adjustRight();
-        isRight = true;
-        break;
-    }
+    //        /* if (_furtherCompareMatch())
+    //         {
+    //             makeSound();
+
+    //             _displayCurrentIntersectionCount();
+    //             _state = IdentifyCornerState::TURN_AROUND;
+    //         }
+    //         */
+    //     }
+    //    // _navModule.adjustRight();
+    //     isRight = true;
+    //     break;
+    // }
 
     case LineMakerFlag::OUTER_LEFT_DETECTION:
         if (!_blockIncrementation)
