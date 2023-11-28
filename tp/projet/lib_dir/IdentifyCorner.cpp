@@ -224,7 +224,8 @@ bool IdentifyCorner::_simpleCompareMAtch()
 
 bool IdentifyCorner::_furtherCompareMatch()
 {
-    if (_firstLineCount == 3 and _secondLineCount == 1)
+     //if (_firstLineCount == 5 and _secondLineCount == 2)
+    if (_firstLineCount == 5 and _secondLineCount == 2)
     {
         // LCTH -- good
         _displayCurrentIntersectionCount();
@@ -245,6 +246,7 @@ bool IdentifyCorner::_furtherCompareMatch()
         makeSound();
         return true;
     }
+    //else if (_firstLineCount == 4 and _secondLineCount == 1)
     else if (_firstLineCount == 4 and _secondLineCount == 1)
     {
         // RCTV this case has to be covered;

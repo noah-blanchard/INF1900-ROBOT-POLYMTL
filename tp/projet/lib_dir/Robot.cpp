@@ -34,7 +34,12 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     //_currentState = State::NAVIGATE_TRIP;
     //_currentState = State::CALCULATE_PATH;
 
-    _currentState = State::MAKE_TRIP;
+    //_currentState = State::MAKE_TRIP;
+
+    _currentState = State::IDENTIFY_CORNER;
+
+
+
     // _moveArray init for test
 
     // _moveArray[0].orientation = Orientation::EAST;
