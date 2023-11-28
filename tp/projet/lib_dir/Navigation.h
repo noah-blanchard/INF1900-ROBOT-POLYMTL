@@ -82,7 +82,7 @@ private:
 
     // Modules
     LineMaker _lineMakerModule;
-    Timer _delayTimerModule;
+    //Timer _delayTimerModule;
     InfraRedSensor _irModule;
     LCM _display;
 

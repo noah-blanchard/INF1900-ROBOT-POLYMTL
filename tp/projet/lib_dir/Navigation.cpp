@@ -71,12 +71,12 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
     _nextMoveValue.y = 0;
     _nextMoveValue.orientation = Orientation::SOUTH;
 
-    TimerConfig timerConfig;
-    timerConfig.timer = 2;
-    timerConfig.prescaler = 256;
-    timerConfig.delay_ms = 2000;
+    // TimerConfig timerConfig;
+    // timerConfig.timer = 2;
+    // timerConfig.prescaler = 256;
+    // timerConfig.delay_ms = 2000;
 
-    _delayTimerModule = Timer(timerConfig);
+    // _delayTimerModule = Timer(timerConfig);
 
     _currentOrientation = robotOrientation;
     _currentPosition = robotPosition;
@@ -364,21 +364,21 @@ Move Navigation::followTrip(Move *trip)
     return _trip[_tripIndex];
 }
 
-void Navigation::_timerOn()
-{
-    cli();
-    _delayTimerModule.reset();
-    _delayTimerModule.enable();
-    sei();
-}
+// void Navigation::_timerOn()
+// {
+//     cli();
+//     _delayTimerModule.reset();
+//     _delayTimerModule.enable();
+//     sei();
+// }
 
-void Navigation::_timerOff()
-{
-    cli();
-    _delayTimerModule.reset();
-    _delayTimerModule.disable();
-    sei();
-}
+// void Navigation::_timerOff()
+// {
+//     cli();
+//     _delayTimerModule.reset();
+//     _delayTimerModule.disable();
+//     sei();
+// }
 
 void Navigation::_chooseForwardMove()
 {
@@ -392,10 +392,10 @@ void Navigation::_chooseForwardMove()
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
     {
-        cli();
-        _delayTimerModule.reset();
-        _delayTimerModule.enable();
-        sei();
+        // cli();
+        // _delayTimerModule.reset();
+        // _delayTimerModule.enable();
+        // sei();
         _display = "FORWARD DELAY";
         _tripState = NavigationState::FORWARD_DELAY;
     }
