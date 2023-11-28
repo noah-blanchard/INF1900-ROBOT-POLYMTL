@@ -252,7 +252,7 @@ void Navigation::adjustLeft()
 void Navigation::adjustForward()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(1750);
+    _delay_ms(2000);
     stop();
     _delay_ms(200);
 }
