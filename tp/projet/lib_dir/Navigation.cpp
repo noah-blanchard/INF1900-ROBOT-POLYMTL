@@ -275,6 +275,7 @@ Move Navigation::followTrip(Move *trip)
 {
     _tripIndex = 0;
     _trip = trip;
+    _firstMove = true;
     _tripState = NavigationState::NEXT_MOVE;
 
     // uint8_t tripIndex = 0;
