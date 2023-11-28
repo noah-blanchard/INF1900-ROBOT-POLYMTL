@@ -36,7 +36,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     //_currentState = State::MODE_SELECTION;
     //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
     //_currentState = State::NAVIGATE_TRIP;
-    _currentState = State::MAKE_TRIP;
+    _currentState = State::CALCULATE_PATH;
     //_currentState = State::MAKE_TRIP;
 
     //_currentState = State::IDENTIFY_CORNER;
@@ -194,8 +194,8 @@ void Robot::_calculatePathRoutine()
     _delay_ms(1500);
 
     /// change this with the result of Make Trip selection
-    // _destination[0] = 6;
-    // _destination[1] = 3;
+    _destination[0] = 0;
+    _destination[1] = 3;
 
     char buffer[20];
     sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);

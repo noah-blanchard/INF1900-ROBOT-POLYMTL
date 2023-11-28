@@ -547,7 +547,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
     // make a for loop to make that it does the following during 8000 ms
 
-    for (uint16_t i = 0; i < 8000 / 220; i++)
+    for (uint16_t i = 0; i < 8000 / 10; i++)
     {
         // check if ir module detects, bREKZ OUT OF THE LOOP
         if (_irModule.isObstacleDetected())
@@ -563,25 +563,19 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         case LineMakerFlag::NO_ADJUSTMENT:
         {
             go(_BASE_SPEED, false);
-            _delay_ms(110);
-            stop();
-            _delay_ms(110);
+            _delay_ms(10);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
         {
             adjustLeft();
-            _delay_ms(110);
-            stop();
-            _delay_ms(110);
+            _delay_ms(10);
             break;
         }
         case LineMakerFlag::LEFT_ADJUSTMENT:
         {
             adjustRight();
-            _delay_ms(110);
-            stop();
-            _delay_ms(110);
+            _delay_ms(10);
             break;
         }
         }
