@@ -87,7 +87,7 @@ void Robot::runRoutine()
     }
     case State::MAKE_TRIP:
     {
-        _maketripModule.selectDestination(_destination);
+        _maketripModule.run(_destination);
         _currentState = State::CALCULATE_PATH;
         break;
     }

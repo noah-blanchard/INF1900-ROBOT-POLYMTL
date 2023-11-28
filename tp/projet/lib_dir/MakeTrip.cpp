@@ -30,23 +30,27 @@ ISR(INT1_vect)
 	// EIFR &= ~(1 << INTF1);
 }
 
-MakeTrip::MakeTrip() {}
+MakeTrip::MakeTrip() : _display(&DDRC, &PORTC) {}
 
-void MakeTrip::run()
+void MakeTrip::run(uint8_t* destination)
 {
+	_columnSeleted = 0;
+	_lineSeleted = 0;
+	sprintf(_buffer, "Line : %d", _lineSeleted + 1);
+	_display = _buffer;
 	while (!_confirmed)
 	{
 		validateChoice = false;
 		switch (_state)
 		{
 		case selection::SELECTLINE:
-			_state = selection::SELECTCOLUMN;
+			_selectLine();
 			break;
 		case selection::SELECTCOLUMN:
-			_state = selection::CONFIRMCHOICES;
+			_selectColumn();
 			break;
 		case selection::CONFIRMCHOICES:
-			_state = selection::FINISH;
+			__confirmChoices();
 			break;
 		}
 	}
