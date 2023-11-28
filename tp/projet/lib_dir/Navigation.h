@@ -44,7 +44,7 @@ public:
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
     Move followTrip(Move *trip);
-    static const uint8_t _BASE_SPEED = 100 ;
+    static const uint8_t _BASE_SPEED = 100;
     static const uint8_t _BACK_SPEED = 105;
     static const uint8_t _TURN_SPEED = 100;
     static const uint8_t _ADJUST_OFFSET = 30;
@@ -79,11 +79,11 @@ private:
     Orientation *_currentOrientation;
     uint8_t _tripIndex = 0;
     bool _firstMove = true;
+    uint16_t _forwardDelayCount;
     bool _preventInitForward = false;
-
     // Modules
     LineMaker _lineMakerModule;
-    //Timer _delayTimerModule;
+    // Timer _delayTimerModule;
     InfraRedSensor _irModule;
     LCM _display;
 
