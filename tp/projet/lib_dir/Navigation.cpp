@@ -161,7 +161,7 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed - 30);
+    _leftWheel.setCompareValue(speed - 10);
     _rightWheel.setCompareValue(speed);
 }
 
@@ -266,7 +266,7 @@ void Navigation::adjustLeft()
 void Navigation::adjustForward()
 {
     go(_BASE_SPEED, false);
-    _delay_ms(900);
+    _delay_ms(1000);
     stop();
     _delay_ms(200);
 }
@@ -403,7 +403,10 @@ void Navigation::_chooseForwardMove()
     {
         _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
-        _initForward();
+        if (!_preventInitForward)
+        {
+            _initForward();
+        }
     }
 }
 
@@ -606,13 +609,14 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         }
     }
 
-    if(_forwardDelayCount >= 200){
+    if (_forwardDelayCount >= 300)
+    {
         _display = "stop";
+        stop();
         _delay_ms(2000);
         _forwardDelayCount = 0;
         _tripIndex++;
         _tripState = NavigationState::NEXT_MOVE;
-            
     }
 }
 
@@ -624,7 +628,7 @@ void Navigation::_initForward()
 void Navigation::_initTurnRight()
 {
     // if it is not the first move, go forward for a bit, then turn
-    if (!_firstMove || _preventInitForward)
+    if (!_firstMove || !_preventInitForward)
     {
         go(_BASE_SPEED + _ADJUST_OFFSET, false);
         _delay_ms(1650);
