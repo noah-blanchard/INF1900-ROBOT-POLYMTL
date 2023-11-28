@@ -34,4 +34,7 @@ public:
     MakeTrip();
    void selectDestination( uint8_t* _destination);
 private:
+
+	uint8_t _lineSeleted;
+	uint8_t _columnSeleted;
 };

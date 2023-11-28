@@ -10,6 +10,10 @@
 
 Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation)
 {
+    DDRB |= (1 << PB0) | (1 << PB1);
+    // put PB0 as VCC and PB1 as GND
+    PORTB |= (1 << PB0) | (0 << PB1);
+
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
     cli();
@@ -32,8 +36,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     //_currentState = State::MODE_SELECTION;
     //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
     //_currentState = State::NAVIGATE_TRIP;
-    _currentState = State::CALCULATE_PATH;
-
+    _currentState = State::MAKE_TRIP;
     //_currentState = State::MAKE_TRIP;
 
     //_currentState = State::IDENTIFY_CORNER;
@@ -85,6 +88,7 @@ void Robot::runRoutine()
     case State::MAKE_TRIP:
     {
         _maketripModule.selectDestination(_destination);
+        _currentState = State::CALCULATE_PATH;
         break;
     }
     case State::TRAVEL_POSITION_SELECTION:
@@ -190,8 +194,8 @@ void Robot::_calculatePathRoutine()
     _delay_ms(1500);
 
     /// change this with the result of Make Trip selection
-    _destination[0] = 6;
-    _destination[1] = 3;
+    // _destination[0] = 6;
+    // _destination[1] = 3;
 
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";

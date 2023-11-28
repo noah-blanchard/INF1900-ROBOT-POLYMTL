@@ -11,8 +11,6 @@
 #define DEMO_DDR	DDRC // `Data Direction Register' AVR occup� par l'aff.
 #define DEMO_PORT	PORTC // Port AVR occup� par l'afficheur
 
-uint8_t lineSeleted = 0;
-uint8_t columnSeleted = 0;
 volatile uint8_t selectChoice = false;
 volatile uint8_t validateChoice = false;
 
@@ -54,13 +52,13 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 			case selection::SELECTLINE:
 			validateChoice = false;
 			while(!validateChoice){
-			sprintf(buf, "Line : %d", lineSeleted+1);
+			sprintf(buf, "Line : %d", _lineSeleted+1);
 			disp = buf;
 			//_delay_ms(3000);
 				if(selectChoice)
 				{
-						lineSeleted = (lineSeleted +1) % 4;
-						sprintf(buf, "Line : %d", lineSeleted+1);
+						_lineSeleted = (_lineSeleted +1) % 4;
+						sprintf(buf, "Line : %d", _lineSeleted+1);
 						disp = buf;
 						selectChoice = false;
 				}
@@ -83,13 +81,13 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 
 			case selection::SELECTCOLUMN:
 				//disp.clear();
-				//sprintf(buf, "Col : %d", columnSeleted+1);
+				//sprintf(buf, "Col : %d", _columnSeleted+1);
 				//disp = buf;
 				while(!validateChoice){
 				if(selectChoice)
 				{
-						columnSeleted = (columnSeleted +1) % 7;
-						sprintf(buf, "Col : %d", columnSeleted+1);
+						_columnSeleted = (_columnSeleted +1) % 7;
+						sprintf(buf, "Col : %d", _columnSeleted+1);
 						disp = buf;
 						//sprintf(buf, "val : %d", validateChoice);
 						//disp = buf;
@@ -100,7 +98,7 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 				//if(validateChoice)
 				//{
 					//disp.clear();
-					//sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
+					//sprintf(buf, "L %d - C %d - ok?", _lineSeleted+1,_columnSeleted+1);
 					//disp = buf;
 					//validateChoice = false;
 					//selectChoice = false;
@@ -108,7 +106,7 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 				//}
 			}
 			disp.clear();
-			sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
+			sprintf(buf, "L %d - C %d - ok?", _lineSeleted+1,_columnSeleted+1);
 			disp = buf;
 			validateChoice = false;
 			selectChoice = false;
@@ -119,7 +117,7 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 			while(!validateChoice || !selectChoice){
 				if(validateChoice)
 				{
-					sprintf(buf, "L %d - C %d", lineSeleted+1,columnSeleted+1);
+					sprintf(buf, "L %d - C %d", _lineSeleted+1,_columnSeleted+1);
 					disp = buf;
 					select = selection::FINISH;
 					//w();
@@ -127,8 +125,8 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 
 				if(selectChoice)
 				{
-					lineSeleted = 1;
-					columnSeleted=1;
+					_lineSeleted = 1;
+					_columnSeleted=1;
 					validateChoice = false;
 					selectChoice = false;
 					select = selection::SELECTLINE;
@@ -138,5 +136,7 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 		}
 	}
 	disp = "HQHQ";
+	_destination[0] = _columnSeleted;
+	_destination[1] = _lineSeleted;
 }
 
