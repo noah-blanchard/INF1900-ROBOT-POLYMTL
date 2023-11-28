@@ -147,7 +147,7 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed-20);
+    _leftWheel.setCompareValue(speed - 20);
     _rightWheel.setCompareValue(speed);
 }
 
@@ -316,22 +316,23 @@ Move Navigation::followTrip(Move *trip)
         case NavigationState::ERROR:
         {
             stop();
-            if (_nextMoveValue.orientation == Orientation::SOUTH)
-            {
-                *_currentOrientation = Orientation::NORTH;
-            }
-            else if (_nextMoveValue.orientation == Orientation::NORTH)
-            {
-                *_currentOrientation = Orientation::SOUTH;
-            }
-            else if (_nextMoveValue.orientation == Orientation::WEST)
-            {
-                *_currentOrientation = Orientation::EAST;
-            }
-            else if (_nextMoveValue.orientation == Orientation::EAST)
-            {
-                *_currentOrientation = Orientation::WEST;
-            }
+            // if (_nextMoveValue.orientation == Orientation::SOUTH)
+            // {
+            //     *_currentOrientation = Orientation::NORTH;
+            // }
+            // else if (_nextMoveValue.orientation == Orientation::NORTH)
+            // {
+            //     *_currentOrientation = Orientation::SOUTH;
+            // }
+            // else if (_nextMoveValue.orientation == Orientation::WEST)
+            // {
+            //     *_currentOrientation = Orientation::EAST;
+            // }
+            // else if (_nextMoveValue.orientation == Orientation::EAST)
+            // {
+            //     *_currentOrientation = Orientation::WEST;
+            // }
+            *_currentOrientation = _nextMoveValue.orientation;
             _currentPosition[0] = _nextMoveValue.x;
             _currentPosition[1] = _nextMoveValue.y;
             return _trip[_tripIndex];
@@ -378,7 +379,7 @@ void Navigation::_chooseForwardMove()
     {
         _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
-         _initForward();
+        _initForward();
     }
 }
 
@@ -709,7 +710,7 @@ void Navigation::_meetPost()
     stop();
     _display = "OKOKOKOK";
     _delay_ms(1000);
-     _tripState = NavigationState::ERROR;
+    _tripState = NavigationState::ERROR;
 
     // switch (lineMakerFlag)
     // {
