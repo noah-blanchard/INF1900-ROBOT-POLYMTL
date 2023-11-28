@@ -590,18 +590,18 @@ void Navigation::_moveForwardDelay(uint16_t speed)
             adjustRight();
             break;
         }
-        // case LineMakerFlag::OUTER_LEFT_DETECTION:
-        // {
-        //     _tripIndex++;
-        //     _tripState = NavigationState::NEXT_MOVE;
-        //     break;
-        // }
-        // case LineMakerFlag::OUTER_RIGHT_DETECTION:
-        // {
-        //     _tripIndex++;
-        //     _tripState = NavigationState::NEXT_MOVE;
-        //     break;
-        // }
+            // case LineMakerFlag::OUTER_LEFT_DETECTION:
+            // {
+            //     _tripIndex++;
+            //     _tripState = NavigationState::NEXT_MOVE;
+            //     break;
+            // }
+            // case LineMakerFlag::OUTER_RIGHT_DETECTION:
+            // {
+            //     _tripIndex++;
+            //     _tripState = NavigationState::NEXT_MOVE;
+            //     break;
+            // }
         }
     }
 }
@@ -614,10 +614,11 @@ void Navigation::_initForward()
 void Navigation::_initTurnRight()
 {
     // if it is not the first move, go forward for a bit, then turn
-    if (!_firstMove)
+    if (!_firstMove || _preventInitForward)
     {
         go(_BASE_SPEED + _ADJUST_OFFSET, false);
-        _delay_ms(1450);
+        _delay_ms(1650);
+        _preventInitForward = false;
     }
     else
     {
@@ -633,10 +634,11 @@ void Navigation::_initTurnRight()
 void Navigation::_initTurnLeft()
 {
     // if it is not the first move, go forward for a bit, then turn
-    if (!_firstMove)
+    if (!_firstMove || _preventInitForward)
     {
         go(_BASE_SPEED + _ADJUST_OFFSET, false);
-        _delay_ms(1450);
+        _delay_ms(1650);
+        _preventInitForward = false;
     }
     else
     {
@@ -675,6 +677,7 @@ void Navigation::_turnRight()
         // so stop moving and go to forward state
         stop();
         _delay_ms(1000);
+        _preventInitForward = true;
         if (_irModule.isObstacleDetected())
         {
             _updateCurrentPosition();
@@ -715,6 +718,7 @@ void Navigation::_turnLeft()
         // if we detect the line on the left, it means we met the line
         // so stop moving and go to forward state
         stop();
+        _preventInitForward = true;
         _delay_ms(1000);
         if (_irModule.isObstacleDetected())
         {

@@ -79,6 +79,7 @@ private:
     Orientation *_currentOrientation;
     uint8_t _tripIndex = 0;
     bool _firstMove = true;
+    bool _preventInitForward = false;
 
     // Modules
     LineMaker _lineMakerModule;
