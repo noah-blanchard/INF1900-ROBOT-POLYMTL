@@ -147,7 +147,7 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed - 20);
+    _leftWheel.setCompareValue(speed - 30);
     _rightWheel.setCompareValue(speed);
 }
 
@@ -251,8 +251,8 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    go(_BASE_SPEED, false);
-    _delay_ms(2000);
+    go(_BASE_SPEED + _ADJUST_OFFSET, false);
+    _delay_ms(1650);
     stop();
     _delay_ms(200);
 }
@@ -669,7 +669,16 @@ void Navigation::_turnRight()
         // so stop moving and go to forward state
         stop();
         _delay_ms(1000);
-        _chooseForwardMove();
+        if (_irModule.isObstacleDetected())
+        {
+            _updateCurrentPosition();
+            _tripState = NavigationState::MEET_POST;
+        }
+        else
+        {
+            _chooseForwardMove();
+        }
+
         break;
     }
     }
@@ -701,7 +710,15 @@ void Navigation::_turnLeft()
         // so stop moving and go to forward state
         stop();
         _delay_ms(1000);
-        _chooseForwardMove();
+        if (_irModule.isObstacleDetected())
+        {
+            _updateCurrentPosition();
+            _tripState = NavigationState::MEET_POST;
+        }
+        else
+        {
+            _chooseForwardMove();
+        }
         break;
     }
     }
@@ -710,8 +727,6 @@ void Navigation::_turnLeft()
 void Navigation::_meetPost()
 {
     // turn around 180 degrees until a line is detected
-
-    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
     _nextMoveValue = _trip[_tripIndex - 1];
     stop();
     _display = "OKOKOKOK";
