@@ -4,11 +4,25 @@
  */
 #include "Navigation.h"
 
-volatile bool delayElapsed = false;
-ISR(TIMER2_COMPA_vect)
-{
-    delayElapsed = true;
-}
+// volatile bool delayElapsed = false;
+// ISR(TIMER2_COMPA_vect)
+// {
+//     delayElapsed = true;
+// }
+
+// void configureTimer2(){
+
+//     // i want timer two to make interruption every 2 seconds
+//     // cpu freq is 8MHz
+//     // prescaler is 256
+
+//     TCCR2A = 0;
+//     TCCR2B = 0;
+
+//     TCNT2 = 0;
+
+//     OCR2A = 249;
+// }
 
 /**
  * @brief Validates the speed value to ensure it is within the range of 0 to Wheel::MAX_COMPARE_VALUE.
@@ -33,12 +47,12 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC
     PORTD &= ~(1 << PD6);
     PORTD &= ~(1 << PD7);
 
-    TimerConfig timerConfig;
-    timerConfig.timer = 2;
-    timerConfig.prescaler = 256;
-    timerConfig.delay_ms = 6000;
+    // TimerConfig timerConfig;
+    // timerConfig.timer = 2;
+    // timerConfig.prescaler = 256;
+    // timerConfig.delay_ms = 6000;
 
-    _delayTimerModule = Timer(timerConfig);
+    //_delayTimerModule = Timer(timerConfig);
 }
 
 /**
@@ -545,50 +559,50 @@ void Navigation::_moveForward(uint16_t speed)
 
 void Navigation::_moveForwardDelay(uint16_t speed)
 {
-    // so here we will user timer 2 to trigger interrupt and stop moving forward in this case
+    if (_irModule.isObstacleDetected())
+    {
+        stop();
+        _display = "POTITO";
+        _delay_ms(1000);
+        _tripState = NavigationState::MEET_POST;
+    }
+    else
+    {
 
-    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-
-    // make a for loop to make that it does the following during 8000 ms
-        if (_irModule.isObstacleDetected())
-        {
-            stop();
-            _delay_ms(1000);
-            _tripState = NavigationState::MEET_POST;
-        }
+        LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+        _display = "MOVE FORWARD NOW";
 
         switch (lineMakerFlag)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(_BASE_SPEED, false);
+            go(speed, false);
             _delay_ms(10);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
         {
             adjustLeft();
-            _delay_ms(10);
             break;
         }
         case LineMakerFlag::LEFT_ADJUSTMENT:
         {
             adjustRight();
-            _delay_ms(10);
             break;
         }
+        // case LineMakerFlag::OUTER_LEFT_DETECTION:
+        // {
+        //     _tripIndex++;
+        //     _tripState = NavigationState::NEXT_MOVE;
+        //     break;
+        // }
+        // case LineMakerFlag::OUTER_RIGHT_DETECTION:
+        // {
+        //     _tripIndex++;
+        //     _tripState = NavigationState::NEXT_MOVE;
+        //     break;
+        // }
         }
-
-    if (delayElapsed)
-    {
-        stop();
-        cli();
-        _delayTimerModule.disable();
-        _delayTimerModule.reset();
-        sei();
-        _tripIndex++;
-        delayElapsed = false;
-        _tripState = NavigationState::NEXT_MOVE;
     }
 }
 

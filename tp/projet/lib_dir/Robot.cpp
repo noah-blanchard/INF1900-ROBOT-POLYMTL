@@ -200,14 +200,14 @@ void Robot::_calculatePathRoutine()
     char buffer[20];
     sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);
     _display = buffer;
-    _delay_ms(3000);
+    _delay_ms(500);
 
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
-    _delay_ms(1500);
+    _delay_ms(500);
     Orientation moveOrientation = _moveArray[0].orientation;
     _display = "NEXT ORIENTATION";
-    _delay_ms(3000);
+    _delay_ms(500);
     switch (moveOrientation)
     {
     case Orientation::NORTH:
@@ -230,7 +230,7 @@ void Robot::_calculatePathRoutine()
         _display = "NOT FOUND";
         break;
     }
-    _delay_ms(3000);
+    _delay_ms(500);
     _currentState = State::NAVIGATE_TRIP;
 }
 
@@ -247,10 +247,10 @@ void Robot::_navigateTripRoutine()
         _beginning[1] = _currentPosition[1];
         sprintf(buffer, "b1 %d  b2 %d", _beginning[0], _beginning[1]);
         _display = buffer;
-        _delay_ms(2000);
+        _delay_ms(500);
         sprintf(buffer, "b1 %d  b2 %d", tripResult.x, tripResult.y);
         _display = buffer;
-        _delay_ms(2000);
+        _delay_ms(500);
         _dijkstraModule.removeNode(tripResult.x, tripResult.y);
         _currentState = State::CALCULATE_PATH;
     }
