@@ -203,7 +203,7 @@ bool IdentifyCorner::_simpleCompareMAtch()
         _displayCurrentIntersectionCount();
         return true;
     }
-    else if((_firstLineCount == 2) && (_secondLineCount == 1) && (_blockIncrementation == false))
+    else if ((_firstLineCount == 2) && (_secondLineCount == 1) && (_blockIncrementation == false))
     {
         _displayCurrentIntersectionCount();
         return true;
@@ -236,6 +236,27 @@ bool IdentifyCorner::_simpleCompareMAtch()
         makeSound();
         return true;
     }
+    else if ((_firstLineCount == 2) && (_secondLineCount == 1) && _blockIncrementation)
+    {
+        // LCTH
+        _displayCurrentIntersectionCount();
+        makeSound();
+        return true;
+    }
+    else if ((_firstLineCount == 1) && (_secondLineCount == 2) && _blockIncrementation)
+    {
+        // LCTV
+        _displayCurrentIntersectionCount();
+        makeSound();
+        return true;
+    }
+    // else if ((_firstLineCount == 1) && (_secondLineCount == 2))
+    // {
+    //     // RCTH
+    //     _displayCurrentIntersectionCount();
+    //     makeSound();
+    //     return true;
+    // }
     return false;
 }
 
