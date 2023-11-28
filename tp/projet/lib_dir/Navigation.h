@@ -79,6 +79,7 @@ private:
     Orientation *_currentOrientation;
     uint8_t _tripIndex = 0;
     bool _firstMove = true;
+    uint16_t _forwardDelayCount;
 
     // Modules
     LineMaker _lineMakerModule;

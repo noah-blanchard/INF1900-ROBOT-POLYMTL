@@ -568,9 +568,10 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     }
     else
     {
+        _forwardDelayCount++;
 
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-        _display = "MOVE FORWARD NOW";
+        _display = "MOVE DELAY";
 
         switch (lineMakerFlag)
         {
@@ -603,6 +604,15 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         //     break;
         // }
         }
+    }
+
+    if(_forwardDelayCount >= 200){
+        _display = "stop";
+        _delay_ms(2000);
+        _forwardDelayCount = 0;
+        _tripIndex++;
+        _tripState = NavigationState::NEXT_MOVE;
+            
     }
 }
 
