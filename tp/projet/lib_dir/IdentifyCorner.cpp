@@ -522,7 +522,8 @@ void IdentifyCorner::_goForwardSecondLine()
         {
             _display.clear();
             _display << "simple";
-            //_delay_ms(5000);
+            makeSound();
+            _delay_ms(2000);
             _state = IdentifyCornerState::TURN_AROUND_SECOND_LINE;
         }
         else
