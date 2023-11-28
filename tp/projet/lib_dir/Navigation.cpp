@@ -161,7 +161,7 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed - 10);
+    _leftWheel.setCompareValue(speed - 5);
     _rightWheel.setCompareValue(speed);
 }
 
