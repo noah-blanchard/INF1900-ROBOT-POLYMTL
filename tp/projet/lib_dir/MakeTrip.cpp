@@ -17,11 +17,12 @@ volatile uint8_t selectChoice = false;
 volatile uint8_t validateChoice = false;
 
 
+
 ISR ( INT0_vect) {
 // select Choice
 selectChoice = true;
-//EIFR |= (1 << INTF0) ;
-EIFR &= ~(1 << INTF0);
+EIFR |= (1 << INTF0) ;
+//EIFR &= ~(1 << INTF0);
 
 
 }
@@ -29,8 +30,8 @@ EIFR &= ~(1 << INTF0);
 ISR ( INT1_vect) {
 // validate Choice
 validateChoice = true;
-//EIFR |= (1 << INTF1) ;
-EIFR &= ~(1 << INTF1);
+EIFR |= (1 << INTF1) ;
+//EIFR &= ~(1 << INTF1);
 
 
 }
@@ -51,8 +52,11 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 		switch(select)
 		{
 			case selection::SELECTLINE:
+			validateChoice = false;
+			while(!validateChoice){
 			sprintf(buf, "Line : %d", lineSeleted+1);
 			disp = buf;
+			//_delay_ms(3000);
 				if(selectChoice)
 				{
 						lineSeleted = (lineSeleted +1) % 4;
@@ -60,47 +64,59 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 						disp = buf;
 						selectChoice = false;
 				}
-				
-				if(validateChoice)
-				{
-					validateChoice = false;
-					selectChoice = false;
-					select = selection::SELECTCOLUMN;
-				}
-					
-				
+				//disp = "heyyy";
+				//_delay_ms(2000);
+				//if(validateChoice)
+				//{
+					//validateChoice = false;
+					//selectChoice = false;
+					//select = selection::SELECTCOLUMN;
+				//}
+			}
+
+			disp = "hiii";
+			_delay_ms(2000);
+			validateChoice = false;
+			selectChoice = false;
+			select = selection::SELECTCOLUMN;
             break;
 
 			case selection::SELECTCOLUMN:
-				disp.clear();
-				sprintf(buf, "Col : %d", columnSeleted+1);
-				disp = buf;
-				
+				//disp.clear();
+				//sprintf(buf, "Col : %d", columnSeleted+1);
+				//disp = buf;
+				while(!validateChoice){
 				if(selectChoice)
 				{
 						columnSeleted = (columnSeleted +1) % 7;
 						sprintf(buf, "Col : %d", columnSeleted+1);
 						disp = buf;
+						//sprintf(buf, "val : %d", validateChoice);
+						//disp = buf;
+
 						selectChoice = false;
 				}
 
-				if(validateChoice)
-				{
-				validateChoice = false;
-				selectChoice = false;
-				select = selection::CONFIRMCHOICES;
-				disp.clear();
-				sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
-				disp = buf;
-				}
-				//disp.clear();
-				//sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
-				//disp = buf;
-				//w();
-
+				//if(validateChoice)
+				//{
+					//disp.clear();
+					//sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
+					//disp = buf;
+					//validateChoice = false;
+					//selectChoice = false;
+					//select = selection::CONFIRMCHOICES;
+				//}
+			}
+			disp.clear();
+			sprintf(buf, "L %d - C %d - ok?", lineSeleted+1,columnSeleted+1);
+			disp = buf;
+			validateChoice = false;
+			selectChoice = false;
+			select = selection::CONFIRMCHOICES;
             break;
 
 			case selection::CONFIRMCHOICES:
+			while(!validateChoice || !selectChoice){
 				if(validateChoice)
 				{
 					sprintf(buf, "L %d - C %d", lineSeleted+1,columnSeleted+1);
@@ -117,7 +133,7 @@ void MakeTrip::selectDestination(uint8_t* _destination)
 					selectChoice = false;
 					select = selection::SELECTLINE;
 				}
-				
+			}	
             break;
 		}
 	}
