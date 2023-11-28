@@ -546,10 +546,6 @@ void Navigation::_moveForwardDelay(uint16_t speed)
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
     // make a for loop to make that it does the following during 8000 ms
-
-    for (uint16_t i = 0; i < 8000 / 10; i++)
-    {
-        // check if ir module detects, bREKZ OUT OF THE LOOP
         if (_irModule.isObstacleDetected())
         {
             stop();
@@ -579,10 +575,6 @@ void Navigation::_moveForwardDelay(uint16_t speed)
             break;
         }
         }
-    }
-    stop();
-    _tripIndex++;
-    _tripState = NavigationState::NEXT_MOVE;
 
     // if (delayElapsed)
     // {
