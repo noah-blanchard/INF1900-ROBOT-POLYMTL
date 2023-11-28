@@ -54,6 +54,9 @@ void MakeTrip::run(uint8_t *destination)
 			break;
 		}
 	}
+
+	destination[0] = _columnSeleted;
+	destination[1] = _lineSeleted;
 }
 
 void MakeTrip::_selectLine()
@@ -110,6 +113,21 @@ void MakeTrip::__confirmChoices()
 			_select = true;
 		}
 		selectChoice = false;
+	}
+
+	if (validateChoice)
+	{
+		if (_select == true)
+		{
+			_confirmed = true;
+			_state = selection::FINISH;
+		}
+		else
+		{
+			_confirmed = false;
+			_state = selection::SELECTLINE;
+		}
+		validateChoice = false;
 	}
 }
 
