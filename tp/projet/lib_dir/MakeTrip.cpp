@@ -50,7 +50,7 @@ void MakeTrip::run(uint8_t *destination)
 			_selectColumn();
 			break;
 		case selection::CONFIRMCHOICES:
-			__confirmChoices();
+			_confirmChoices();
 			break;
 		}
 	}
@@ -67,6 +67,7 @@ void MakeTrip::_selectLine()
 		_display = _buffer;
 		_lineSeleted = (_lineSeleted + 1) % 4;
 		selectChoice = false;
+		_delay_ms(500);
 	}
 
 	if (validateChoice)
@@ -75,6 +76,7 @@ void MakeTrip::_selectLine()
 		_display = _buffer;
 		_state = selection::SELECTCOLUMN;
 		validateChoice = false;
+		_delay_ms(500);
 	}
 }
 
@@ -86,33 +88,36 @@ void MakeTrip::_selectColumn()
 		_display = _buffer;
 		_columnSeleted = (_columnSeleted + 1) % 4;
 		selectChoice = false;
+		_delay_ms(500);
 	}
 
 	if (validateChoice)
 	{
 		sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted, _columnSeleted);
+		_delay_ms(500);
 		_state = selection::CONFIRMCHOICES;
 		validateChoice = false;
+		_delay_ms(500);
 	}
 }
 
-void MakeTrip::__confirmChoices()
+void MakeTrip::_confirmChoices()
 {
 	if (selectChoice)
 	{
-		if (_select == true)
+		_select = !_select;
+		if (_select)
 		{
 			sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted, _columnSeleted);
 			_display = _buffer;
-			_select = false;
 		}
 		else
 		{
 			sprintf(_buffer, "(%d, %d) OK?\nNON", _lineSeleted, _columnSeleted);
 			_display = _buffer;
-			_select = true;
 		}
 		selectChoice = false;
+		_delay_ms(500);
 	}
 
 	if (validateChoice)
@@ -128,6 +133,7 @@ void MakeTrip::__confirmChoices()
 			_state = selection::SELECTLINE;
 		}
 		validateChoice = false;
+		_delay_ms(500);
 	}
 }
 
