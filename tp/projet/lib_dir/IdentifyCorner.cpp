@@ -158,8 +158,10 @@ void IdentifyCorner::_goForward()
             _delay_ms(2000);
             _displayCurrentIntersectionCount();
             _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
+        }else{
+            _state = IdentifyCornerState::TURN_AROUND;
         }
-        _state = IdentifyCornerState::TURN_AROUND;
+      
         break;
     }
         //_displayCurrentIntersectionCount();
@@ -317,7 +319,7 @@ void IdentifyCorner::_turnAroundSecondLine()
 {
     //_displayCurrentIntersectionCount();
     _display.clear();
-    _display << "turn around";
+    _display << "SEC turn around";
     // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
@@ -336,7 +338,7 @@ void IdentifyCorner::_turnAroundSecondLine()
         _delay_ms(1000);
         _displayCurrentIntersectionCount();
         _delay_ms(2000);
-        _state = IdentifyCornerState::GO_BACK_SECOND_LINE;
+        _state = IdentifyCornerState::GO_INIT_POS;
     }
 }
 
