@@ -82,6 +82,11 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             _goForwardThirdLine();
             _display = "third line";
             break;
+
+        case IdentifyCornerState::GO_FORWARD_SPECIAL_CASE:
+            _goForwardThirdLine();
+            _display = "SPEC CASE";
+            break;
         }
     }
     // It found the right intersection so call function compare match
@@ -605,13 +610,36 @@ void IdentifyCorner::_goForwardThirdLine()
             _firstLineCount++;
             _blockIncrementation = true;
 
-            if (_furtherCompareMatch())
+           /* if (_furtherCompareMatch())
             {
                 makeSound();
 
                 _displayCurrentIntersectionCount();
                 _state = IdentifyCornerState::TURN_AROUND;
             }
+            */
+        }
+       // _navModule.adjustRight();
+        isRight = true;
+        break;
+    }
+
+    case LineMakerFlag::FULL_CROSSROAD:
+    {
+        if (!_blockIncrementation)
+        {
+            _firstLineCount = _firstLineCount + 2;
+            _secondLineCount++;
+            _blockIncrementation = true;
+
+           /* if (_furtherCompareMatch())
+            {
+                makeSound();
+
+                _displayCurrentIntersectionCount();
+                _state = IdentifyCornerState::TURN_AROUND;
+            }
+            */
         }
        // _navModule.adjustRight();
         isRight = true;
@@ -623,13 +651,14 @@ void IdentifyCorner::_goForwardThirdLine()
         {
             _secondLineCount++;
             _blockIncrementation = true;
-            if (_furtherCompareMatch())
+            /*if (_furtherCompareMatch())
             {
                 makeSound();
 
                 _displayCurrentIntersectionCount();
                 _state = IdentifyCornerState::TURN_AROUND;
             }
+            */
         }
       //  _navModule.adjustLeft();
         isRight = false;

@@ -33,6 +33,7 @@ enum class IdentifyCornerState
     TURN_BACK_FIRST_LINE,
     TURN_AROUND_THIRD_LINE,
     GO_BACK_THIRD_LINE,
+    GO_FORWARD_SPECIAL_CASE,
     TURN_BACK_SECOND_LINE,
 };
 class IdentifyCorner
