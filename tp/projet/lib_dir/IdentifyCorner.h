@@ -8,7 +8,6 @@
 #include "sound.h"
 #include "lcm_so1602dtr_m_fw.h"
 
-
 // enum class IdentifyCornerState
 // {
 //     GO_FORWARD,
@@ -18,6 +17,18 @@
 //     RECOGNIZE,
 //     STOP
 // };
+
+enum class Corner
+{
+    LCBH,
+    LCBV,
+    LCTH,
+    LCTV,
+    RCTH,
+    RCTV,
+    RCBH,
+    RCBV
+};
 
 enum class IdentifyCornerState
 {
@@ -35,6 +46,9 @@ enum class IdentifyCornerState
     GO_BACK_THIRD_LINE,
     GO_FORWARD_SPECIAL_CASE,
     TURN_BACK_SECOND_LINE,
+    GO_INIT_POS,
+    TURN_INIT_POS,
+    FINISH,
 };
 class IdentifyCorner
 {
@@ -55,11 +69,13 @@ private:
     uint8_t _firstLineCount = 0;
     uint8_t _secondLineCount = 0;
 
-
     // routines
     void _goForward();
     void _turnAround();
     void _goBack();
+    void _goInitPos();
+    void _turnInitPos();
+
     void _turnSecondLine();
     void _turnBackFirstLine();
     void _turnBackSecondLine();
@@ -71,18 +87,20 @@ private:
     bool _simpleCompareMAtch();
     void makeSound();
     bool _furtherCompareMatch();
-    void  _turnAroundSecondLine();
-    void  _turnAroundThirdLine();
+    void _turnAroundSecondLine();
+    void _turnAroundThirdLine();
 
     bool isRight = false;
     bool _sidefirst = false;
 
+    Corner _initCorner;
+
     void _displayCurrentIntersectionCount();
 
-    //sequence
-    // uint16_t _sequence = 0b0000000000000000;
-    // uint8_t _currentSequence;
-    // uint8_t _bitshift = 0;
+    // sequence
+    //  uint16_t _sequence = 0b0000000000000000;
+    //  uint8_t _currentSequence;
+    //  uint8_t _bitshift = 0;
     bool _found = false;
     bool _blockIncrementation;
 
