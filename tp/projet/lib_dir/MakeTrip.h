@@ -45,6 +45,7 @@ private:
 	uint8_t _lineSeleted;
 	uint8_t _columnSeleted;
 	LCM _display;
+	bool _select = true;
 
 	char _buffer[25];
 };

@@ -32,7 +32,7 @@ ISR(INT1_vect)
 
 MakeTrip::MakeTrip() : _display(&DDRC, &PORTC) {}
 
-void MakeTrip::run(uint8_t* destination)
+void MakeTrip::run(uint8_t *destination)
 {
 	_columnSeleted = 0;
 	_lineSeleted = 0;
@@ -87,8 +87,29 @@ void MakeTrip::_selectColumn()
 
 	if (validateChoice)
 	{
+		sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted, _columnSeleted);
 		_state = selection::CONFIRMCHOICES;
 		validateChoice = false;
+	}
+}
+
+void MakeTrip::__confirmChoices()
+{
+	if (selectChoice)
+	{
+		if (_select == true)
+		{
+			sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted, _columnSeleted);
+			_display = _buffer;
+			_select = false;
+		}
+		else
+		{
+			sprintf(_buffer, "(%d, %d) OK?\nNON", _lineSeleted, _columnSeleted);
+			_display = _buffer;
+			_select = true;
+		}
+		selectChoice = false;
 	}
 }
 
