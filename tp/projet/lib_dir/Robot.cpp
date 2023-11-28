@@ -197,6 +197,11 @@ void Robot::_calculatePathRoutine()
     // _destination[0] = 6;
     // _destination[1] = 3;
 
+    char buffer[20];
+    sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);
+    _display = buffer;
+    _delay_ms(3000);
+
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
     _delay_ms(1500);

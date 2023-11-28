@@ -86,7 +86,7 @@ void MakeTrip::_selectColumn()
 	{
 		sprintf(_buffer, "Col : %d", _columnSeleted + 1);
 		_display = _buffer;
-		_columnSeleted = (_columnSeleted + 1) % 4;
+		_columnSeleted = (_columnSeleted + 1) % 7;
 		selectChoice = false;
 		_delay_ms(500);
 	}
