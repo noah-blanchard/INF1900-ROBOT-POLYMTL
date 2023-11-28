@@ -77,8 +77,8 @@ private:
     // move array
     Move _moveArray[28];
 
-    uint8_t _destination[2];
-    uint8_t _beginning[2];
+    uint8_t _destination[2] = {0, 0};
+    uint8_t _beginning[2] = {0, 0};
 
     // void _customDelay(uint16_t delay);
     // void _pause();
