@@ -33,8 +33,17 @@ class MakeTrip
 public:
     MakeTrip();
    void selectDestination( uint8_t* _destination);
+   void run();
 private:
 
+	void _selectLine();
+	void _selectColumn();
+
+	bool _confirmed = false;
+	selection _state = selection::SELECTLINE;
 	uint8_t _lineSeleted;
 	uint8_t _columnSeleted;
+	LCM _display;
+
+	char _buffer[25];
 };
