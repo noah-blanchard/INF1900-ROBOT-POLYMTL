@@ -140,7 +140,7 @@ void IdentifyCorner::_goForward()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-       // _navModule.adjustRight();
+        // _navModule.adjustRight();
         isRight = true;
         break;
     }
@@ -167,6 +167,13 @@ void IdentifyCorner::_goForward()
     case LineMakerFlag::NO_LINE:
     {
         _navModule.adjustForward();
+        if (_simpleCompareMAtch())
+        {
+            makeSound();
+            _delay_ms(2000);
+            _displayCurrentIntersectionCount();
+            _state = IdentifyCornerState::TURN_AROUND;
+        }
         _state = IdentifyCornerState::TURN_AROUND;
         break;
     }
@@ -191,28 +198,38 @@ bool IdentifyCorner::_simpleCompareMAtch()
     // add case 1-1 (right left and left right)
     _displayCurrentIntersectionCount();
     _delay_ms(5000);
-    if ((_firstLineCount == 3) and (_secondLineCount == 2))
+    if ((_firstLineCount == 1) && (_secondLineCount == 0) && (_blockIncrementation == false))
+    {
+        _displayCurrentIntersectionCount();
+        return true;
+    }
+    else if((_firstLineCount == 2) && (_secondLineCount == 1) && (_blockIncrementation == false))
+    {
+        _displayCurrentIntersectionCount();
+        return true;
+    }
+    else if ((_firstLineCount == 3) && (_secondLineCount == 2))
     {
         makeSound();
         _delay_ms(2000);
         _displayCurrentIntersectionCount();
         return true;
     }
-    else if ((_firstLineCount == 2) and (_secondLineCount == 3))
+    else if ((_firstLineCount == 2) && (_secondLineCount == 3))
     {
 
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if ((_firstLineCount == 1) and (_secondLineCount == 1) and _sidefirst)
+    else if ((_firstLineCount == 1) && (_secondLineCount == 1) && _sidefirst)
     {
         // LCBV
         _displayCurrentIntersectionCount();
         makeSound();
         return true;
     }
-    else if ((_firstLineCount == 1) and (_secondLineCount == 1 and !_sidefirst))
+    else if ((_firstLineCount == 1) && (_secondLineCount == 1 && !_sidefirst))
     {
         // LCBH
         _displayCurrentIntersectionCount();
@@ -224,7 +241,7 @@ bool IdentifyCorner::_simpleCompareMAtch()
 
 bool IdentifyCorner::_furtherCompareMatch()
 {
-     //if (_firstLineCount == 5 and _secondLineCount == 2)
+    // if (_firstLineCount == 5 and _secondLineCount == 2)
     if (_firstLineCount == 5 and _secondLineCount == 2)
     {
         // LCTH -- good
@@ -246,7 +263,7 @@ bool IdentifyCorner::_furtherCompareMatch()
         makeSound();
         return true;
     }
-    //else if (_firstLineCount == 4 and _secondLineCount == 1)
+    // else if (_firstLineCount == 4 and _secondLineCount == 1)
     else if (_firstLineCount == 4 and _secondLineCount == 1)
     {
         // RCTV this case has to be covered;
@@ -373,7 +390,7 @@ void IdentifyCorner::_goBackSecondLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
-         _navModule.adjustForward();
+        _navModule.adjustForward();
         _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -393,7 +410,7 @@ void IdentifyCorner::_goBackThirdLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
-         _navModule.adjustForward();
+        _navModule.adjustForward();
         _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -537,7 +554,7 @@ void IdentifyCorner::_goForwardSecondLine()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-       // _navModule.adjustRight();
+        // _navModule.adjustRight();
         isRight = true;
         break;
     }
@@ -588,7 +605,7 @@ void IdentifyCorner::_goForwardThirdLine()
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
-         _navModule.adjustForward();
+        _navModule.adjustForward();
         if (_furtherCompareMatch())
         {
             makeSound();
@@ -612,42 +629,42 @@ void IdentifyCorner::_goForwardThirdLine()
             _firstLineCount++;
             _blockIncrementation = true;
 
-           /* if (_furtherCompareMatch())
-            {
-                makeSound();
+            /* if (_furtherCompareMatch())
+             {
+                 makeSound();
 
-                _displayCurrentIntersectionCount();
-                _state = IdentifyCornerState::TURN_AROUND;
-            }
-            */
+                 _displayCurrentIntersectionCount();
+                 _state = IdentifyCornerState::TURN_AROUND;
+             }
+             */
         }
-       // _navModule.adjustRight();
+        // _navModule.adjustRight();
         isRight = true;
         break;
     }
 
-    // case LineMakerFlag::FULL_CROSSROAD:
-    // {
+        // case LineMakerFlag::FULL_CROSSROAD:
+        // {
 
-    //     if (!_blockIncrementation)
-    //     {
-    //         _firstLineCount = _firstLineCount + 2;
-    //         _secondLineCount++;
-    //         _blockIncrementation = true;
+        //     if (!_blockIncrementation)
+        //     {
+        //         _firstLineCount = _firstLineCount + 2;
+        //         _secondLineCount++;
+        //         _blockIncrementation = true;
 
-    //        /* if (_furtherCompareMatch())
-    //         {
-    //             makeSound();
+        //        /* if (_furtherCompareMatch())
+        //         {
+        //             makeSound();
 
-    //             _displayCurrentIntersectionCount();
-    //             _state = IdentifyCornerState::TURN_AROUND;
-    //         }
-    //         */
-    //     }
-    //    // _navModule.adjustRight();
-    //     isRight = true;
-    //     break;
-    // }
+        //             _displayCurrentIntersectionCount();
+        //             _state = IdentifyCornerState::TURN_AROUND;
+        //         }
+        //         */
+        //     }
+        //    // _navModule.adjustRight();
+        //     isRight = true;
+        //     break;
+        // }
 
     case LineMakerFlag::OUTER_LEFT_DETECTION:
         if (!_blockIncrementation)
@@ -663,7 +680,7 @@ void IdentifyCorner::_goForwardThirdLine()
             }
             */
         }
-      //  _navModule.adjustLeft();
+        //  _navModule.adjustLeft();
         isRight = false;
         break;
     }
