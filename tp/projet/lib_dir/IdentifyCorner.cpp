@@ -63,6 +63,7 @@ IdentifyCorner::~IdentifyCorner()
 
     _display.clear();
     _displayInitPos();
+    _led.turnLedGreen();
 
     return;
 }
