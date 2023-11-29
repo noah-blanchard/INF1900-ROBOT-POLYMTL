@@ -9,12 +9,6 @@ Sound::Sound()
     PORTB &= ~(1 << PB5);
 }
 
-// Sound::Sound()
-// {
-//     DDRD |= (1 << PD7) | (1 << PD6);
-//     PORTD |= (1 << PD7);
-//     PORTD &= ~(1 << PD6);
-// }
 
 void Sound::stopSound()
 {
@@ -22,25 +16,6 @@ void Sound::stopSound()
     TCCR0A &= ~(1 << COM0A0);
 }
 
-// void Sound::stopSound()
-// {
-//     PORTD &= ~(1 << PD7);
-//     TCCR2A &= ~(1 << COM2A0);
-// }
-
-// void Sound::makeSound(uint16_t frequency)
-// {
-//     uint32_t timing = (F_CPU / (2. * 256 * frequency)) - 1.;
-//     TCNT2 = 0;
-    
-//     OCR2A = timing; // On initialise le timer 2
-
-//     TCCR2A |= 1 << COM2A0;
-
-//     TCCR2A |= 1 << WGM21;
-    
-//     TCCR2B |= (1 << CS22) | (1 << CS21); // /256
-// }
 
 void Sound::makeSound(uint16_t frequency)
 {
@@ -56,17 +31,6 @@ void Sound::makeSound(uint16_t frequency)
     TCCR0B |= (1 << CS02);
 }
 
-// void Sound::makeSound(uint16_t frequency)
-// {
-//     uint32_t timing = ((F_CPU / (2. * 256 * frequency)) - 1.);
-
-//     TCNT0 = 0;
-    
-//     OCR0A = timing;
-
-//     TCCR0A = (1 << WGM01) | (1 << WGM00)  | (1 << COM0A1); 
-//     TCCR0B = (1 << CS02);  
-// }
 
 void Sound::chooseFrequency(uint8_t note)
 {

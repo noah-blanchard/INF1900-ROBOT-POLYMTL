@@ -140,6 +140,8 @@ void IdentifyCorner::_goForwardFirstLine()
 void IdentifyCorner::makeSound()
 {
     _sound.chooseFrequency(81);
+    _delay_ms(1000);
+    _sound.stopSound();
 }
 void IdentifyCorner::_displayCurrentIntersectionCount()
 {
