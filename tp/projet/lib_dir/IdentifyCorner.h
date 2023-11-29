@@ -69,6 +69,7 @@ private:
     void _goForwardSecondLine();
     bool _simpleCompareMAtch();
     void _turnAroundSecondLine();
+    void _displayInitPos();
 
     bool isRight = false;
     bool _sidefirst = false;

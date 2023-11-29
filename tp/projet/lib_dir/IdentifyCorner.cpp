@@ -6,10 +6,6 @@ IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC)
 
 IdentifyCorner::~IdentifyCorner()
 {
-}
-
-void IdentifyCorner::identificationProcess(uint8_t *_beginning)
-{
     _display.clear();
     while (!_found)
     {
@@ -63,10 +59,13 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
         }
     }
 
+    _display.clear();
+    _displayInitPos();
+
     return;
 }
 
-// go forward should follow the line using the line maker module until no line is detected
+// go forward on the first line met by the robot
 void IdentifyCorner::_goForwardFirstLine()
 {
     _display.clear();
@@ -221,43 +220,6 @@ bool IdentifyCorner::_simpleCompareMAtch()
     return false;
 }
 
-bool IdentifyCorner::_furtherCompareMatch()
-{
-    // if (_firstLineCount == 5 and _secondLineCount == 2)
-    if (_firstLineCount == 5 and _secondLineCount == 2)
-    {
-        // LCTH -- good
-        _displayCurrentIntersectionCount();
-        makeSound();
-        return true;
-    }
-    else if (_firstLineCount == 1 and _secondLineCount == 3)
-    {
-        // LCTV
-        _displayCurrentIntersectionCount();
-        makeSound();
-        return true;
-    }
-    else if (_firstLineCount == 4 and _secondLineCount == 2)
-    {
-        // RCTH
-        _displayCurrentIntersectionCount();
-        makeSound();
-        return true;
-    }
-    // else if (_firstLineCount == 4 and _secondLineCount == 1)
-    else if (_firstLineCount == 4 and _secondLineCount == 1)
-    {
-        // RCTV this case has to be covered;
-
-        //_displayCurrentIntersectionCount();
-        // makeSound();
-        _display.clear();
-        _display << "not found";
-        return false;
-    }
-}
-
 // turn around should turn around
 void IdentifyCorner::_turnAround()
 {
@@ -376,7 +338,6 @@ void IdentifyCorner::_turnInitPos()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _display = "BACK HOME";
         _delay_ms(2000);
         _found = true;
         _state = IdentifyCornerState::FINISH;
@@ -551,5 +512,62 @@ void IdentifyCorner::_goForwardSecondLine()
         //_navModule.adjustLeft();
         isRight = false;
         break;
+    }
+}
+
+void IdentifyCorner::_displayInitPos()
+{
+    _display.clear();
+
+    switch (_initCorner)
+    {
+    case Corner::LCTH:
+    {
+        _display.write("(1, 1)");
+        _display.write("EST", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::LCTV:
+    {
+        _display.write("(1, 1)");
+        _display.write("SUD", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::RCTH:
+    {
+        _display.write("(1, 7)");
+        _display.write("OUEST", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::RCTV:
+    {
+        _display.write("(1, 7)");
+        _display.write("SUD", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::LCBH:
+    {
+        _display.write("(4, 1)");
+        _display.write("EST", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::LCBV:
+    {
+        _display.write("(4, 1)");
+        _display.write("NORD", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::RCBH:
+    {
+        _display.write("(4, 7)");
+        _display.write("OUEST", LCM_FW_HALF_CH);
+        break;
+    }
+    case Corner::RCBV:
+    {
+        _display.write("(4, 7)");
+        _display.write("NORD", LCM_FW_HALF_CH);
+        break;
+    }
     }
 }
