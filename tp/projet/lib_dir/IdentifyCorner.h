@@ -6,6 +6,7 @@
 #include "Navigation.h"
 #include "LineMaker.h"
 #include "sound.h"
+#include "LED.h"
 #include "lcm_so1602dtr_m_fw.h"
 
 enum class Corner
@@ -49,6 +50,7 @@ private:
     LineMaker _lineMakerModule;
     LCM _display;
     Sound _sound;
+    LED _led;
 
     uint8_t _intersectionCount = 0;
     uint8_t _firstLineCount = 0;
@@ -80,6 +82,7 @@ private:
 
     bool _found = false;
     bool _blockIncrementation;
+
 
     IdentifyCornerState _state = IdentifyCornerState::GO_FORWARD_FIRST_LINE;
 };

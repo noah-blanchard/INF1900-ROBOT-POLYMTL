@@ -8,6 +8,7 @@
 #include "LED.h"
 
 constexpr uint8_t DELAY_AMBER_COLOR = 10;
+constexpr uint8_t DELAY_FOR_FOUR_HZ = 125;
 
 /**
  * @brief Constructor for the LED class.
@@ -58,4 +59,14 @@ void LED::turnLedAmber()
     _delay_ms(DELAY_AMBER_COLOR);
     turnLedRed();
     _delay_ms(DELAY_AMBER_COLOR);
+}
+
+
+void LED::flashGreen()
+{
+    turnLedGreen();
+    _delay_ms(DELAY_FOR_FOUR_HZ);  
+    turnOffLed();
+    _delay_ms(DELAY_FOR_FOUR_HZ);  
+
 }

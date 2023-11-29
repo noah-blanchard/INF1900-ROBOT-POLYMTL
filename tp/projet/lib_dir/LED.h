@@ -14,6 +14,7 @@ public:
     void turnLedRed();
     void turnLedGreen();
     void turnLedAmber();
+    void flashGreen();
     
 private:
     Register _port;

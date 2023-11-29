@@ -6,9 +6,11 @@ IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC)
 
 IdentifyCorner::~IdentifyCorner()
 {
+    _led(&PORTB, &DDRB, PB0, PB1);
     _display.clear();
     while (!_found)
     {
+        _led.flashGreen();
         switch (_state)
         {
         case IdentifyCornerState::GO_FORWARD_FIRST_LINE:
