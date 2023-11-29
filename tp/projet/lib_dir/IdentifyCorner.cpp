@@ -106,7 +106,6 @@ void IdentifyCorner::_goForwardFirstLine()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        //_navModule.adjustLeft();
         isRight = false;
         break;
 
@@ -135,7 +134,6 @@ void IdentifyCorner::_goForwardFirstLine()
 
         break;
     }
-        //_displayCurrentIntersectionCount();
     }
 }
 
@@ -153,7 +151,6 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 
 bool IdentifyCorner::_simpleCompareMAtch()
 {
-    // add case 1-1 (right left and left right)
     _displayCurrentIntersectionCount();
     _delay_ms(5000);
     if ((_firstLineCount == 1) && (_secondLineCount == 0) && (_blockIncrementation == false))
@@ -223,10 +220,8 @@ bool IdentifyCorner::_simpleCompareMAtch()
 // turn around should turn around
 void IdentifyCorner::_turnAround()
 {
-    //_displayCurrentIntersectionCount();
     _display.clear();
     _display << "turn around";
-    // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
         _navModule.turnLeft();
@@ -248,13 +243,12 @@ void IdentifyCorner::_turnAround()
     }
 }
 
-// turn around should turn around
+
 void IdentifyCorner::_turnAroundSecondLine()
 {
     //_displayCurrentIntersectionCount();
     _display.clear();
     _display << "SEC turn around";
-    // if isRight, turn around from left wait for NO_ADJUSTMENT or LEFT_ADJUSTMENT or RIGHT_ADJUSTMENT
     if (isRight)
     {
         _navModule.turnLeft();
@@ -367,9 +361,6 @@ void IdentifyCorner::_goBackSecondLine()
 void IdentifyCorner::_turnSecondLine()
 {
 
-    // go forward for 1 second
-
-    // turn around from left
     if (isRight)
     {
         _navModule.turnLeft();
@@ -401,16 +392,6 @@ void IdentifyCorner::_turnBackFirstLine()
     {
         _navModule.turnRight();
     }
-
-    // uint8_t sensor = _lineMakerModule._retrieveSensorData();
-
-    // if (sensor == LineMaker::INNER_LEFT || sensor == LineMaker::INNER_RIGHT || sensor == LineMaker::NO_ADJUSTMENT)
-    // {
-    //     _delay_ms(1000);
-    //     _navModule.stop();
-    //     _display.clear();
-    //     _display << "i am back";
-    // }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
@@ -458,9 +439,7 @@ void IdentifyCorner::_goForwardSecondLine()
     case LineMakerFlag::NO_LINE:
         _navModule.adjustForward();
         _display << "simple";
-        //_state = IdentifyCornerState::TURN_AROUND;
         if (_simpleCompareMAtch())
-        // it founds the right spot since the second line
         {
             _display.clear();
             _display << "simple";
@@ -491,13 +470,10 @@ void IdentifyCorner::_goForwardSecondLine()
     {
         if (!_blockIncrementation)
         {
-            // Correct this in code instead of _firstLineCount, it's _secondLineCount
             _secondLineCount++;
-
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        // _navModule.adjustRight();
         isRight = true;
         break;
     }
@@ -509,7 +485,6 @@ void IdentifyCorner::_goForwardSecondLine()
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
         }
-        //_navModule.adjustLeft();
         isRight = false;
         break;
     }
