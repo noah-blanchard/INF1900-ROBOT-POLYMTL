@@ -8,16 +8,6 @@
 #include "sound.h"
 #include "lcm_so1602dtr_m_fw.h"
 
-// enum class IdentifyCornerState
-// {
-//     GO_FORWARD,
-//     DETECT_INTERSECTION,
-//     DETECT_FORWARD,
-//     TURN,
-//     RECOGNIZE,
-//     STOP
-// };
-
 enum class Corner
 {
     LCBH,
@@ -34,17 +24,12 @@ enum class IdentifyCornerState
 {
     GO_FORWARD_FIRST_LINE,
     TURN_AROUND,
-    GO_BACK,
+    GO_BACK_FIRST_LINE,
     TURN_SECOND_LINE,
     GO_FORWARD_SECOND_LINE,
-    GO_FORWARD_THIRD_LINE,
-    TURN_THIRD_LINE,
     TURN_AROUND_SECOND_LINE,
     GO_BACK_SECOND_LINE,
     TURN_BACK_FIRST_LINE,
-    TURN_AROUND_THIRD_LINE,
-    GO_BACK_THIRD_LINE,
-    GO_FORWARD_SPECIAL_CASE,
     TURN_BACK_SECOND_LINE,
     GO_INIT_POS,
     TURN_INIT_POS,
@@ -69,26 +54,21 @@ private:
     uint8_t _firstLineCount = 0;
     uint8_t _secondLineCount = 0;
 
+    void makeSound();
+
     // routines
-    void _goForward();
+    void _goForwardFirstLine();
     void _turnAround();
-    void _goBack();
+    void _goBackFirstLine();
     void _goInitPos();
     void _turnInitPos();
-
     void _turnSecondLine();
     void _turnBackFirstLine();
     void _turnBackSecondLine();
     void _goBackSecondLine();
-    void _goBackThirdLine();
     void _goForwardSecondLine();
-    void _turnThirdLine();
-    void _goForwardThirdLine();
     bool _simpleCompareMAtch();
-    void makeSound();
-    bool _furtherCompareMatch();
     void _turnAroundSecondLine();
-    void _turnAroundThirdLine();
 
     bool isRight = false;
     bool _sidefirst = false;

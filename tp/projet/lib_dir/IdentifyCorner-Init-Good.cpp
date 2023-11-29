@@ -24,8 +24,8 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
             _turnAround();
             break;
 
-        case IdentifyCornerState::GO_BACK:
-            _goBack();
+        case IdentifyCornerState::GO_BACK_FIRST_LINE:
+            _goBackFirstLine();
             _display = "GO_BACK";
             _navModule.stop();
             break;
@@ -154,11 +154,11 @@ void IdentifyCorner::_turnAround()
     {
         _navModule.stop();
         _delay_ms(1000);
-        _state = IdentifyCornerState::GO_BACK;
+        _state = IdentifyCornerState::GO_BACK_FIRST_LINE;
     }
 }
 
-void IdentifyCorner::_goBack()
+void IdentifyCorner::_goBackFirstLine()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();

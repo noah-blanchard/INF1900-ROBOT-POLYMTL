@@ -22,7 +22,7 @@ enum class IdentifyCornerState
 {
     GO_FORWARD_FIRST_LINE,
     TURN_AROUND,
-    GO_BACK,
+    GO_BACK_FIRST_LINE,
     TURN_SECOND_LINE,
     GO_FORWARD_SECOND_LINE,
 };
@@ -47,7 +47,7 @@ private:
     // routines
     void _goForward();
     void _turnAround();
-    void _goBack();
+    void _goBackFirstLine();
     void _turnSecondLine();
     void _goForwardSecondLine();
 
