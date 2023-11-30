@@ -237,7 +237,7 @@ void Robot::_calculatePathRoutine()
 void Robot::_navigateTripRoutine()
 {
     Move tripResult = _navModule.followTrip(_moveArray); // returns the last move of the trip ! will return the one with a post if invalid
-    if (_currentOrientation != Orientation::FINISHED)
+    if (tripResult.orientation != Orientation::FINISHED)
     {
         char buffer[28];
 
