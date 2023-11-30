@@ -253,6 +253,9 @@ void Robot::_navigateTripRoutine()
         _delay_ms(500);
         _dijkstraModule.removeNode(tripResult.x, tripResult.y);
         _currentState = State::CALCULATE_PATH;
+    } else {
+        _display = "OK OK OK";
+        _delay_ms(5000);
     }
 }
 
