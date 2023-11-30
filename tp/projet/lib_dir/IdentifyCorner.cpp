@@ -13,7 +13,7 @@ void IdentifyCorner::identificationProcess(uint8_t * _beginning)
     _display.clear();
     while (!_found)
     {
-        _led.flashGreen();
+        //_led.flashGreen();
         switch (_state)
         {
         case IdentifyCornerState::GO_FORWARD_FIRST_LINE:
@@ -66,7 +66,7 @@ void IdentifyCorner::identificationProcess(uint8_t * _beginning)
 
     _display.clear();
     _displayInitPos();
-    _led.turnLedGreen();
+    //_led.turnLedGreen();
 
     return;
 }
@@ -129,6 +129,7 @@ void IdentifyCorner::_goForwardFirstLine()
         if (_simpleCompareMAtch())
         {
             makeSound();
+            stop();
             _delay_ms(2000);
             _displayCurrentIntersectionCount();
             _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
