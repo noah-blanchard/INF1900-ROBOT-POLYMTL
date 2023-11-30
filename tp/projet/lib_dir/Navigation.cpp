@@ -673,7 +673,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         }
     }
 
-    if (_forwardDelayCount >= _MOVE_FORWARD_DELAY / _ADJUST_DELAY)
+    if (_forwardDelayCount >= 300)
     {
         _display = "stop";
         stop();
