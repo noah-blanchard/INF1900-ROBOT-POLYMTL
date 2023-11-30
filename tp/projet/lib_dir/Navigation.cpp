@@ -161,7 +161,7 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed - 5);
+    _leftWheel.setCompareValue(speed - 15);
     _rightWheel.setCompareValue(speed);
 }
 
@@ -184,7 +184,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(speed);
+    _leftWheel.setCompareValue(speed - 15);
 }
 
 /**
@@ -750,33 +750,43 @@ void Navigation::_turnRight()
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
-    switch (lineMakerFlag)
+    if (_irModule.isObstacleDetected())
     {
-    case LineMakerFlag::NO_LINE:
-    {
-        // if we don't detect the line, we need to turn right until we detect it
-        turnRight();
-        break;
+        _updateCurrentPosition();
+        _tripState = NavigationState::MEET_POST;
     }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
-    {
-        // if we detect the line on the left, it means we met the line
-        // so stop moving and go to forward state
-        stop();
-        _delay_ms(1000);
-        _preventInitForward = true;
-        if (_irModule.isObstacleDetected())
-        {
-            _updateCurrentPosition();
-            _tripState = NavigationState::MEET_POST;
-        }
-        else
-        {
-            _chooseForwardMove();
-        }
 
-        break;
-    }
+    else
+    {
+
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_LINE:
+        {
+            // if we don't detect the line, we need to turn right until we detect it
+            turnRight();
+            break;
+        }
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
+        {
+            // if we detect the line on the left, it means we met the line
+            // so stop moving and go to forward state
+            stop();
+            _delay_ms(1000);
+            _preventInitForward = true;
+            if (_irModule.isObstacleDetected())
+            {
+                _updateCurrentPosition();
+                _tripState = NavigationState::MEET_POST;
+            }
+            else
+            {
+                _chooseForwardMove();
+            }
+
+            break;
+        }
+        }
     }
 }
 
@@ -792,32 +802,37 @@ void Navigation::_turnLeft()
 
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
-    switch (lineMakerFlag)
+    if (_irModule.isObstacleDetected())
     {
-    case LineMakerFlag::NO_LINE:
-    {
-        // if we don't detect the line, we need to turn left until we detect it
-        turnLeft();
-        break;
+        _updateCurrentPosition();
+        _tripState = NavigationState::MEET_POST;
     }
-    case LineMakerFlag::LEFT_ADJUSTMENT:
+
+    else
     {
-        // if we detect the line on the left, it means we met the line
-        // so stop moving and go to forward state
-        stop();
-        _preventInitForward = true;
-        _delay_ms(1000);
-        if (_irModule.isObstacleDetected())
+
+        switch (lineMakerFlag)
         {
-            _updateCurrentPosition();
-            _tripState = NavigationState::MEET_POST;
-        }
-        else
+        case LineMakerFlag::NO_LINE:
         {
-            _chooseForwardMove();
+            // if we don't detect the line, we need to turn left until we detect it
+            turnLeft();
+            break;
         }
-        break;
-    }
+        case LineMakerFlag::LEFT_ADJUSTMENT:
+        {
+            // if we detect the line on the left, it means we met the line
+            // so stop moving and go to forward state
+            stop();
+            _preventInitForward = true;
+            _delay_ms(1000);
+            else
+            {
+                _chooseForwardMove();
+            }
+            break;
+        }
+        }
     }
 }
 
