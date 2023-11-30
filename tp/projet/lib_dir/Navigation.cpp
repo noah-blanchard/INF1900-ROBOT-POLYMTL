@@ -265,7 +265,7 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    for (uint16_t delayCounter = 0; delayCounter < 210; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 230; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
@@ -893,7 +893,7 @@ void Navigation::parking()
 
     if (_lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_LINE)
     {
-        while (_lineMakerModule.getDetectionFlag != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::RIGHT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_ADJUSTMENT)
+        while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::RIGHT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_ADJUSTMENT)
         {
 
             switch (savedFlag)
@@ -922,29 +922,29 @@ void Navigation::parking()
 
     // update _currentOrientation
 
-    if(_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
-        _currentOrientation = Orientation::WEST;
+    if(*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        *_currentOrientation = Orientation::WEST;
     }
-    else if(_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
-        _currentOrientation = Orientation::EAST;
+    else if(*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        *_currentOrientation = Orientation::EAST;
     }
-    else if(_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
-        _currentOrientation = Orientation::EAST;
+    else if(*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        *_currentOrientation = Orientation::EAST;
     }
-    else if(_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
-        _currentOrientation = Orientation::WEST;
+    else if(*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        *_currentOrientation = Orientation::WEST;
     }
-    else if(_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
-        _currentOrientation = Orientation::SOUTH;
+    else if(*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        *_currentOrientation = Orientation::SOUTH;
     }
-    else if(_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
-        _currentOrientation = Orientation::NORTH;
+    else if(*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        *_currentOrientation = Orientation::NORTH;
     }
-    else if(_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
-        _currentOrientation = Orientation::NORTH;
+    else if(*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        *_currentOrientation = Orientation::NORTH;
     }
-    else if(_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
-        _currentOrientation = Orientation::SOUTH;
+    else if(*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        *_currentOrientation = Orientation::SOUTH;
     }
 
     /// if detect left or right adjustment

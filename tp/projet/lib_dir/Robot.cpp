@@ -199,8 +199,8 @@ void Robot::_calculatePathRoutine()
     _delay_ms(1500);
 
     /// change this with the result of Make Trip selection
-    _destination[0] = 2;
-    _destination[1] = 0;
+    _destination[0] = 6;
+    _destination[1] = 1;
 
     char buffer[20];
     sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);
@@ -272,7 +272,7 @@ void Robot::_parkingRoutine()
     _display = "PARKING";
     _delay_ms(5000);
     _navModule.parking();
-    _currentState = State::FINISHED;
+    _currentState = State::MAKE_TRIP;
 }
 
 // void Robot::_pause()
