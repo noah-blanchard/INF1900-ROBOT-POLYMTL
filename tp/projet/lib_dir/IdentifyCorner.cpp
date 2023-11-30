@@ -161,65 +161,48 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 bool IdentifyCorner::_simpleCompareMAtch()
 {
     _displayCurrentIntersectionCount();
-    _delay_ms(5000);
     if ((_firstLineCount == 1) && (_secondLineCount == 0) && (_blockIncrementation == false))
     {
-        _display = "RCTH";
-        _delay_ms(2000);
         _initCorner = Corner::RCTH;
         return true;
     }
     else if ((_firstLineCount == 2) && (_secondLineCount == 1) && (_blockIncrementation == false))
     {
-        _display = "RCTV";
-        _delay_ms(2000);
         _initCorner = Corner::RCTV;
         return true;
     }
     else if ((_firstLineCount == 3) && (_secondLineCount == 0))
     {
-        _display = "RCBH";
-        _delay_ms(2000);
         _initCorner = Corner::RCBH;
         return true;
     }
     else if ((_firstLineCount == 2) && (_secondLineCount == 3))
     {
 
-        _display = "RCBV";
-        _delay_ms(2000);
         _initCorner = Corner::RCBV;
         return true;
     }
     else if ((_firstLineCount == 1) && (_secondLineCount == 1) && _sidefirst)
     {
         // LCBV
-        _display = "LCBV";
-        _delay_ms(2000);
         _initCorner = Corner::LCBV;
         return true;
     }
     else if ((_firstLineCount == 1) && (_secondLineCount == 1 && !_sidefirst))
     {
         // LCBH
-        _display = "LCBH";
-        _delay_ms(2000);
         _initCorner = Corner::LCBH;
         return true;
     }
     else if ((_firstLineCount == 2) && (_secondLineCount == 1) && _blockIncrementation)
     {
         // LCTH
-        _display = "LCTH";
-        _delay_ms(2000);
         _initCorner = Corner::LCTH;
         return true;
     }
     else if ((_firstLineCount == 1) && (_secondLineCount == 2) && _blockIncrementation)
     {
         // LCTV
-        _display = "LCTV";
-        _delay_ms(2000);
         _initCorner = Corner::LCTV;
         return true;
     }
