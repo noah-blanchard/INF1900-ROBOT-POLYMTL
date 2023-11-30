@@ -828,10 +828,11 @@ void Navigation::_chooseRightTurn()
 {
     // turn left pour (1,1) et nextOrientation west
     /**
-     *  2, 1 et nextOrientation = north
-     * 1, 2 et nextOrientation = east
-     * 1, 0 et nextOrientation = west
-     *
+     * 1, 0,
+     * 1, 1
+     * 2, 1
+     * 1, 2
+     * 2, 2
      */
 
     if ((_nextMoveValue.x == 1) && (_nextMoveValue.y == 1))
