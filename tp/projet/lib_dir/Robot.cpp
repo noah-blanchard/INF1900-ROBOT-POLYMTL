@@ -17,9 +17,9 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
     cli();
-    _validateButton.setRisingEdge();
+    _validateButton.setFallingEdge();
     _validateButton.enableInterrupt();
-    _selectButton.setRisingEdge();
+    _selectButton.setFallingEdge();
     _selectButton.enableInterrupt();
     sei();
 

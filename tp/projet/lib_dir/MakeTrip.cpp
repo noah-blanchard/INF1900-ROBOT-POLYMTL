@@ -17,6 +17,7 @@ volatile uint8_t validateChoice = false;
 ISR(INT0_vect)
 {
 	// select Choice
+	_delay_ms(20);
 	selectChoice = true;
 	EIFR |= (1 << INTF0);
 	// EIFR &= ~(1 << INTF0);
@@ -25,6 +26,7 @@ ISR(INT0_vect)
 ISR(INT1_vect)
 {
 	// validate Choice
+	_delay_ms(20);
 	validateChoice = true;
 	EIFR |= (1 << INTF1);
 	// EIFR &= ~(1 << INTF1);
