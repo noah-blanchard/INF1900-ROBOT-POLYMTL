@@ -265,7 +265,7 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    for (uint16_t delayCounter = 0; delayCounter < 200; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 210; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
@@ -451,6 +451,7 @@ void Navigation::_chooseForwardMove()
     {
         _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
+        _initForward();
         if (!_preventInitForward)
         {
             _initForward();
