@@ -451,7 +451,7 @@ void Navigation::_chooseForwardMove()
     {
         _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
-        _initForward();
+        //_initForward();
         if (!_preventInitForward)
         {
             _initForward();
@@ -477,6 +477,7 @@ void Navigation::_nextMove(Move nextMove)
     _delay_ms(1000);
     _updateCurrentPosition();
     _nextMoveValue = nextMove;
+    _preventInitForward = false;
     _display = "NEXT MOVE";
 
     if (*_currentOrientation == _nextMoveValue.orientation)
