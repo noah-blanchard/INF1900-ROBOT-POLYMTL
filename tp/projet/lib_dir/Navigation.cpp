@@ -184,7 +184,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(speed - 15);
+    _leftWheel.setCompareValue(speed - _LESS);
 }
 
 /**
@@ -338,7 +338,7 @@ Move Navigation::followTrip(Move *trip)
     _tripIndex = 0;
     _trip = trip;
     _firstMove = true;
-    _preventInitForward = false;
+    _preventInitForward = true;
     _tripState = NavigationState::NEXT_MOVE;
 
     // uint8_t tripIndex = 0;
@@ -774,15 +774,8 @@ void Navigation::_turnRight()
             stop();
             _delay_ms(1000);
             _preventInitForward = true;
-            if (_irModule.isObstacleDetected())
-            {
-                _updateCurrentPosition();
-                _tripState = NavigationState::MEET_POST;
-            }
-            else
-            {
                 _chooseForwardMove();
-            }
+            
 
             break;
         }
@@ -823,13 +816,12 @@ void Navigation::_turnLeft()
         {
             // if we detect the line on the left, it means we met the line
             // so stop moving and go to forward state
-            stop();
-            _preventInitForward = true;
+           stop();
             _delay_ms(1000);
-            else
-            {
+            _preventInitForward = true;
                 _chooseForwardMove();
-            }
+            
+
             break;
         }
         }
