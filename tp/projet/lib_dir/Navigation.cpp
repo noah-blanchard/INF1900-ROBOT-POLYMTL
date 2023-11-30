@@ -440,7 +440,6 @@ void Navigation::_chooseForwardMove()
     // x = 1, y = 0, 1 3, 5 2, 6, 2
     // so put state to forward delay if we have one of these positions
 
-    *_currentOrientation = _nextMoveValue.orientation;
 
     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
