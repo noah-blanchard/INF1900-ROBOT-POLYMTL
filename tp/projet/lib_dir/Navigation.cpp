@@ -184,7 +184,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(speed - _LESS);
+    _leftWheel.setCompareValue(speed);
 }
 
 /**
@@ -206,7 +206,7 @@ void Navigation::goRightWheel(uint16_t speed, bool backward)
         this->_rightForward();
     }
 
-    _rightWheel.setCompareValue(speed);
+    _rightWheel.setCompareValue(speed - _LESS);
 }
 
 /**
@@ -265,7 +265,7 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    for (uint16_t delayCounter = 0; delayCounter < 230; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 280; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
@@ -467,7 +467,7 @@ void Navigation::_updateCurrentPosition()
 {
     _currentPosition[0] = _nextMoveValue.x;
     _currentPosition[1] = _nextMoveValue.y;
-    _currentOrientation = _nextMoveValue.orientation;
+    *_currentOrientation = _nextMoveValue.orientation;
 }
 
 void Navigation::_nextMove()
@@ -537,6 +537,8 @@ void Navigation::_nextMove()
         {
             if (_nextMoveValue.orientation == Orientation::WEST)
             {
+                _display="CACA PIPI";
+                _delay_ms(1000);
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
             }

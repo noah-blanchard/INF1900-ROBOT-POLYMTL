@@ -48,10 +48,10 @@ public:
     void parking();
 
     // CONSTANTS
-    static const uint8_t _BASE_SPEED = 110;
-    static const uint8_t _BACK_SPEED = 125;
-    static const uint8_t _TURN_SPEED = 115;
-    static const uint8_t _ADJUST_OFFSET = 30;
+    static const uint8_t _BASE_SPEED = 100;
+    static const uint8_t _BACK_SPEED = 100;
+    static const uint8_t _TURN_SPEED = 100;
+    static const uint8_t _ADJUST_OFFSET = 20;
     static const uint8_t _LESS = 4;
 
     static const uint8_t _MOVE_FORWARD_DELAY = 3000;
