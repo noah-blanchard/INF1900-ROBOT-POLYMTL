@@ -52,7 +52,7 @@ public:
     static const uint8_t _BACK_SPEED = 100;
     static const uint8_t _TURN_SPEED = 100;
     static const uint8_t _ADJUST_OFFSET = 20;
-    static const uint8_t _LESS = 4;
+    static const uint8_t _LESS = 15;
 
     static const uint8_t _MOVE_FORWARD_DELAY = 3000;
     static const uint8_t _FORWARD_ADJUST_DELAY = 2000;

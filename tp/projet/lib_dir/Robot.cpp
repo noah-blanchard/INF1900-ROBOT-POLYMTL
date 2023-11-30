@@ -24,19 +24,19 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _selectButton.setRisingEdge();
     sei();
 
-    _beginning[0] = 6;
-    _beginning[1] = 3;
+    _beginning[0] = 0;
+    _beginning[1] = 0;
 
-    _currentOrientation = Orientation::NORTH;
-    _currentPosition[0] = 6;
-    _currentPosition[1] = 3;
+    _currentOrientation = Orientation::SOUTH;
+    _currentPosition[0] = 0;
+    _currentPosition[1] = 0;
 
     // _beginning[0] = 0;
     // _beginning[1] = 0;
     //_currentState = State::MODE_SELECTION;
     //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
     //_currentState = State::NAVIGATE_TRIP;
-    _currentState = State::CALCULATE_PATH;
+    _currentState = State::IDENTIFY_CORNER;
     //_display = "WSH";
     //_currentState = State::MAKE_TRIP;
 
@@ -73,6 +73,17 @@ Robot::~Robot()
 
 void Robot::runRoutine()
 {
+    // char buffer[28];
+    // uint16_t val = _irSensorModule._getDistance();
+    // sprintf(buffer, "%d",_irSensorModule._getDistance());
+    // _display = buffer;
+    // if(_irSensorModule.isObstacleDetected()){
+    //     _display = "HHI";
+    // }else{
+    //     _display = buffer;
+    // }
+    // _delay_ms(100);
+
     switch (_currentState)
     {
     case State::MODE_SELECTION:
@@ -200,8 +211,8 @@ void Robot::_calculatePathRoutine()
     _delay_ms(1000);
 
     /// change this with the result of Make Trip selection
-    _destination[0] = 4;
-    _destination[1] = 1;
+    _destination[0] = 0;
+    _destination[1] = 3;
 
     char buffer[20];
     sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);

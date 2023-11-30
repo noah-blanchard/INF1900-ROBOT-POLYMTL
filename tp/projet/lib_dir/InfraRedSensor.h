@@ -10,6 +10,7 @@ public:
     InfraRedSensor();
     ~InfraRedSensor();
     bool isObstacleDetected();
+    uint16_t _getDistance();
 
 private:
     static const uint8_t _distanceReferenceValue = 230;
@@ -18,7 +19,7 @@ private:
 
     uint16_t _distance;
 
-    uint8_t _getDistance();
+   
 
     can _analogicConverter;
 };
