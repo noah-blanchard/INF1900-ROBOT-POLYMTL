@@ -98,6 +98,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _sidefirst = true;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
+             _delay_ms(100);
         }
         // _navModule.adjustRight();
         isRight = true;
@@ -110,6 +111,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _firstLineCount++;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
+            _delay_ms(100);
         }
         isRight = false;
         break;
@@ -120,6 +122,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _firstLineCount++;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
+             _delay_ms(100);
         }
         break;
     case LineMakerFlag::NO_LINE:
