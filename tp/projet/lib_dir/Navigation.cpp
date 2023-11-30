@@ -409,6 +409,10 @@ Move Navigation::followTrip(Move *trip)
         }
     }
 
+    stop();
+    _display = "FINISHED";
+    _delay_ms(4000);
+
     return _trip[_tripIndex];
 }
 
