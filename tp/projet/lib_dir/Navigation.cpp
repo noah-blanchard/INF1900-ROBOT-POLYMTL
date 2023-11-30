@@ -833,6 +833,7 @@ void Navigation::_meetPost()
 {
     // turn around 180 degrees until a line is detected
     _nextMoveValue = _trip[_tripIndex - 1];
+    *_currentOrientation = _nextMoveValue.orientation;
     stop();
     _display = "OKOKOKOK";
     _delay_ms(1000);
