@@ -773,7 +773,6 @@ void Navigation::_turnRight()
             // if we detect the line on the left, it means we met the line
             // so stop moving and go to forward state
             stop();
-            *_currentOrientation = _nextMoveValue.orientation;
             _delay_ms(1000);
             _preventInitForward = true;
             _chooseForwardMove();
@@ -818,7 +817,6 @@ void Navigation::_turnLeft()
             // if we detect the line on the left, it means we met the line
             // so stop moving and go to forward state
             stop();
-            *_currentOrientation = _nextMoveValue.orientation;
             _delay_ms(1000);
             _preventInitForward = true;
             _chooseForwardMove();
