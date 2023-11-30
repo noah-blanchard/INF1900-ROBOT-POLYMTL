@@ -23,33 +23,6 @@ Bouton::Bouton(uint8_t int_N) : _int_N(int_N)
 
 Bouton::~Bouton() {}
 
-/**
- * @brief Sets the interrupt to trigger on a rising edge.
- *
- */
-
-void Bouton::setLowLevel()
-{
-    reset();
-
-    switch (_int_N)
-    {
-    case INT0:
-        EICRA &= ~(1 << ISC00);
-        EICRA &= ~(1 << ISC01);
-        break;
-    case INT1:
-        EICRA &= ~(1 << ISC10);
-        EICRA &= ~(1 << ISC11);
-        break;
-    case INT2:
-        EICRA &= ~(1 << ISC20);
-        EICRA &= ~(1 << ISC21);
-        break;
-    default:
-        break;
-    }
-}
 
 void Bouton::setRisingEdge()
 {

@@ -17,11 +17,10 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
     cli();
-    _validateButton.enableInterrupt();
     _validateButton.setRisingEdge();
-
-    _selectButton.enableInterrupt();
+    _validateButton.enableInterrupt();
     _selectButton.setRisingEdge();
+    _selectButton.enableInterrupt();
     sei();
 
     _beginning[0] = 0;
