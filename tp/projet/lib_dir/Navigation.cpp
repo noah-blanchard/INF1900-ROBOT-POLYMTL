@@ -841,7 +841,10 @@ void Navigation::_chooseRightTurn()
      * 2, 2
      */
 
-    if ((_nextMoveValue.x == 1) && (_nextMoveValue.y == 1))
+    uint8_t col = _nextMoveValue.x;
+    uint8_t row = _nextMoveValue.y;
+
+    if ((col == 1) && (row == 1))
     {
         switch (_nextMoveValue.orientation)
         {
@@ -861,7 +864,154 @@ void Navigation::_chooseRightTurn()
         }
         }
     }
-    else if ((_nextMoveValue.x == 1) && (_nextMoveValue.y == 0))
+    else if ((col == 1 && row == 0))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 2 0
+    else if ((col == 2) && (row == 0))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 4 1
+    else if ((col == 4) && (row == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    // 5 1
+    else if ((col == 5) && (row == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 2 1
+    else if ((col == 2) && (row == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::NORTH:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::SOUTH:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    // 4 1
+    else if ((col == 4) && (row == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 6 1
+    else if ((col == 6) && (row == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::SOUTH:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::NORTH:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    // 1 2
+    else if ((col == 1) && (row == 2))
     {
         switch (_nextMoveValue.orientation)
         {
@@ -877,6 +1027,153 @@ void Navigation::_chooseRightTurn()
             _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    // 3 2
+    else if ((col == 3) && (row == 2))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::WEST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::EAST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 4 2
+    else if ((col == 4) && (row == 2))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::NORTH:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::SOUTH:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    // 5 2
+    else if ((col == 5) && (row == 2))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::NORTH:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::SOUTH:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 6 2
+    else if ((col == 6) && (row == 2))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    // 1 3
+    else if ((col == 1) && (row == 3))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 4 3
+    else if ((col == 4) && (row == 3))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    // 5 3
+    else if ((col == 5) && (row == 3))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
             break;
         }
         }
@@ -922,28 +1219,36 @@ void Navigation::parking()
 
     // update _currentOrientation
 
-    if(*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+    if (*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    {
         *_currentOrientation = Orientation::WEST;
     }
-    else if(*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+    else if (*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    {
         *_currentOrientation = Orientation::EAST;
     }
-    else if(*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+    else if (*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    {
         *_currentOrientation = Orientation::EAST;
     }
-    else if(*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+    else if (*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    {
         *_currentOrientation = Orientation::WEST;
     }
-    else if(*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+    else if (*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    {
         *_currentOrientation = Orientation::SOUTH;
     }
-    else if(*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+    else if (*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    {
         *_currentOrientation = Orientation::NORTH;
     }
-    else if(*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+    else if (*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    {
         *_currentOrientation = Orientation::NORTH;
     }
-    else if(*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+    else if (*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    {
         *_currentOrientation = Orientation::SOUTH;
     }
 
