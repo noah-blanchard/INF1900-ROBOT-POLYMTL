@@ -8,7 +8,7 @@ IdentifyCorner::~IdentifyCorner()
 {
 }
 
-void IdentifyCorner::identificationProcess(uint8_t * _beginning)
+void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 {
     _display.clear();
     while (!_found)
@@ -129,8 +129,6 @@ void IdentifyCorner::_goForwardFirstLine()
         if (_simpleCompareMAtch())
         {
             makeSound();
-            stop();
-            _delay_ms(2000);
             _displayCurrentIntersectionCount();
             _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
         }
@@ -160,6 +158,7 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 
 bool IdentifyCorner::_simpleCompareMAtch()
 {
+    stop();
     _displayCurrentIntersectionCount();
     if ((_firstLineCount == 1) && (_secondLineCount == 0) && (_blockIncrementation == false))
     {
@@ -235,7 +234,6 @@ void IdentifyCorner::_turnAround()
     }
 }
 
-
 void IdentifyCorner::_turnAroundSecondLine()
 {
     //_displayCurrentIntersectionCount();
@@ -287,13 +285,14 @@ void IdentifyCorner::_goInitPos()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-
-    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
         _navModule.adjustForward();
         _state = IdentifyCornerState::TURN_INIT_POS;
+        break;
+    case LineMakerFlag::NO_ADJUSTMENT:
+        _navModule.go(Navigation::_BASE_SPEED, false);
         break;
     case LineMakerFlag::LEFT_ADJUSTMENT:
         _navModule.adjustRight();
@@ -374,6 +373,10 @@ void IdentifyCorner::_turnSecondLine()
 
 void IdentifyCorner::_turnBackFirstLine()
 {
+    _navModule.stop();
+    _delay_ms(1000);
+    _display = "CACA";
+    _delay_ms(3000);
 
     // turn around from left
     if (isRight)
@@ -443,7 +446,7 @@ void IdentifyCorner::_goForwardSecondLine()
         {
             _display.clear();
             _display << "no simple";
-           // _state = IdentifyCornerState::TURN_THIRD_LINE;
+            // _state = IdentifyCornerState::TURN_THIRD_LINE;
         }
         break;
     case LineMakerFlag::RIGHT_ADJUSTMENT:
