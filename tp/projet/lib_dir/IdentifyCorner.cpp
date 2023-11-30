@@ -127,6 +127,7 @@ void IdentifyCorner::_goForwardFirstLine()
         _navModule.adjustForward();
         if (_simpleCompareMAtch())
         {
+            _navModule.stop();
             makeSound();
             _displayCurrentIntersectionCount();
             _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
@@ -502,11 +503,11 @@ void IdentifyCorner::_turnBackSecondLine()
 
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
-        _delay_ms(1000);
         _navModule.stop();
+        _delay_ms(1000);
         _display.clear();
         _display << "back on sec line";
-        _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
+        _state = IdentifyCornerState::GO_INIT_POS;
     }
 }
 
@@ -526,8 +527,9 @@ void IdentifyCorner::_goForwardSecondLine()
             _display.clear();
             _display << "simple";
             makeSound();
-            _delay_ms(2000);
-            _state = IdentifyCornerState::TURN_AROUND_SECOND_LINE;
+            _navModule.stop();
+            _delay_ms(1000);
+            _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
         }
         else
         {
