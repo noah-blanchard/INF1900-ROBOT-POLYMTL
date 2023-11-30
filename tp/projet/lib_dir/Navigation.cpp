@@ -349,7 +349,7 @@ Move Navigation::followTrip(Move *trip)
         {
         case NavigationState::NEXT_MOVE:
         {
-            _nextMove(_trip[_tripIndex]);
+            _nextMove();
             break;
         }
         case NavigationState::FORWARD:
@@ -383,7 +383,6 @@ Move Navigation::followTrip(Move *trip)
             //*_currentOrientation = _nextMoveValue.orientation;
             _currentPosition[0] = _nextMoveValue.x;
             _currentPosition[1] = _nextMoveValue.y;
-            _display = "CURR ORIENT :";
             _delay_ms(3000);
             switch (*_currentOrientation)
             {
@@ -440,7 +439,6 @@ void Navigation::_chooseForwardMove()
     // x = 1, y = 0, 1 3, 5 2, 6, 2
     // so put state to forward delay if we have one of these positions
 
-
     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
@@ -469,9 +467,10 @@ void Navigation::_updateCurrentPosition()
 {
     _currentPosition[0] = _nextMoveValue.x;
     _currentPosition[1] = _nextMoveValue.y;
+    _currentOrientation = _nextMoveValue.orientation;
 }
 
-void Navigation::_nextMove(Move nextMove)
+void Navigation::_nextMove()
 {
     // so here we need to compare the current position and orientation with next move
     // if it's the same, state go forward
@@ -481,7 +480,7 @@ void Navigation::_nextMove(Move nextMove)
     stop();
     _delay_ms(1000);
     _updateCurrentPosition();
-    _nextMoveValue = nextMove;
+    _nextMoveValue = _trip[_tripIndex];
     _preventInitForward = false;
     _display = "NEXT MOVE";
 

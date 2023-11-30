@@ -65,7 +65,7 @@ private:
     NavigationState _tripState = NavigationState::NEXT_MOVE;
 
     // trip movements
-    void _nextMove(Move nextMove);
+    void _nextMove();
     void _moveForward(uint16_t speed);      // will just follow the line until the next crossroad
     void _moveForwardDelay(uint16_t speed); /// will go forward for a specific delay (used for places with no crossroad)
     void _meetPost();
