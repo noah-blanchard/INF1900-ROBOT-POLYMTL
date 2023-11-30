@@ -200,7 +200,7 @@ void Robot::_calculatePathRoutine()
 
     /// change this with the result of Make Trip selection
     _destination[0] = 6;
-    _destination[1] = 1;
+    _destination[1] = 3;
 
     char buffer[20];
     sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);
