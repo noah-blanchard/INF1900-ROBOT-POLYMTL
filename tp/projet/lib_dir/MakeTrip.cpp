@@ -90,15 +90,16 @@ void MakeTrip::_selectColumn()
 		sprintf(_buffer, "Col : %d", _columnSeleted + 1);
 		_display = _buffer;
 		selectChoice = false;
-		_delay_ms(1000);
+		_delay_ms(100);
 	}
 
 	if (validateChoice)
 	{
-		sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted, _columnSeleted);
+		sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted + 1, _columnSeleted + 1);
+		_display = _buffer;
 		_state = selection::CONFIRMCHOICES;
 		validateChoice = false;
-		_delay_ms(1000);
+		_delay_ms(100);
 	}
 }
 
