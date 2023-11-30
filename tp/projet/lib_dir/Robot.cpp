@@ -216,19 +216,19 @@ void Robot::_calculatePathRoutine()
     switch (moveOrientation)
     {
     case Orientation::NORTH:
-        _currentOrientation = Orientation::NORTH;
+       // _currentOrientation = Orientation::NORTH;
         _display = "NORTH";
         break;
     case Orientation::EAST:
-        _currentOrientation = Orientation::EAST;
+        //_currentOrientation = Orientation::EAST;
         _display = "EAST";
         break;
     case Orientation::SOUTH:
-        _currentOrientation = Orientation::SOUTH;
+        //_currentOrientation = Orientation::SOUTH;
         _display = "SOUTH";
         break;
     case Orientation::WEST:
-        _currentOrientation = Orientation::WEST;
+        //_currentOrientation = Orientation::WEST;
         _display = "WEST";
         break;
     default:
