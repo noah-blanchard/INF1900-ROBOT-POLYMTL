@@ -265,17 +265,15 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-
-    for (uint16_t delayCounter = 0; delayCounter < _FORWARD_ADJUST_DELAY / _ADJUST_DELAY; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 250; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-        _display = "MOVE DELAY";
 
         switch (lineMakerFlag)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(speed, false);
+            go(_BASE_SPEED, false);
             _delay_ms(_ADJUST_DELAY);
             break;
         }
@@ -283,6 +281,28 @@ void Navigation::adjustForward()
         {
             adjustLeft();
             break;
+        }
+        case LineMakerFlag::OUTER_RIGHT_DETECTION:
+        {
+            go(_BASE_SPEED, false);
+            _delay_ms(_ADJUST_DELAY);
+            break;
+        }
+        case LineMakerFlag::FULL_CROSSROAD:
+        {
+            go(_BASE_SPEED, false);
+            _delay_ms(_ADJUST_DELAY);
+            break;
+        }
+        case LineMakerFlag::NO_LINE:
+        {
+            go(_BASE_SPEED, false);
+            _delay_ms(_ADJUST_DELAY);
+        }break;
+        case LineMakerFlag::OUTER_LEFT_DETECTION:
+        {
+            go(_BASE_SPEED, false);
+            _delay_ms(_ADJUST_DELAY);
         }
         case LineMakerFlag::LEFT_ADJUSTMENT:
         {
@@ -669,7 +689,7 @@ void Navigation::_initTurnRight()
     stop();
     _delay_ms(200);
     turnRight();
-    _delay_ms(800);
+    _delay_ms(1100);
     stop();
 }
 
@@ -691,7 +711,7 @@ void Navigation::_initTurnLeft()
     _delay_ms(200);
     // then turn a bit left for 1 second
     turnLeft();
-    _delay_ms(800);
+    _delay_ms(1100);
     stop();
 }
 void Navigation::_turnRight()
