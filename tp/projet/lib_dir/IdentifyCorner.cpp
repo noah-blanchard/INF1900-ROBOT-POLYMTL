@@ -6,11 +6,15 @@ IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC)
 
 IdentifyCorner::~IdentifyCorner()
 {
-    _led(&PORTB, &DDRB, PB0, PB1);
+}
+
+void IdentifyCorner::identificationProcess(uint8_t * _beginning)
+{
+    //_led(&PORTB, &DDRB, PB0, PB1);
     _display.clear();
     while (!_found)
     {
-        _led.flashGreen();
+        //_led.flashGreen();
         switch (_state)
         {
         case IdentifyCornerState::GO_FORWARD_FIRST_LINE:
@@ -63,7 +67,7 @@ IdentifyCorner::~IdentifyCorner()
 
     _display.clear();
     _displayInitPos();
-    _led.turnLedGreen();
+    //_led.turnLedGreen();
 
     return;
 }
@@ -456,7 +460,7 @@ void IdentifyCorner::_goForwardSecondLine()
         {
             _display.clear();
             _display << "no simple";
-            _state = IdentifyCornerState::TURN_THIRD_LINE;
+           // _state = IdentifyCornerState::TURN_THIRD_LINE;
         }
         break;
     case LineMakerFlag::RIGHT_ADJUSTMENT:
