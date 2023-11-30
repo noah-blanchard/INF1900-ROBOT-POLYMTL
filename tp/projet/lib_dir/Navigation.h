@@ -18,6 +18,7 @@ enum class NavigationState
     FORWARD_DELAY,
     TURN_RIGHT,
     TURN_LEFT,
+    CHOOSE_RIGHT_TURN,
     MEET_POST,
     ERROR,
     GO_BACK
@@ -72,6 +73,7 @@ private:
     void _initTurnRight();
     void _initTurnLeft();
     void _initForward();
+    void _chooseRightTurn();
 
     void _chooseForwardMove();
     void _updateCurrentPosition();

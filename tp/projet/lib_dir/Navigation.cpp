@@ -298,7 +298,8 @@ void Navigation::adjustForward()
         {
             go(_BASE_SPEED, false);
             _delay_ms(_ADJUST_DELAY);
-        }break;
+        }
+        break;
         case LineMakerFlag::OUTER_LEFT_DETECTION:
         {
             go(_BASE_SPEED, false);
@@ -500,6 +501,10 @@ void Navigation::_nextMove(Move nextMove)
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
             }
+            else if (_nextMoveValue.orientation == Orientation::SOUTH)
+            {
+                _tripState = NavigationState::CHOOSE_RIGHT_TURN;
+            }
             break;
         }
         case Orientation::EAST:
@@ -516,6 +521,10 @@ void Navigation::_nextMove(Move nextMove)
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
             }
+            else if (_nextMoveValue.orientation == Orientation::WEST)
+            {
+                _tripState = NavigationState::CHOOSE_RIGHT_TURN;
+            }
             break;
         }
         case Orientation::SOUTH:
@@ -530,6 +539,10 @@ void Navigation::_nextMove(Move nextMove)
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
+            }
+            else if (_nextMoveValue.orientation == Orientation::NORTH)
+            {
+                _tripState = NavigationState::CHOOSE_RIGHT_TURN;
             }
             break;
         }
@@ -546,6 +559,10 @@ void Navigation::_nextMove(Move nextMove)
                 _initTurnLeft();
                 _tripState = NavigationState::TURN_LEFT;
                 _display = "TURN LEFT";
+            }
+            else if (_nextMoveValue.orientation == Orientation::EAST)
+            {
+                _tripState = NavigationState::CHOOSE_RIGHT_TURN;
             }
             break;
         }
@@ -805,89 +822,56 @@ void Navigation::_meetPost()
     _display = "OKOKOKOK";
     _delay_ms(1000);
     _tripState = NavigationState::ERROR;
-
-    // switch (lineMakerFlag)
-    // {
-    // case LineMakerFlag::NO_LINE:
-    // {
-    //     // if we don't detect the line, we need to turn right until we detect it
-    //     turnRight();
-    //     break;
-    // }
-    // case LineMakerFlag::RIGHT_ADJUSTMENT:
-    // {
-    //     // if we detect the line on the left, it means we met the line
-    //     // so stop moving and go to forward state
-    //     stop();
-    //     _nextMoveValue = _trip[_tripIndex - 1];
-    //     _delay_ms(1000);
-    //     _tripState = NavigationState::GO_BACK;
-
-    //     break;
-    // }
-    // case LineMakerFlag::LEFT_ADJUSTMENT:
-    // {
-    //     // if we detect the line on the left, it means we met the line
-    //     // so stop moving and go to forward state
-    //     stop();
-    //     _nextMoveValue = _trip[_tripIndex - 1];
-    //     _delay_ms(1000);
-    //     _tripState = NavigationState::ERROR;
-    //     break;
-    // }
-    // case LineMakerFlag::NO_ADJUSTMENT:
-    // {
-    //     // if we detect the line on the left, it means we met the line
-    //     // so stop moving and go to forward state
-    //     stop();
-    //     _nextMoveValue = _trip[_tripIndex - 1];
-    //     _delay_ms(1000);
-    //     _tripState = NavigationState::GO_BACK;
-    //     break;
-    // }
-    // }
 }
 
-// void Navigation::_goBack()
-// {
-//     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
-//         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
-//         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
-//         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
-//     {
-//         // _display = "FORWARD DELAY";
-//         // _tripState = NavigationState::FORWARD_DELAY;
-//     }
-//     else
-//     {
-//         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-//         switch (lineMakerFlag)
-//         {
-//         case LineMakerFlag::NO_ADJUSTMENT:
-//         {
-//             go(_BASE_SPEED, false);
-//             break;
-//         }
-//         case LineMakerFlag::RIGHT_ADJUSTMENT:
-//         {
-//             adjustLeft();
-//             break;
-//         }
-//         case LineMakerFlag::LEFT_ADJUSTMENT:
-//         {
-//             adjustRight();
-//             break;
-//         }
-//         case LineMakerFlag::OUTER_LEFT_DETECTION:
-//         {
-//             _tripState = NavigationState::ERROR;
-//             break;
-//         }
-//         case LineMakerFlag::OUTER_RIGHT_DETECTION:
-//         {
-//             _tripState = NavigationState::ERROR;
-//             break;
-//         }
-//         }
-//     }
-// }
+void Navigation::_chooseRightTurn()
+{
+    // turn left pour (1,1) et nextOrientation west
+    /**
+     *  2, 1 et nextOrientation = north
+     * 1, 2 et nextOrientation = east
+     * 1, 0 et nextOrientation = west
+     *
+     */
+
+    if ((_nextMoveValue.x == 1) && (_nextMoveValue.y == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+    else if ((_nextMoveValue.x == 1) && (_nextMoveValue.y == 0))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        }
+    }
+}
