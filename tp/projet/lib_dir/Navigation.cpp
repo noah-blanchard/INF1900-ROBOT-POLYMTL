@@ -249,7 +249,7 @@ void Navigation::adjustRight()
 {
     goRightWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
     goLeftWheel(_BASE_SPEED, false);
-    _delay_ms(10);
+    _delay_ms(_ADJUST_DELAY);
 }
 
 /**
@@ -260,15 +260,42 @@ void Navigation::adjustLeft()
 {
     goRightWheel(_BASE_SPEED, false);
     goLeftWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
-    _delay_ms(10);
+    _delay_ms(_ADJUST_DELAY);
 }
 
 void Navigation::adjustForward()
 {
-    go(_BASE_SPEED, false);
-    _delay_ms(1000);
-    stop();
-    _delay_ms(200);
+
+    for (uint16_t delayCounter = 0; delayCounter < _FORWARD_ADJUST_DELAY / _ADJUST_DELAY; delayCounter++)
+    {
+        LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+        _display = "MOVE DELAY";
+
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_ADJUSTMENT:
+        {
+            go(speed, false);
+            _delay_ms(_ADJUST_DELAY);
+            break;
+        }
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
+        {
+            adjustLeft();
+            break;
+        }
+        case LineMakerFlag::LEFT_ADJUSTMENT:
+        {
+            adjustRight();
+            break;
+        }
+        }
+
+        // go(_BASE_SPEED, false);
+        // _delay_ms(_FORWARD_ADJUST_DELAY);
+        // stop();
+        // _delay_ms(200);
+    }
 }
 
 void Navigation::turnLeft()
@@ -581,7 +608,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         case LineMakerFlag::NO_ADJUSTMENT:
         {
             go(speed, false);
-            _delay_ms(10);
+            _delay_ms(_ADJUST_DELAY);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -609,7 +636,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         }
     }
 
-    if (_forwardDelayCount >= 300)
+    if (_forwardDelayCount >= _MOVE_FORWARD_DELAY / _ADJUST_DELAY)
     {
         _display = "stop";
         stop();
@@ -630,8 +657,9 @@ void Navigation::_initTurnRight()
     // if it is not the first move, go forward for a bit, then turn
     if (!_firstMove || !_preventInitForward)
     {
-        go(_BASE_SPEED + _ADJUST_OFFSET, false);
-        _delay_ms(1650);
+        // go(_BASE_SPEED, false);
+        // _delay_ms(1650);
+        adjustForward();
         _preventInitForward = false;
     }
     else
@@ -650,8 +678,9 @@ void Navigation::_initTurnLeft()
     // if it is not the first move, go forward for a bit, then turn
     if (!_firstMove || _preventInitForward)
     {
-        go(_BASE_SPEED + _ADJUST_OFFSET, false);
-        _delay_ms(1650);
+        // go(_BASE_SPEED + _ADJUST_OFFSET, false);
+        // _delay_ms(1650);
+        adjustForward();
         _preventInitForward = false;
     }
     else
