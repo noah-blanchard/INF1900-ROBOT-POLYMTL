@@ -37,6 +37,7 @@ enum class State
     TRAVEL_POSITION_SELECTION,
     CALCULATE_PATH,
     NAVIGATE_TRIP,
+    PARKING,
     FOLLOW_LINE,
     MEET_CROSSROAD,
     MEET_OBSTACLE,
@@ -92,4 +93,5 @@ private:
     void _meetCrossroadRoutine();
     void _turnAtCrossroadRoutine();
     void _navigateTripRoutine();
+    void _parkingRoutine();
 };

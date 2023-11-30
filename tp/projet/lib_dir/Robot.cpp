@@ -106,6 +106,11 @@ void Robot::runRoutine()
         _navigateTripRoutine();
         break;
     }
+    case State::PARKING:
+    {
+        _parkingRoutine();
+        break;
+    }
     case State::FOLLOW_LINE:
     {
         _followLineRoutine();
@@ -253,10 +258,21 @@ void Robot::_navigateTripRoutine()
         _delay_ms(500);
         _dijkstraModule.removeNode(tripResult.x, tripResult.y);
         _currentState = State::CALCULATE_PATH;
-    } else {
+    }
+    else
+    {
         _display = "OK OK OK";
         _delay_ms(5000);
+        _currentState = State::PARKING;
     }
+}
+
+void Robot::_parkingRoutine()
+{
+    _display = "PARKING";
+    _delay_ms(5000);
+    _navModule.parking();
+    _currentState = State::FINISHED;
 }
 
 // void Robot::_pause()

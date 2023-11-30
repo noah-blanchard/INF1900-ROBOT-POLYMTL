@@ -882,3 +882,70 @@ void Navigation::_chooseRightTurn()
         }
     }
 }
+
+void Navigation::parking()
+{
+    LineMakerFlag savedFlag = _lineMakerModule.getDetectionFlag();
+
+    adjustForward();
+    stop();
+    _delay_ms(1000);
+
+    if (_lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_LINE)
+    {
+        while (_lineMakerModule.getDetectionFlag != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::RIGHT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_ADJUSTMENT)
+        {
+
+            switch (savedFlag)
+            {
+            case LineMakerFlag::OUTER_LEFT_DETECTION:
+            {
+                turnLeft();
+                break;
+            }
+            case LineMakerFlag::OUTER_RIGHT_DETECTION:
+            {
+                turnRight();
+                break;
+            }
+            case LineMakerFlag::FULL_CROSSROAD:
+            {
+                turnRight();
+                break;
+            }
+            }
+        }
+    }
+
+    stop();
+    _delay_ms(1000);
+
+    // update _currentOrientation
+
+    if(_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        _currentOrientation = Orientation::WEST;
+    }
+    else if(_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        _currentOrientation = Orientation::EAST;
+    }
+    else if(_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        _currentOrientation = Orientation::EAST;
+    }
+    else if(_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        _currentOrientation = Orientation::WEST;
+    }
+    else if(_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        _currentOrientation = Orientation::SOUTH;
+    }
+    else if(_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        _currentOrientation = Orientation::NORTH;
+    }
+    else if(_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION){
+        _currentOrientation = Orientation::NORTH;
+    }
+    else if(_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION){
+        _currentOrientation = Orientation::SOUTH;
+    }
+
+    /// if detect left or right adjustment
+}

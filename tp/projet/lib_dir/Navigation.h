@@ -45,6 +45,7 @@ public:
 
     // function to follow follow a trip stored as an array of moves, switch case, state machine
     Move followTrip(Move *trip);
+    void parking();
 
     // CONSTANTS
     static const uint8_t _BASE_SPEED = 110;
