@@ -65,8 +65,8 @@ void LED::turnLedAmber()
 void LED::flashGreen()
 {
     turnLedGreen();
-    _delay_ms(DELAY_FOR_FOUR_HZ);  
+    //_delay_ms(1);  
     turnOffLed();
-    _delay_ms(DELAY_FOR_FOUR_HZ);  
+    //_delay_ms(1);  
 
 }
