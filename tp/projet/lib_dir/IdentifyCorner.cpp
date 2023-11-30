@@ -372,12 +372,8 @@ void IdentifyCorner::_turnSecondLine()
 
 void IdentifyCorner::_turnBackFirstLine()
 {
-    _navModule.stop();
-    _delay_ms(1000);
-    _display = "CACA";
-    _delay_ms(3000);
-
-    // turn around from left
+    _display.clear();
+    _display << "turn around FIRST";
     if (isRight)
     {
         _navModule.turnLeft();
@@ -388,6 +384,7 @@ void IdentifyCorner::_turnBackFirstLine()
     }
 
     LineMakerFlag sensor = _lineMakerModule.getDetectionFlag();
+
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
