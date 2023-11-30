@@ -158,7 +158,6 @@ void IdentifyCorner::_displayCurrentIntersectionCount()
 
 bool IdentifyCorner::_simpleCompareMAtch()
 {
-    stop();
     _displayCurrentIntersectionCount();
     if ((_firstLineCount == 1) && (_secondLineCount == 0) && (_blockIncrementation == false))
     {
