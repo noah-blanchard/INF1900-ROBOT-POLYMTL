@@ -284,21 +284,74 @@ void IdentifyCorner::_goInitPos()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
+    // switch (flag)
+    // {
+    // case LineMakerFlag::NO_LINE:
+    //     _navModule.adjustForward();
+    //     _state = IdentifyCornerState::TURN_INIT_POS;
+    //     break;
+    // case LineMakerFlag::NO_ADJUSTMENT:
+    //     _navModule.go(Navigation::_BASE_SPEED, false);
+    //     break;
+    // case LineMakerFlag::LEFT_ADJUSTMENT:
+    //     _navModule.adjustRight();
+    //     break;
+    // case LineMakerFlag::RIGHT_ADJUSTMENT:
+    //     _navModule.adjustLeft();
+    //     break;
+    // }
+    _navModule.go(Navigation::_BASE_SPEED, false);
     switch (flag)
     {
+
+    case LineMakerFlag::RIGHT_ADJUSTMENT:
+        _blockIncrementation = false;
+        _navModule.adjustLeft();
+        break;
+
+    case LineMakerFlag::LEFT_ADJUSTMENT:
+        _blockIncrementation = false;
+        _navModule.adjustRight();
+        break;
+
+    // case LineMakerFlag::OUTER_RIGHT_DETECTION:
+    // {
+    //     if (!_blockIncrementation)
+    //     {
+    //         _firstLineCount++;
+    //         _sidefirst = true;
+    //         _displayCurrentIntersectionCount();
+    //         _blockIncrementation = true;
+    //     }
+    //     // _navModule.adjustRight();
+    //     isRight = true;
+    //     break;
+    // }
+
+    // case LineMakerFlag::OUTER_LEFT_DETECTION:
+    //     if (!_blockIncrementation)
+    //     {
+    //         _firstLineCount++;
+    //         _displayCurrentIntersectionCount();
+    //         _blockIncrementation = true;
+    //     }
+    //     isRight = false;
+    //     break;
+
+    // case LineMakerFlag::FULL_CROSSROAD:
+    //     if (!_blockIncrementation)
+    //     {
+    //         _firstLineCount++;
+    //         _displayCurrentIntersectionCount();
+    //         _blockIncrementation = true;
+    //     }
+    //     break;
     case LineMakerFlag::NO_LINE:
+    {
         _navModule.adjustForward();
         _state = IdentifyCornerState::TURN_INIT_POS;
         break;
-    case LineMakerFlag::NO_ADJUSTMENT:
-        _navModule.go(Navigation::_BASE_SPEED, false);
-        break;
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-        _navModule.adjustRight();
-        break;
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
-        _navModule.adjustLeft();
-        break;
+    }
     }
 }
 
