@@ -380,7 +380,7 @@ Move Navigation::followTrip(Move *trip)
         case NavigationState::ERROR:
         {
             stop();
-            *_currentOrientation = _nextMoveValue.orientation;
+            //*_currentOrientation = _nextMoveValue.orientation;
             _currentPosition[0] = _nextMoveValue.x;
             _currentPosition[1] = _nextMoveValue.y;
             _display = "CURR ORIENT :";
@@ -832,8 +832,8 @@ void Navigation::_turnLeft()
 void Navigation::_meetPost()
 {
     // turn around 180 degrees until a line is detected
-    _nextMoveValue = _trip[_tripIndex - 1];
     *_currentOrientation = _nextMoveValue.orientation;
+    _nextMoveValue = _trip[_tripIndex - 1];
     stop();
     _display = "OKOKOKOK";
     _delay_ms(1000);
