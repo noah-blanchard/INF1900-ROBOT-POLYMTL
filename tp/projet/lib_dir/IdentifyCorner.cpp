@@ -1,5 +1,32 @@
 #include "IdentifyCorner.h"
 
+#define CPU_FREQ 8000000UL // 8 MHz
+#define PRESCALER 1024
+#define OVERFLOW_FREQ (CPU_FREQ / (PRESCALER * 256))
+
+volatile uint8_t counter = 0;
+const uint8_t countsRequired = OVERFLOW_FREQ / 4;
+
+ISR(TIMER2_OVF_vect)
+{
+    counter++;
+    if (counter >= countsRequired)
+    {
+        counter = 0;
+    }
+}
+
+void setupTimerForBlinkingLED()
+{
+    TCCR2A = 0;
+
+    // Set prescaler to 1024
+    TCCR2B = (1 << CS22) | (1 << CS21) | (1 << CS20);
+
+    // Enable Timer 2 overflow interrupt
+    TIMSK2 = (1 << TOIE2);
+}
+
 IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC), _led(&PORTB, &DDRB, PB0, PB1)
 {
 }
@@ -98,7 +125,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _sidefirst = true;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
-             _delay_ms(300);
+            _delay_ms(300);
         }
         // _navModule.adjustRight();
         isRight = true;
@@ -122,7 +149,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _firstLineCount++;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
-             _delay_ms(300);
+            _delay_ms(300);
         }
         break;
     case LineMakerFlag::NO_LINE:
