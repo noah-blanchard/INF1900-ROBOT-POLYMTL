@@ -69,7 +69,7 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
 
     _nextMoveValue.x = robotPosition[0];
     _nextMoveValue.y = robotPosition[1];
-    _nextMoveValue.orientation = robotOrientation;
+    _nextMoveValue.orientation = *robotOrientation;
 
     // TimerConfig timerConfig;
     // timerConfig.timer = 2;
