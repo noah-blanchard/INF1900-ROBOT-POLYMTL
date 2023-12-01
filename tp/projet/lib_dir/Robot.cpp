@@ -273,6 +273,8 @@ void Robot::_navigateTripRoutine()
     else
     {
         _display = "OK OK OK";
+        _beginning[0] = tripResult.x;
+        _beginning[1] = tripResult.y;
         _delay_ms(1000);
         _currentState = State::PARKING;
     }
