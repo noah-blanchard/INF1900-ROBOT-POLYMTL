@@ -217,70 +217,76 @@ void Dijkstra::_emptyDijkstraResult()
     }
 }
 
-void Dijkstra::_dijkstra()
-{
-    uint8_t poids[N_NOEUDS];
-    uint8_t noeudPrecedent[N_NOEUDS];
-    bool noeudVisite[N_NOEUDS];
+// implement _dijstra for the _ADJ_MATRIX
+// and fill _dijkstraResult
+// the start node should be _start
+// the destination node should be _destination
 
-    for (uint8_t i = 0; i < N_NOEUDS; ++i)
-    {
-        poids[i] = POIDS_MAX;
-        noeudPrecedent[i] = 255; // Utiliser une valeur qui signifie "aucun prédecesseur"
-        noeudVisite[i] = false;
+void Dijkstra::_dijkstra() {
+    // Initialisation
+    uint8_t dist[N_NOEUDS];
+    bool visited[N_NOEUDS] = { false };
+
+    for (int i = 0; i < N_NOEUDS; i++) {
+        dist[i] = POIDS_MAX;
     }
+    dist[_start] = 0;
 
-    // poids[0] = 0; // Partir du noeud 0
-    // partir du noeud _start
-    poids[_start] = 0;
-    // noeudPrecedent[0] = 0;
-    noeudPrecedent[_start] = 0;
+    for (int count = 0; count < N_NOEUDS - 1; count++) {
+        // Trouver le nœud avec la distance minimale parmi les nœuds non visités
+        uint8_t u = POIDS_MAX;
+        uint8_t minDistance = POIDS_MAX;
 
-    for (uint8_t i = 0; i < N_NOEUDS - 1; i++)
-    {
-        uint8_t minPoids = POIDS_MAX;
-        uint8_t minIndex;
-
-        for (uint8_t j = 0; j < N_NOEUDS; j++)
-        {
-            if (!noeudVisite[j] && poids[j] <= minPoids)
-            {
-                minPoids = poids[j];
-                minIndex = j;
+        for (int v = 0; v < N_NOEUDS; v++) {
+            if (!visited[v] && dist[v] <= minDistance) {
+                minDistance = dist[v];
+                u = v;
             }
         }
 
-        noeudVisite[minIndex] = true;
+        // Marquer le nœud choisi comme visité
+        visited[u] = true;
 
-        for (uint8_t j = 0; j < N_NOEUDS; j++)
-        {
-            if (!noeudVisite[j] && _ADJ_MATRIX[minIndex][j] && poids[minIndex] != POIDS_MAX && poids[minIndex] + _ADJ_MATRIX[minIndex][j] < poids[j])
-            {
-                poids[j] = poids[minIndex] + _ADJ_MATRIX[minIndex][j];
-                noeudPrecedent[j] = minIndex;
+        // Mettre à jour la valeur de distance des nœuds adjacents
+        for (int v = 0; v < N_NOEUDS; v++) {
+            if (!visited[v] && _ADJ_MATRIX[u][v] && dist[u] != POIDS_MAX && dist[u] + _ADJ_MATRIX[u][v] < dist[v]) {
+                dist[v] = dist[u] + _ADJ_MATRIX[u][v];
             }
         }
     }
 
-    // Reconstruire le chemin
-    uint8_t noeudCourant = _destination;
-    uint8_t cheminIndex = 0;
+    // Stocker le résultat dans _dijkstraResult
+    uint8_t current = _destination;
+    uint8_t resultIndex = 0;
 
-    while (noeudCourant != 0)
-    {
-        _dijkstraResult[cheminIndex++] = noeudCourant;
-        noeudCourant = noeudPrecedent[noeudCourant];
+    // Retracer le chemin à partir de la destination, sans inclure le nœud de départ
+    while (current != _start) {
+        _dijkstraResult[resultIndex++] = current;
+        uint8_t nextNode = POIDS_MAX;
+        uint8_t minDist = POIDS_MAX;
+
+        for (int i = 0; i < N_NOEUDS; i++) {
+            if (_ADJ_MATRIX[current][i] != POIDS_MAX && dist[i] < minDist) {
+                nextNode = i;
+                minDist = dist[i];
+            }
+        }
+
+        if (nextNode == POIDS_MAX) {
+            // Aucun chemin trouvé
+            return;
+        }
+
+        current = nextNode;
     }
-    _dijkstraResult[cheminIndex] = 0; // Ajouter le noeud de départ
 
-    // Inverser le chemin
-    for (uint8_t i = 0; i < cheminIndex / 2; i++)
-    {
+    // Inverser le _dijkstraResult manuellement
+    for (uint8_t i = 0; i < resultIndex / 2; ++i) {
         uint8_t temp = _dijkstraResult[i];
-        _dijkstraResult[i] = _dijkstraResult[cheminIndex - i - 1];
-        _dijkstraResult[cheminIndex - i - 1] = temp;
+        _dijkstraResult[i] = _dijkstraResult[resultIndex - i - 1];
+        _dijkstraResult[resultIndex - i - 1] = temp;
     }
 
-    // put a 255 at the end of the array so we know where it ends
-    _dijkstraResult[cheminIndex] = 255;
+    // Ajouter le nœud 255 à la fin pour indiquer la fin du chemin
+    _dijkstraResult[resultIndex] = 255;
 }
