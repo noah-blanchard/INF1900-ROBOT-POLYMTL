@@ -221,14 +221,15 @@ void Dijkstra::_emptyDijkstraResult()
 // and fill _dijkstraResult
 // the start node should be _start
 // the destination node should be _destination
-
 void Dijkstra::_dijkstra() {
     // Initialisation
     uint8_t dist[N_NOEUDS];
+    uint8_t pred[N_NOEUDS];
     bool visited[N_NOEUDS] = { false };
 
     for (int i = 0; i < N_NOEUDS; i++) {
         dist[i] = POIDS_MAX;
+        pred[i] = POIDS_MAX; // Initialisez les prédécesseurs à une valeur non valide
     }
     dist[_start] = 0;
 
@@ -251,6 +252,7 @@ void Dijkstra::_dijkstra() {
         for (int v = 0; v < N_NOEUDS; v++) {
             if (!visited[v] && _ADJ_MATRIX[u][v] && dist[u] != POIDS_MAX && dist[u] + _ADJ_MATRIX[u][v] < dist[v]) {
                 dist[v] = dist[u] + _ADJ_MATRIX[u][v];
+                pred[v] = u; // Enregistrer le prédécesseur
             }
         }
     }
@@ -262,31 +264,23 @@ void Dijkstra::_dijkstra() {
     // Retracer le chemin à partir de la destination, sans inclure le nœud de départ
     while (current != _start) {
         _dijkstraResult[resultIndex++] = current;
-        uint8_t nextNode = POIDS_MAX;
-        uint8_t minDist = POIDS_MAX;
-
-        for (int i = 0; i < N_NOEUDS; i++) {
-            if (_ADJ_MATRIX[current][i] != POIDS_MAX && dist[i] < minDist) {
-                nextNode = i;
-                minDist = dist[i];
-            }
-        }
-
-        if (nextNode == POIDS_MAX) {
+        current = pred[current]; // Utilisez le prédécesseur pour remonter
+        if (current == POIDS_MAX) {
             // Aucun chemin trouvé
             return;
         }
-
-        current = nextNode;
     }
+
+    // Ajouter le nœud de départ à la fin du chemin retracé
+    _dijkstraResult[resultIndex] = _start;
 
     // Inverser le _dijkstraResult manuellement
     for (uint8_t i = 0; i < resultIndex / 2; ++i) {
         uint8_t temp = _dijkstraResult[i];
-        _dijkstraResult[i] = _dijkstraResult[resultIndex - i - 1];
-        _dijkstraResult[resultIndex - i - 1] = temp;
+        _dijkstraResult[i] = _dijkstraResult[resultIndex - i];
+        _dijkstraResult[resultIndex - i] = temp;
     }
 
     // Ajouter le nœud 255 à la fin pour indiquer la fin du chemin
-    _dijkstraResult[resultIndex] = 255;
+    _dijkstraResult[resultIndex + 1] = 255;
 }

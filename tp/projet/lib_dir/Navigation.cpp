@@ -265,7 +265,7 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    for (uint16_t delayCounter = 0; delayCounter < 65; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 120; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 

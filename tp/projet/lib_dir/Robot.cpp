@@ -37,7 +37,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     // //_currentState = State::NAVIGATE_TRIP;
     // _currentState = State::MAKE_TRIP;
     //_display = "WSH";
-    _currentState = State::IDENTIFY_CORNER;
+    _currentState = State::MAKE_TRIP;
 
     //_currentState = State::IDENTIFY_CORNER;
 
@@ -300,7 +300,7 @@ void Robot::_navigateTripRoutine()
         sprintf(buffer, "b1 %d  b2 %d", tripResult.x, tripResult.y);
         _display = buffer;
         _delay_ms(500);
-        _dijkstraModule.removeNode(tripResult.x, tripResult.y);
+        //_dijkstraModule.removeNode(tripResult.x, tripResult.y);
         _currentState = State::CALCULATE_PATH;
     }
     else
