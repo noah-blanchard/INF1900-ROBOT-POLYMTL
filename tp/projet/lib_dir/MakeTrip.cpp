@@ -36,6 +36,8 @@ MakeTrip::MakeTrip() : _display(&DDRC, &PORTC) {}
 
 void MakeTrip::run(uint8_t *destination)
 {
+	selectChoice = false;
+	validateChoice = false;
 	_columnSeleted = 0;
 	_lineSeleted = 0;
 	_confirmed = false;
@@ -116,7 +118,7 @@ void MakeTrip::_confirmChoices()
 		}
 		else
 		{
-			sprintf(_buffer, "(%d, %d) OK?\nNON", _lineSeleted + 1, _columnSeleted+ 1);
+			sprintf(_buffer, "(%d, %d) OK?\nNON", _lineSeleted + 1, _columnSeleted + 1);
 			_display = _buffer;
 		}
 		selectChoice = false;
@@ -134,9 +136,9 @@ void MakeTrip::_confirmChoices()
 		{
 			_confirmed = false;
 			_columnSeleted = 0;
-	_lineSeleted = 0;
-	sprintf(_buffer, "Line : %d", _lineSeleted + 1);
-	_display = _buffer;
+			_lineSeleted = 0;
+			sprintf(_buffer, "Line : %d", _lineSeleted + 1);
+			_display = _buffer;
 			_state = selection::SELECTLINE;
 		}
 		validateChoice = false;
