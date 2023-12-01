@@ -161,8 +161,10 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    _leftWheel.setCompareValue(speed - 15);
-    _rightWheel.setCompareValue(speed);
+    // _leftWheel.setCompareValue(speed);
+    // _rightWheel.setCompareValue(speed);
+    goLeftWheel(speed, backward);
+    goRightWheel(speed, backward);
 }
 
 /**
@@ -184,7 +186,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(speed + 30);
+    _leftWheel.setCompareValue(speed + _LESS);
 }
 
 /**
@@ -206,7 +208,7 @@ void Navigation::goRightWheel(uint16_t speed, bool backward)
         this->_rightForward();
     }
 
-    _rightWheel.setCompareValue(speed - 30);
+    _rightWheel.setCompareValue(speed - _LESS);
 }
 
 /**
@@ -1197,7 +1199,6 @@ void Navigation::parking()
     _delay_ms(1000);
 
     LineMakerFlag savedFlag = _lineMakerModule.getDetectionFlag();
-
 
     if (_lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_LINE)
     {
