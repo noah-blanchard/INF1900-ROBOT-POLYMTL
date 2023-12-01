@@ -1,7 +1,8 @@
 #include "IdentifyCorner.h"
 
-IdentifyCorner::IdentifyCorner(LED *robotLed) : _display(&DDRC, &PORTC)
+IdentifyCorner::IdentifyCorner(LED *led) : _display(&DDRC, &PORTC)
 {
+    robotLed = led;
 }
 
 IdentifyCorner::~IdentifyCorner()

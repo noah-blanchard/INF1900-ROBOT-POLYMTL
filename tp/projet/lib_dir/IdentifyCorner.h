@@ -50,6 +50,7 @@ private:
     LineMaker _lineMakerModule;
     LCM _display;
     Sound _sound;
+    LED* robotLed;
 
     uint8_t _intersectionCount = 0;
     uint8_t _firstLineCount = 0;

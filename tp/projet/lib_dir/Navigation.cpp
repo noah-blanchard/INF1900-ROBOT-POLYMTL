@@ -184,7 +184,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(speed);
+    _leftWheel.setCompareValue(speed + _LESS);
 }
 
 /**
@@ -247,7 +247,7 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
+    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET +_LESS, false);
     goLeftWheel(_BASE_SPEED, false);
     _delay_ms(_ADJUST_DELAY);
 }
@@ -265,7 +265,7 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    for (uint16_t delayCounter = 0; delayCounter < 280; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 65; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
