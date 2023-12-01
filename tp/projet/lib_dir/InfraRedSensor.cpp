@@ -21,7 +21,7 @@ InfraRedSensor::~InfraRedSensor()
 
 uint16_t InfraRedSensor::_getDistance()
 {
-    uint16_t distanceLevel = _analogicConverter.lecture(AN_PORT) >> PRECISION_BITSHIFT;
+    uint8_t distanceLevel = _analogicConverter.lecture(AN_PORT) >> PRECISION_BITSHIFT;
     return distanceLevel;
 }
 
