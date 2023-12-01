@@ -8,7 +8,7 @@
 //     customDelayElapsed = true;
 // }
 
-Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1)
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1), _identifyCornerModule(&_ledModule)
 {
    
 

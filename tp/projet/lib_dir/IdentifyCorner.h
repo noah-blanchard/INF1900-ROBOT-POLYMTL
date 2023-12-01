@@ -40,7 +40,7 @@ class IdentifyCorner
 {
 
 public:
-    IdentifyCorner();
+    IdentifyCorner(LED* robotLed);
     ~IdentifyCorner();
 
     void identificationProcess(uint8_t *_beginning);

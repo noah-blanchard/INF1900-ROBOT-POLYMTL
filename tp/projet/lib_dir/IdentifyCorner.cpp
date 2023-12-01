@@ -1,6 +1,6 @@
 #include "IdentifyCorner.h"
 
-IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC)
+IdentifyCorner::IdentifyCorner(LED *robotLed) : _display(&DDRC, &PORTC)
 {
 }
 
@@ -17,43 +17,53 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
         switch (_state)
         {
         case IdentifyCornerState::GO_FORWARD_FIRST_LINE:
+            robotLed->flashGreen();
             _goForwardFirstLine();
             break;
 
         case IdentifyCornerState::TURN_AROUND:
+            robotLed->flashGreen();
             _turnAround();
             break;
 
         case IdentifyCornerState::TURN_AROUND_SECOND_LINE:
+            robotLed->flashGreen();
             _turnAroundSecondLine();
             break;
 
         case IdentifyCornerState::GO_BACK_FIRST_LINE:
+            robotLed->flashGreen();
             _goBackFirstLine();
             break;
 
         case IdentifyCornerState::GO_BACK_SECOND_LINE:
+            robotLed->flashGreen();
             _goBackSecondLine();
             _navModule.stop();
             break;
 
         case IdentifyCornerState::TURN_SECOND_LINE:
+            robotLed->flashGreen();
             _turnSecondLine();
             break;
 
         case IdentifyCornerState::TURN_BACK_FIRST_LINE:
+            robotLed->flashGreen();
             _turnBackFirstLine();
             break;
 
         case IdentifyCornerState::TURN_BACK_SECOND_LINE:
+            robotLed->flashGreen();
             _turnBackSecondLine();
             break;
 
         case IdentifyCornerState::GO_FORWARD_SECOND_LINE:
+            robotLed->flashGreen();
             _goForwardSecondLine();
             break;
 
         case IdentifyCornerState::GO_INIT_POS:
+            robotLed->turnLedGreen();
             _goInitPos();
             break;
 
