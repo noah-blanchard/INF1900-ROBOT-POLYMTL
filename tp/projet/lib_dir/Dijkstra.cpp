@@ -159,23 +159,6 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
     _emptyDijkstraResult();
     _dijkstra();
 
-    // position 0 is x = 0, y = 0
-    // position 1 is x = 1, y = 0
-    // position 6 is x = 6 y = 0
-    // position 7 is x = 0 y = 1
-
-    // so I want to convert the result of dijkstra to an array of Moves
-    // so position 7 is x = 7%7 = 0, y = 7/7 = 1
-    // position 8 is x = 8%7 = 1, y = 8/7 = 1
-    // position 13 is x = 13%7 = 6, y = 13/7 = 1
-    // position 6 is x = 6%7 = 6, y = 6/7 = 0
-
-    // so I want to convert the result of dijkstra to an array of Moves
-    // if last x < next x, orientation is EAST
-    // if last x > next x, orientation is WEST
-    // if last y < next y, orientation is SOUTH
-    // if last y > next y, orientation is NORTH
-
     uint8_t lastX = start[0];
     uint8_t lastY = start[1];
 
