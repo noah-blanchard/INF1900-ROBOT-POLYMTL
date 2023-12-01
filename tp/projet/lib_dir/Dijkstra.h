@@ -1,6 +1,9 @@
 #pragma once
 #include <avr/io.h>
-#include "Types.h"
+#include <util/delay.h>
+#include "Types.h"// import lcm
+#include "lcm_so1602dtr_m_fw.h"
+
 
 const uint8_t POIDS_MAX = 255;
 const uint8_t N_NOEUDS = 28;
@@ -19,6 +22,7 @@ private:
     uint8_t _dijkstraResult[28];
     uint8_t _destination;
     uint8_t _start;
+    LCM _display;
 
     void _emptyDijkstraResult();
     void _resetAdjMatrix();

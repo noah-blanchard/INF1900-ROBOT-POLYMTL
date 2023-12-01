@@ -1,6 +1,7 @@
 #include "Dijkstra.h"
+#include <stdio.h>
 
-Dijkstra::Dijkstra()
+Dijkstra::Dijkstra() : _display(&DDRC, &PORTC) : _start(0), _destination(0)
 {
     _resetAdjMatrix();
     // initialisation à MAX de la matrice d'adjacence
@@ -143,6 +144,18 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
 {
     _destination = _getNodeNumber(destination[0], destination[1]);
     _start = _getNodeNumber(start[0], start[1]);
+
+    char buffer[20];
+    // print destination for 2 SEC then START for 2 SEC
+    // print start for 2 SEC then destination for 2 SEC
+    sprintf(buffer, "Destination: %d", _destination);
+    _display = buffer;
+    _delay_ms(2000);
+
+    sprintf(buffer, "Start: %d", _start);
+    _display = buffer;
+    _delay_ms(2000);
+
     _emptyDijkstraResult();
     _dijkstra();
 
@@ -174,10 +187,10 @@ void Dijkstra::run(uint8_t *start, uint8_t *destination, Move *moveArray)
         uint8_t nextX = _dijkstraResult[indexR] % 7;
         uint8_t nextY = _dijkstraResult[indexR] / 7;
         Orientation nextOrientation = Orientation::NORTH;
-indexR++;
+        indexR++;
         if (lastX == nextX && lastY == nextY)
         {
-            
+
             continue;
         }
         else if (lastX < nextX)
