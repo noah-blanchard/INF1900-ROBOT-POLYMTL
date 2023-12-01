@@ -37,7 +37,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     // //_currentState = State::NAVIGATE_TRIP;
     // _currentState = State::MAKE_TRIP;
     //_display = "WSH";
-    _currentState = State::MAKE_TRIP;
+    _currentState = State::IDENTIFY_CORNER;
 
     //_currentState = State::IDENTIFY_CORNER;
 
@@ -73,80 +73,80 @@ Robot::~Robot()
 void Robot::runRoutine()
 {
 
-    _ledModule.turnLedGreen();
-    _display = "okok";
-    _ledModule.flashGreen();
+    // _ledModule.turnLedGreen();
+    // _display = "okok";
+    // _ledModule.flashGreen();
 
-    char buffer[28];
-    uint16_t val = _irSensorModule._getDistance();
-    sprintf(buffer, "%d",_irSensorModule._getDistance());
-    _display = buffer;
-    if(_irSensorModule.isObstacleDetected()){
-        _display = "HHI";
-    }else{
-        _display = buffer;
+    // char buffer[28];
+    // uint16_t val = _irSensorModule._getDistance();
+    // sprintf(buffer, "%d",_irSensorModule._getDistance());
+    // _display = buffer;
+    // if(_irSensorModule.isObstacleDetected()){
+    //     _display = "HHI";
+    // }else{
+    //     _display = buffer;
+    // }
+    // _delay_ms(100);
+
+    switch (_currentState)
+    {
+    case State::MODE_SELECTION:
+    {
+        //_modeSelectionRoutine();
+        break;
     }
-    _delay_ms(100);
-
-    // switch (_currentState)
-    // {
-    // case State::MODE_SELECTION:
-    // {
-    //     //_modeSelectionRoutine();
-    //     break;
-    // }
-    // case State::IDENTIFY_CORNER:
-    // {
-    //     //_identifyCornerRoutine();
-    //     _identifyCornerModule.identificationProcess(_beginning);
-    //     break;
-    // }
-    // case State::MAKE_TRIP:
-    // {
-    //     _maketripModule.run(_destination);
-    //     _currentState = State::CALCULATE_PATH;
-    //     break;
-    // }
-    // case State::TRAVEL_POSITION_SELECTION:
-    // {
-    //     //_travelPositionSelectionRoutine();
-    //     break;
-    // }
-    // case State::CALCULATE_PATH:
-    // {
-    //     _calculatePathRoutine();
-    //     break;
-    // }
-    // case State::NAVIGATE_TRIP:
-    // {
-    //     _navigateTripRoutine();
-    //     break;
-    // }
-    // case State::PARKING:
-    // {
-    //     _parkingRoutine();
-    //     break;
-    // }
-    // case State::FOLLOW_LINE:
-    // {
-    //     _followLineRoutine();
-    //     break;
-    // }
-    // case State::MEET_CROSSROAD:
-    // {
-    //     _meetCrossroadRoutine();
-    //     break;
-    // }
-    // case State::TURN_AT_CROSSROAD:
-    // {
-    //     _turnAtCrossroadRoutine();
-    //     break;
-    // }
-    // default:
-    // {
-    //     break;
-    // }
-    // }
+    case State::IDENTIFY_CORNER:
+    {
+        //_identifyCornerRoutine();
+        _identifyCornerModule.identificationProcess(_beginning);
+        break;
+    }
+    case State::MAKE_TRIP:
+    {
+        _maketripModule.run(_destination);
+        _currentState = State::CALCULATE_PATH;
+        break;
+    }
+    case State::TRAVEL_POSITION_SELECTION:
+    {
+        //_travelPositionSelectionRoutine();
+        break;
+    }
+    case State::CALCULATE_PATH:
+    {
+        _calculatePathRoutine();
+        break;
+    }
+    case State::NAVIGATE_TRIP:
+    {
+        _navigateTripRoutine();
+        break;
+    }
+    case State::PARKING:
+    {
+        _parkingRoutine();
+        break;
+    }
+    case State::FOLLOW_LINE:
+    {
+        _followLineRoutine();
+        break;
+    }
+    case State::MEET_CROSSROAD:
+    {
+        _meetCrossroadRoutine();
+        break;
+    }
+    case State::TURN_AT_CROSSROAD:
+    {
+        _turnAtCrossroadRoutine();
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
 }
 
 void Robot::_followLineRoutine()
