@@ -67,9 +67,9 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
     PORTD &= ~(1 << PD6);
     PORTD &= ~(1 << PD7);
 
-    _nextMoveValue.x = 0;
-    _nextMoveValue.y = 0;
-    _nextMoveValue.orientation = Orientation::SOUTH;
+    _nextMoveValue.x = robotPosition[0];
+    _nextMoveValue.y = robotPosition[1];
+    _nextMoveValue.orientation = robotOrientation;
 
     // TimerConfig timerConfig;
     // timerConfig.timer = 2;
@@ -340,6 +340,9 @@ Move Navigation::followTrip(Move *trip)
     _firstMove = true;
     _preventInitForward = true;
     _tripState = NavigationState::NEXT_MOVE;
+    _nextMoveValue.x = _currentPosition[0];
+    _nextMoveValue.y = _currentPosition[1];
+    _nextMoveValue.orientation = *_currentOrientation;
 
     // uint8_t tripIndex = 0;
 
@@ -537,7 +540,7 @@ void Navigation::_nextMove()
         {
             if (_nextMoveValue.orientation == Orientation::WEST)
             {
-                _display="CACA PIPI";
+                _display = "CACA PIPI";
                 _delay_ms(1000);
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
