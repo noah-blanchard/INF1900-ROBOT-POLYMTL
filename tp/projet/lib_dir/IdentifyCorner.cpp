@@ -16,9 +16,20 @@ ISR(TIMER2_OVF_vect)
     }
 }
 
+/*
+ISR(TIMER2_COMP_vect) {
+    //counter = 1;
+}
+*/
 void setupTimerForBlinkingLED()
 {
     TCCR2A = 0;
+
+
+    //TCCR2A |= (1 << WGM21);  // CTC
+    //OCR2A = 124;  
+    //TIMSK2 |= (1 << OCIE2A);
+    // sei();
 
     // Set prescaler to 1024
     TCCR2B = (1 << CS22) | (1 << CS21) | (1 << CS20);
@@ -26,6 +37,8 @@ void setupTimerForBlinkingLED()
     // Enable Timer 2 overflow interrupt
     TIMSK2 = (1 << TOIE2);
 }
+
+
 
 IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC), _led(&PORTB, &DDRB, PB0, PB1)
 {
