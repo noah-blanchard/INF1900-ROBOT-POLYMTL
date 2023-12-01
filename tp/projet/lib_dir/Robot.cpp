@@ -24,11 +24,11 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     sei();
 
     _beginning[0] = 0;
-    _beginning[1] = 1;
+    _beginning[1] = 0;
 
-    _currentOrientation = Orientation::EAST;
+    _currentOrientation = Orientation::SOUTH;
     _currentPosition[0] = 0;
-    _currentPosition[1] = 1;
+    _currentPosition[1] = 0;
 
     // _beginning[0] = 0;
     // _beginning[1] = 0;
