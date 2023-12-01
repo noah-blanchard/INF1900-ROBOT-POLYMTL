@@ -247,7 +247,7 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET +_LESS, false);
+    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET + _LESS, false);
     goLeftWheel(_BASE_SPEED, false);
     _delay_ms(_ADJUST_DELAY);
 }
@@ -265,7 +265,7 @@ void Navigation::adjustLeft()
 
 void Navigation::adjustForward()
 {
-    for (uint16_t delayCounter = 0; delayCounter < 120; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < 160; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
@@ -540,8 +540,6 @@ void Navigation::_nextMove()
         {
             if (_nextMoveValue.orientation == Orientation::WEST)
             {
-                _display = "CACA PIPI";
-                _delay_ms(1000);
                 _initTurnRight();
                 _tripState = NavigationState::TURN_RIGHT;
             }
@@ -684,7 +682,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         }
     }
 
-    if (_forwardDelayCount >= 300)
+    if (_forwardDelayCount >= 200)
     {
         _display = "stop";
         stop();
