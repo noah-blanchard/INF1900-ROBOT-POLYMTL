@@ -1,7 +1,7 @@
 #include "Dijkstra.h"
 #include <stdio.h>
 
-Dijkstra::Dijkstra() : _display(&DDRC, &PORTC) : _start(0), _destination(0)
+Dijkstra::Dijkstra() : _display(&DDRC, &PORTC)
 {
     _resetAdjMatrix();
     // initialisation à MAX de la matrice d'adjacence
