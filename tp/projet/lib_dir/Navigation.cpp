@@ -1191,11 +1191,13 @@ void Navigation::_chooseRightTurn()
 
 void Navigation::parking()
 {
-    LineMakerFlag savedFlag = _lineMakerModule.getDetectionFlag();
 
     adjustForward();
     stop();
     _delay_ms(1000);
+
+    LineMakerFlag savedFlag = _lineMakerModule.getDetectionFlag();
+
 
     if (_lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_LINE)
     {
