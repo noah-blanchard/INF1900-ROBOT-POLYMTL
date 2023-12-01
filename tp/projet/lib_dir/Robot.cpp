@@ -214,20 +214,48 @@ void Robot::_calculatePathRoutine()
     // _destination[1] = 3;
 
     char buffer[20];
-    sprintf(buffer, "D: %d %d", _destination[0], _destination[1]);
+    sprintf(buffer, "Dest: %d %d", _destination[0], _destination[1]);
     _display = buffer;
-    _delay_ms(500);
+    _delay_ms(2000);
+    sprintf(buffer, "Begin: %d %d", _beginning[0], _beginning[1]);
+    _display = buffer;
+    _delay_ms(2000);
 
     _dijkstraModule.run(_beginning, _destination, _moveArray);
     _display = "FINISHED";
     _delay_ms(500);
+
+    _display = "CURRENT ORIENTATION";
+    _delay_ms(2000);
+
+    // print current orientation
+    switch (_currentOrientation)
+    {
+    case Orientation::NORTH:
+        _display = "NORTH";
+        break;
+    case Orientation::EAST:
+        _display = "EAST";
+        break;
+    case Orientation::SOUTH:
+        _display = "SOUTH";
+        break;
+    case Orientation::WEST:
+        _display = "WEST";
+        break;
+    default:
+        _display = "NOT FOUND";
+        break;
+    }
+    _delay_ms(2000);
+
     Orientation moveOrientation = _moveArray[0].orientation;
     _display = "NEXT ORIENTATION";
     _delay_ms(500);
     switch (moveOrientation)
     {
     case Orientation::NORTH:
-       // _currentOrientation = Orientation::NORTH;
+        // _currentOrientation = Orientation::NORTH;
         _display = "NORTH";
         break;
     case Orientation::EAST:
