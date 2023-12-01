@@ -27,5 +27,5 @@ uint16_t InfraRedSensor::_getDistance()
 
 bool InfraRedSensor::isObstacleDetected()
 {
-    return _getDistance() < 100;
+    return false;
 }
