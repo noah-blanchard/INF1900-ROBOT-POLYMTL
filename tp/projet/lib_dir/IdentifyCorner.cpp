@@ -1,6 +1,6 @@
 #include "IdentifyCorner.h"
 
-IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC), _led(&PORTB, &DDRB, PB0, PB1)
+IdentifyCorner::IdentifyCorner() : _display(&DDRC, &PORTC)
 {
 }
 

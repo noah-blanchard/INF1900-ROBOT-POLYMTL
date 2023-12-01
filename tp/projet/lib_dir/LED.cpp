@@ -11,20 +11,22 @@
 #define PRESCALER 1024
 #define OVERFLOW_FREQ (CPU_FREQ / (PRESCALER * 256))
 
-volatile uint8_t counter = 0;
+volatile bool counter = true;
 const uint8_t countsRequired = OVERFLOW_FREQ / 4;
 
-ISR(TIMER2_OVF_vect)
+ISR(TIMER2_COMPA_vect)
 {
-    counter++;
-    if (counter >= countsRequired)
-    {
-        counter = 0;
-    }
+    // counter++;
+    // if (counter >= countsRequired)
+    // {
+    //     counter = 0;
+    // }
+    counter = !counter;
+    //TIFR2 |= (1 << TOV2);
 }
 
 constexpr uint8_t DELAY_AMBER_COLOR = 10;
-constexpr uint8_t DELAY_FOR_FOUR_HZ = 125;
+// constexpr uint8_t DELAY_FOR_FOUR_HZ = 125;
 
 /**
  * @brief Constructor for the LED class.
@@ -38,6 +40,20 @@ LED::LED(Register port, Register mode, uint8_t greenLed, uint8_t redLed)
     : _port(port), _mode(mode), _greenLed(greenLed), _redLed(redLed)
 {
     *mode |= (1 << greenLed) | (1 << redLed);
+
+
+    cli();
+     // Réglez le mode CTC
+    TCCR2A = (1 << WGM21);
+    TCCR2B = (1 << CS22) | (1 << CS21) | (1 << CS20); // Prescaler à 1024
+
+    // Définir la valeur pour la comparaison
+    OCR2A = 254; // Calculé selon la formule
+
+    // Activer l'interruption de comparaison
+    TIMSK2 = (1 << OCIE2A);
+    
+    sei();
 }
 
 /**
@@ -79,30 +95,29 @@ void LED::turnLedAmber()
 
 void LED::flashGreen()
 {
-    if (counter > countsRequired)
-    {
-        if (_on)
-        {
-            turnOffLed();
-            _on = false;
-        }
-        else
-        {
+        if(counter)  {
             turnLedGreen();
-            _on = true;
+        }   else {
+            turnOffLed();
         }
-    }
+//     if (counter == 1)
+//     {
+//         counter = 0;
+//         if (_on)
+//         {
+//             turnOffLed();
+//             _on = false;
+//         }
+//         else
+//         {
+//             turnLedGreen();
+//             _on = true;
+//         }
+
+//     }
 }
 
 void LED::setupBlink()
 {
-    cli();
-    TCCR2A = 0;
 
-    // Set prescaler to 1024
-    TCCR2B = (1 << CS22) | (1 << CS21) | (1 << CS20);
-
-    // Enable Timer 2 overflow interrupt
-    TIMSK2 = (1 << TOIE2);
-    sei();
 }

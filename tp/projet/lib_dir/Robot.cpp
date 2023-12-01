@@ -8,11 +8,9 @@
 //     customDelayElapsed = true;
 // }
 
-Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(_led(&PORTB, &DDRB, PB0, PB1))
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1)
 {
-    DDRB |= (1 << PB0) | (1 << PB1);
-    // put PB0 as VCC and PB1 as GND
-    PORTB |= (1 << PB0) | (0 << PB1);
+   
 
     _validateButton = Bouton(INT1);
     _selectButton = Bouton(INT0);
@@ -23,7 +21,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _selectButton.enableInterrupt();
     sei();
 
-    _ledModule.setupBlink();
+    //_ledModule.setupBlink();
 
     _beginning[0] = 0;
     _beginning[1] = 0;
@@ -32,14 +30,14 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _currentPosition[0] = 0;
     _currentPosition[1] = 0;
 
-    // _beginning[0] = 0;
-    // _beginning[1] = 0;
-    //_currentState = State::MODE_SELECTION;
-    //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
-    //_currentState = State::NAVIGATE_TRIP;
-    _currentState = State::MAKE_TRIP;
+    // // _beginning[0] = 0;
+    // // _beginning[1] = 0;
+    // //_currentState = State::MODE_SELECTION;
+    // //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
+    // //_currentState = State::NAVIGATE_TRIP;
+    // _currentState = State::MAKE_TRIP;
     //_display = "WSH";
-    //_currentState = State::MAKE_TRIP;
+    _currentState = State::MAKE_TRIP;
 
     //_currentState = State::IDENTIFY_CORNER;
 
@@ -75,6 +73,8 @@ Robot::~Robot()
 void Robot::runRoutine()
 {
 
+    //_ledModule.turnLedGreen();
+    _display = "okok";
     _ledModule.flashGreen();
 
     // char buffer[28];
