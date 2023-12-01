@@ -10,10 +10,10 @@ public:
     InfraRedSensor();
     ~InfraRedSensor();
     bool isObstacleDetected();
-    uint16_t _getDistance();
+    uint8_t _getDistance();
 
 private:
-    static const uint8_t _distanceReferenceValue = 230;
+    static const uint8_t _distanceReferenceValue = 80;
     static const uint8_t PRECISION_BITSHIFT = 2;
     static const uint8_t AN_PORT = PA0;
 

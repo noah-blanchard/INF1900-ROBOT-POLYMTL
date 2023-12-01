@@ -109,7 +109,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _sidefirst = true;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
-            _delay_ms(300);
+            _delay_ms(270);
         }
         // _navModule.adjustRight();
         isRight = true;
@@ -122,7 +122,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _firstLineCount++;
             _displayCurrentIntersectionCount();
             _blockIncrementation = true;
-            _delay_ms(300);
+            _delay_ms(270);
         }
         isRight = false;
         break;
@@ -159,8 +159,6 @@ void IdentifyCorner::_goForwardFirstLine()
 void IdentifyCorner::makeSound()
 {
     _sound.chooseFrequency(81);
-    _delay_ms(1000);
-    _sound.stopSound();
 }
 void IdentifyCorner::_displayCurrentIntersectionCount()
 {
@@ -240,9 +238,7 @@ void IdentifyCorner::_turnAround()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
-        _displayCurrentIntersectionCount();
-        _delay_ms(2000);
+        _delay_ms(500);
         _state = IdentifyCornerState::GO_BACK_FIRST_LINE;
     }
 }
@@ -267,8 +263,6 @@ void IdentifyCorner::_turnAroundSecondLine()
     {
         _navModule.stop();
         _delay_ms(1000);
-        _displayCurrentIntersectionCount();
-        _delay_ms(2000);
         _state = IdentifyCornerState::GO_INIT_POS;
     }
 }
@@ -428,7 +422,7 @@ void IdentifyCorner::_turnInitPos()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(2000);
+        _delay_ms(1000);
         _found = true;
         _state = IdentifyCornerState::FINISH;
     }
@@ -543,6 +537,7 @@ void IdentifyCorner::_goForwardSecondLine()
             makeSound();
             _navModule.stop();
             _delay_ms(1000);
+            _sound.stopSound();
             _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
         }
         else

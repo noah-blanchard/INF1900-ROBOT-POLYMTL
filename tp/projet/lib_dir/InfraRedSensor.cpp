@@ -20,13 +20,13 @@ InfraRedSensor::~InfraRedSensor()
     //_analogicConverter.disableADCInterrupt();
 }
 
-uint16_t InfraRedSensor::_getDistance()
+uint8_t InfraRedSensor::_getDistance()
 {
-    uint16_t distanceLevel = _analogicConverter.lecture(AN_PORT);
+    uint8_t distanceLevel = _analogicConverter.lecture(AN_PORT) >> PRECISION_BITSHIFT;
     return distanceLevel;
 }
 
 bool InfraRedSensor::isObstacleDetected()
 {
-    return false;
+    return _getDistance() >= _distanceReferenceValue;
 }
