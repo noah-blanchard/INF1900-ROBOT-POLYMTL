@@ -217,7 +217,7 @@ void Robot::_calculatePathRoutine()
     sprintf(buffer, "Dest: %d %d", _destination[0], _destination[1]);
     _display = buffer;
     _delay_ms(2000);
-    sprintf(buffer, "Begin: %d %d", _beginning[0], _beginning[1]);
+    sprintf(buffer, "Beg: %d %d", _beginning[0], _beginning[1]);
     _display = buffer;
     _delay_ms(2000);
 
