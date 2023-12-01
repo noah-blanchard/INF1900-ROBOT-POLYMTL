@@ -7,12 +7,28 @@
 #include <util/delay.h>
 #include "LED.h"
 
+#define CPU_FREQ 8000000UL // 8 MHz
+#define PRESCALER 1024
+#define OVERFLOW_FREQ (CPU_FREQ / (PRESCALER * 256))
+
+volatile uint8_t counter = 0;
+const uint8_t countsRequired = OVERFLOW_FREQ / 4;
+
+ISR(TIMER2_OVF_vect)
+{
+    counter++;
+    if (counter >= countsRequired)
+    {
+        counter = 0;
+    }
+}
+
 constexpr uint8_t DELAY_AMBER_COLOR = 10;
 constexpr uint8_t DELAY_FOR_FOUR_HZ = 125;
 
 /**
  * @brief Constructor for the LED class.
- * 
+ *
  * @param port The register for the LED port.
  * @param mode The register for the LED mode.
  * @param greenLed The pin number for the green LED.
@@ -61,12 +77,32 @@ void LED::turnLedAmber()
     _delay_ms(DELAY_AMBER_COLOR);
 }
 
-
 void LED::flashGreen()
 {
-    turnLedGreen();
-    //_delay_ms(1);  
-    turnOffLed();
-    //_delay_ms(1);  
+    if (counter > countsRequired)
+    {
+        if (_on)
+        {
+            turnOffLed();
+            _on = false;
+        }
+        else
+        {
+            turnLedGreen();
+            _on = true;
+        }
+    }
+}
 
+void LED::setupBlink()
+{
+    cli();
+    TCCR2A = 0;
+
+    // Set prescaler to 1024
+    TCCR2B = (1 << CS22) | (1 << CS21) | (1 << CS20);
+
+    // Enable Timer 2 overflow interrupt
+    TIMSK2 = (1 << TOIE2);
+    sei();
 }

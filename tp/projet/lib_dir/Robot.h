@@ -68,6 +68,7 @@ private:
     MakeTrip _maketripModule;
     IdentifyCorner _identifyCornerModule;
     Dijkstra _dijkstraModule;
+    LED _ledModule;
 
     State _currentState;
     State _previousState;

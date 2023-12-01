@@ -8,7 +8,7 @@
 //     customDelayElapsed = true;
 // }
 
-Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation)
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(_led(&PORTB, &DDRB, PB0, PB1))
 {
     DDRB |= (1 << PB0) | (1 << PB1);
     // put PB0 as VCC and PB1 as GND
@@ -22,6 +22,8 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _selectButton.setFallingEdge();
     _selectButton.enableInterrupt();
     sei();
+
+    _ledModule.setupBlink();
 
     _beginning[0] = 0;
     _beginning[1] = 0;
@@ -72,6 +74,9 @@ Robot::~Robot()
 
 void Robot::runRoutine()
 {
+
+    _ledModule.flashGreen();
+
     // char buffer[28];
     // uint16_t val = _irSensorModule._getDistance();
     // sprintf(buffer, "%d",_irSensorModule._getDistance());
@@ -83,65 +88,65 @@ void Robot::runRoutine()
     // }
     // _delay_ms(100);
 
-    switch (_currentState)
-    {
-    case State::MODE_SELECTION:
-    {
-        //_modeSelectionRoutine();
-        break;
-    }
-    case State::IDENTIFY_CORNER:
-    {
-        //_identifyCornerRoutine();
-        _identifyCornerModule.identificationProcess(_beginning);
-        break;
-    }
-    case State::MAKE_TRIP:
-    {
-        _maketripModule.run(_destination);
-        _currentState = State::CALCULATE_PATH;
-        break;
-    }
-    case State::TRAVEL_POSITION_SELECTION:
-    {
-        //_travelPositionSelectionRoutine();
-        break;
-    }
-    case State::CALCULATE_PATH:
-    {
-        _calculatePathRoutine();
-        break;
-    }
-    case State::NAVIGATE_TRIP:
-    {
-        _navigateTripRoutine();
-        break;
-    }
-    case State::PARKING:
-    {
-        _parkingRoutine();
-        break;
-    }
-    case State::FOLLOW_LINE:
-    {
-        _followLineRoutine();
-        break;
-    }
-    case State::MEET_CROSSROAD:
-    {
-        _meetCrossroadRoutine();
-        break;
-    }
-    case State::TURN_AT_CROSSROAD:
-    {
-        _turnAtCrossroadRoutine();
-        break;
-    }
-    default:
-    {
-        break;
-    }
-    }
+    // switch (_currentState)
+    // {
+    // case State::MODE_SELECTION:
+    // {
+    //     //_modeSelectionRoutine();
+    //     break;
+    // }
+    // case State::IDENTIFY_CORNER:
+    // {
+    //     //_identifyCornerRoutine();
+    //     _identifyCornerModule.identificationProcess(_beginning);
+    //     break;
+    // }
+    // case State::MAKE_TRIP:
+    // {
+    //     _maketripModule.run(_destination);
+    //     _currentState = State::CALCULATE_PATH;
+    //     break;
+    // }
+    // case State::TRAVEL_POSITION_SELECTION:
+    // {
+    //     //_travelPositionSelectionRoutine();
+    //     break;
+    // }
+    // case State::CALCULATE_PATH:
+    // {
+    //     _calculatePathRoutine();
+    //     break;
+    // }
+    // case State::NAVIGATE_TRIP:
+    // {
+    //     _navigateTripRoutine();
+    //     break;
+    // }
+    // case State::PARKING:
+    // {
+    //     _parkingRoutine();
+    //     break;
+    // }
+    // case State::FOLLOW_LINE:
+    // {
+    //     _followLineRoutine();
+    //     break;
+    // }
+    // case State::MEET_CROSSROAD:
+    // {
+    //     _meetCrossroadRoutine();
+    //     break;
+    // }
+    // case State::TURN_AT_CROSSROAD:
+    // {
+    //     _turnAtCrossroadRoutine();
+    //     break;
+    // }
+    // default:
+    // {
+    //     break;
+    // }
+    // }
 }
 
 void Robot::_followLineRoutine()

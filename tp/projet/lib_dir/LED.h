@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <avr/interrupt.h>
 #define FLASHRED 0
 #define FLASHGREEN 1
 #define FLASHAMBER 2
@@ -15,10 +16,12 @@ public:
     void turnLedGreen();
     void turnLedAmber();
     void flashGreen();
-    
+    void setupBlink();
+
 private:
     Register _port;
     Register _mode;
     uint8_t _greenLed;
     uint8_t _redLed;
+    bool _on = false;
 };
