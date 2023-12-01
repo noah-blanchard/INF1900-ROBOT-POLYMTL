@@ -73,80 +73,80 @@ Robot::~Robot()
 void Robot::runRoutine()
 {
 
-    //_ledModule.turnLedGreen();
-    // _display = "okok";
-    // _ledModule.flashGreen();
+    _ledModule.turnLedGreen();
+    _display = "okok";
+    _ledModule.flashGreen();
 
-    // char buffer[28];
-    // uint16_t val = _irSensorModule._getDistance();
-    // sprintf(buffer, "%d",_irSensorModule._getDistance());
-    // _display = buffer;
-    // if(_irSensorModule.isObstacleDetected()){
-    //     _display = "HHI";
-    // }else{
-    //     _display = buffer;
+    char buffer[28];
+    uint16_t val = _irSensorModule._getDistance();
+    sprintf(buffer, "%d",_irSensorModule._getDistance());
+    _display = buffer;
+    if(_irSensorModule.isObstacleDetected()){
+        _display = "HHI";
+    }else{
+        _display = buffer;
+    }
+    _delay_ms(100);
+
+    // switch (_currentState)
+    // {
+    // case State::MODE_SELECTION:
+    // {
+    //     //_modeSelectionRoutine();
+    //     break;
     // }
-    // _delay_ms(100);
-
-    switch (_currentState)
-    {
-    case State::MODE_SELECTION:
-    {
-        //_modeSelectionRoutine();
-        break;
-    }
-    case State::IDENTIFY_CORNER:
-    {
-        //_identifyCornerRoutine();
-        _identifyCornerModule.identificationProcess(_beginning);
-        break;
-    }
-    case State::MAKE_TRIP:
-    {
-        _maketripModule.run(_destination);
-        _currentState = State::CALCULATE_PATH;
-        break;
-    }
-    case State::TRAVEL_POSITION_SELECTION:
-    {
-        //_travelPositionSelectionRoutine();
-        break;
-    }
-    case State::CALCULATE_PATH:
-    {
-        _calculatePathRoutine();
-        break;
-    }
-    case State::NAVIGATE_TRIP:
-    {
-        _navigateTripRoutine();
-        break;
-    }
-    case State::PARKING:
-    {
-        _parkingRoutine();
-        break;
-    }
-    case State::FOLLOW_LINE:
-    {
-        _followLineRoutine();
-        break;
-    }
-    case State::MEET_CROSSROAD:
-    {
-        _meetCrossroadRoutine();
-        break;
-    }
-    case State::TURN_AT_CROSSROAD:
-    {
-        _turnAtCrossroadRoutine();
-        break;
-    }
-    default:
-    {
-        break;
-    }
-    }
+    // case State::IDENTIFY_CORNER:
+    // {
+    //     //_identifyCornerRoutine();
+    //     _identifyCornerModule.identificationProcess(_beginning);
+    //     break;
+    // }
+    // case State::MAKE_TRIP:
+    // {
+    //     _maketripModule.run(_destination);
+    //     _currentState = State::CALCULATE_PATH;
+    //     break;
+    // }
+    // case State::TRAVEL_POSITION_SELECTION:
+    // {
+    //     //_travelPositionSelectionRoutine();
+    //     break;
+    // }
+    // case State::CALCULATE_PATH:
+    // {
+    //     _calculatePathRoutine();
+    //     break;
+    // }
+    // case State::NAVIGATE_TRIP:
+    // {
+    //     _navigateTripRoutine();
+    //     break;
+    // }
+    // case State::PARKING:
+    // {
+    //     _parkingRoutine();
+    //     break;
+    // }
+    // case State::FOLLOW_LINE:
+    // {
+    //     _followLineRoutine();
+    //     break;
+    // }
+    // case State::MEET_CROSSROAD:
+    // {
+    //     _meetCrossroadRoutine();
+    //     break;
+    // }
+    // case State::TURN_AT_CROSSROAD:
+    // {
+    //     _turnAtCrossroadRoutine();
+    //     break;
+    // }
+    // default:
+    // {
+    //     break;
+    // }
+    // }
 }
 
 void Robot::_followLineRoutine()
@@ -211,75 +211,7 @@ void Robot::_turnAtCrossroadRoutine()
 
 void Robot::_calculatePathRoutine()
 {
-    _display = "I WILL CALCULATE";
-    _delay_ms(1000);
-
-    /// change this with the result of Make Trip selection
-    // _destination[0] = 0;
-    // _destination[1] = 3;
-
-    char buffer[20];
-    sprintf(buffer, "Dest: %d %d", _destination[0], _destination[1]);
-    _display = buffer;
-    _delay_ms(2000);
-    sprintf(buffer, "Beg: %d %d", _beginning[0], _beginning[1]);
-    _display = buffer;
-    _delay_ms(2000);
-
     _dijkstraModule.run(_beginning, _destination, _moveArray);
-    _display = "FINISHED";
-    _delay_ms(500);
-
-    _display = "CURRENT ORIENTATION";
-    _delay_ms(2000);
-
-    // print current orientation
-    switch (_currentOrientation)
-    {
-    case Orientation::NORTH:
-        _display = "NORTH";
-        break;
-    case Orientation::EAST:
-        _display = "EAST";
-        break;
-    case Orientation::SOUTH:
-        _display = "SOUTH";
-        break;
-    case Orientation::WEST:
-        _display = "WEST";
-        break;
-    default:
-        _display = "NOT FOUND";
-        break;
-    }
-    _delay_ms(2000);
-
-    Orientation moveOrientation = _moveArray[0].orientation;
-    _display = "NEXT ORIENTATION";
-    _delay_ms(500);
-    switch (moveOrientation)
-    {
-    case Orientation::NORTH:
-        // _currentOrientation = Orientation::NORTH;
-        _display = "NORTH";
-        break;
-    case Orientation::EAST:
-        //_currentOrientation = Orientation::EAST;
-        _display = "EAST";
-        break;
-    case Orientation::SOUTH:
-        //_currentOrientation = Orientation::SOUTH;
-        _display = "SOUTH";
-        break;
-    case Orientation::WEST:
-        //_currentOrientation = Orientation::WEST;
-        _display = "WEST";
-        break;
-    default:
-        _display = "NOT FOUND";
-        break;
-    }
-    _delay_ms(500);
     _currentState = State::NAVIGATE_TRIP;
 }
 

@@ -12,6 +12,7 @@
 InfraRedSensor::InfraRedSensor()
 {
     //_analogicConverter.enableADCInterrupt();
+   // DDRA = (1 << AN_PORT);
 }
 
 InfraRedSensor::~InfraRedSensor()
@@ -21,7 +22,7 @@ InfraRedSensor::~InfraRedSensor()
 
 uint16_t InfraRedSensor::_getDistance()
 {
-    uint8_t distanceLevel = _analogicConverter.lecture(AN_PORT) >> PRECISION_BITSHIFT;
+    uint16_t distanceLevel = _analogicConverter.lecture(AN_PORT);
     return distanceLevel;
 }
 
