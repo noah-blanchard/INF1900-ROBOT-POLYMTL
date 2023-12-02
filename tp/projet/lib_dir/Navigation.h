@@ -9,7 +9,7 @@
 #include "Types.h"
 #include "Timer.h"
 #include "InfraRedSensor.h"
-#include "Dijkstra.h"
+#include "Consts.h"
 
 enum class NavigationState
 {
@@ -30,9 +30,9 @@ public:
     Navigation();
     Navigation(uint8_t *robotPosition, Orientation *robotOrientation);
 
-    void go(uint16_t speed, bool backward);
-    void goLeftWheel(uint16_t speed, bool backward);
-    void goRightWheel(uint16_t speed, bool backward);
+    void go(bool backward);
+    void goLeftWheel(bool backward);
+    void goRightWheel(bool backward);
     void stop();
     void stopLeft();
     void stopRight();
@@ -40,6 +40,7 @@ public:
     void adjustRight();
     void adjustLeft();
     void adjustForward();
+    void adjustForward(uint16_t amount);
     void turnRight();
     void turnLeft();
 
@@ -47,18 +48,14 @@ public:
     Move followTrip(Move *trip);
     void parking();
 
-    // CONSTANTS
-    static const uint8_t _BASE_SPEED = 90;
-    static const uint8_t _BACK_SPEED = 80;
-    static const uint8_t _TURN_SPEED = 80;
-    static const uint8_t _ADJUST_OFFSET = 10;
-    static const uint8_t _LESS = 9;
-
-    static const uint8_t _MOVE_FORWARD_DELAY = 3000;
-    static const uint8_t _FORWARD_ADJUST_DELAY = 2000;
-    static const uint8_t _ADJUST_DELAY = 10;
-
 private:
+    // CONSTANTS
+    static const uint8_t _BASE_SPEED = BASE_WHEEL_SPEED;
+    static const uint8_t _BACK_SPEED = BACK_WHEEL_SPEED;
+    static const uint8_t _TURN_SPEED = TURN_WHEEL_SPEED;
+    static const uint8_t _ADJUST_OFFSET = LINE_ADJUST_OFFSET;
+    static const uint8_t _OFFSET = OFFSET;
+
     Wheel _leftWheel;
     Wheel _rightWheel;
 
@@ -66,8 +63,8 @@ private:
 
     // trip movements
     void _nextMove();
-    void _moveForward(uint16_t speed);      // will just follow the line until the next crossroad
-    void _moveForwardDelay(uint16_t speed); /// will go forward for a specific delay (used for places with no crossroad)
+    void _moveForward();      // will just follow the line until the next crossroad
+    void _moveForwardDelay(); /// will go forward for a specific delay (used for places with no crossroad)
     void _meetPost();
     void _goBack();
     void _turnRight();
@@ -91,9 +88,9 @@ private:
     bool _firstMove = true;
     uint16_t _forwardDelayCount;
     bool _preventInitForward = false;
+
     // Modules
     LineMaker _lineMakerModule;
-    // Timer _delayTimerModule;
     InfraRedSensor _irModule;
     LCM _display;
 

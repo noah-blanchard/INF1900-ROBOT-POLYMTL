@@ -83,7 +83,7 @@ void IdentifyCorner::identificationProcess(uint8_t *_beginning)
 void IdentifyCorner::_goForwardFirstLine()
 {
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(Navigation::_BASE_SPEED, false);
+    _navModule.go(false);
     switch (flag)
     {
 
@@ -260,7 +260,7 @@ void IdentifyCorner::_goBackFirstLine()
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
 
-    _navModule.go(Navigation::_BASE_SPEED, false);
+    _navModule.go(false);
     switch (flag)
     {
 
@@ -302,7 +302,7 @@ void IdentifyCorner::_goInitPos()
     //     _navModule.adjustLeft();
     //     break;
     // }
-    _navModule.go(Navigation::_BASE_SPEED, false);
+    _navModule.go(false);
     switch (flag)
     {
 
@@ -356,7 +356,7 @@ void IdentifyCorner::_goBackSecondLine()
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
 
-    _navModule.go(Navigation::_BASE_SPEED, false);
+    _navModule.go(false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:
@@ -442,7 +442,7 @@ void IdentifyCorner::_goForwardSecondLine()
 {
     // go forward until no line is detected
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    _navModule.go(Navigation::_BASE_SPEED, false);
+    _navModule.go(false);
     switch (flag)
     {
     case LineMakerFlag::NO_LINE:

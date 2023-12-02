@@ -4,26 +4,6 @@
  */
 #include "Navigation.h"
 
-// volatile bool delayElapsed = false;
-// ISR(TIMER2_COMPA_vect)
-// {
-//     delayElapsed = true;
-// }
-
-// void configureTimer2(){
-
-//     // i want timer two to make interruption every 2 seconds
-//     // cpu freq is 8MHz
-//     // prescaler is 256
-
-//     TCCR2A = 0;
-//     TCCR2B = 0;
-
-//     TCNT2 = 0;
-
-//     OCR2A = 249;
-// }
-
 /**
  * @brief Validates the speed value to ensure it is within the range of 0 to Wheel::MAX_COMPARE_VALUE.
  * @param speed The speed value to validate.
@@ -46,13 +26,6 @@ Navigation::Navigation() : _leftWheel(0), _rightWheel(1), _display(&DDRC, &PORTC
     PORTD |= (1 << PD4);
     PORTD &= ~(1 << PD6);
     PORTD &= ~(1 << PD7);
-
-    // TimerConfig timerConfig;
-    // timerConfig.timer = 2;
-    // timerConfig.prescaler = 256;
-    // timerConfig.delay_ms = 6000;
-
-    //_delayTimerModule = Timer(timerConfig);
 }
 
 /**
@@ -70,14 +43,6 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
     _nextMoveValue.x = robotPosition[0];
     _nextMoveValue.y = robotPosition[1];
     _nextMoveValue.orientation = *robotOrientation;
-
-    // TimerConfig timerConfig;
-    // timerConfig.timer = 2;
-    // timerConfig.prescaler = 256;
-    // timerConfig.delay_ms = 2000;
-
-    // _delayTimerModule = Timer(timerConfig);
-
     _currentOrientation = robotOrientation;
     _currentPosition = robotPosition;
 }
@@ -88,7 +53,6 @@ Navigation::Navigation(uint8_t *robotPosition, Orientation *robotOrientation) : 
  */
 void Navigation::_leftForward()
 {
-    // PORTD |= (1 << PD4);
     PORTD &= ~(1 << PD6);
 }
 
@@ -98,7 +62,7 @@ void Navigation::_leftForward()
  */
 void Navigation::_rightForward()
 {
-    // PORTD |= (1 << PD5);
+
     PORTD &= ~(1 << PD7);
 }
 
@@ -109,7 +73,6 @@ void Navigation::_rightForward()
 void Navigation::_leftBackward()
 {
     PORTD |= (1 << PD6);
-    // PORTD &= ~(1 << PD4);
 }
 
 /**
@@ -119,7 +82,6 @@ void Navigation::_leftBackward()
 void Navigation::_rightBackward()
 {
     PORTD |= (1 << PD7);
-    // PORTD &= ~(1 << PD5);
 }
 
 /**
@@ -148,10 +110,8 @@ void Navigation::_backward()
  * @param speed The speed value to set the wheels to move at.
  * @param backward A boolean value indicating whether the wheels should move backward or forward.
  */
-void Navigation::go(uint16_t speed, bool backward)
+void Navigation::go(bool backward)
 {
-    speed = _validateSpeed(speed);
-
     if (backward)
     {
         this->_backward();
@@ -161,10 +121,8 @@ void Navigation::go(uint16_t speed, bool backward)
         this->_forward();
     }
 
-    // _leftWheel.setCompareValue(speed);
-    // _rightWheel.setCompareValue(speed);
-    goLeftWheel(speed, backward);
-    goRightWheel(speed, backward);
+    goLeftWheel(backward);
+    goRightWheel(backward);
 }
 
 /**
@@ -173,10 +131,8 @@ void Navigation::go(uint16_t speed, bool backward)
  * @param speed The speed value to set the left wheel to move at.
  * @param backward A boolean value indicating whether the left wheel should move backward or forward.
  */
-void Navigation::goLeftWheel(uint16_t speed, bool backward)
+void Navigation::goLeftWheel(bool backward)
 {
-    speed = _validateSpeed(speed);
-
     if (backward)
     {
         this->_leftBackward();
@@ -186,7 +142,7 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(speed + _LESS);
+    _leftWheel.setCompareValue(_BASE_SPEED + _OFFSET);
 }
 
 /**
@@ -195,10 +151,8 @@ void Navigation::goLeftWheel(uint16_t speed, bool backward)
  * @param speed The speed value to set the right wheel to move at.
  * @param backward A boolean value indicating whether the right wheel should move backward or forward.
  */
-void Navigation::goRightWheel(uint16_t speed, bool backward)
+void Navigation::goRightWheel(bool backward)
 {
-    speed = _validateSpeed(speed);
-
     if (backward)
     {
         this->_rightBackward();
@@ -208,7 +162,7 @@ void Navigation::goRightWheel(uint16_t speed, bool backward)
         this->_rightForward();
     }
 
-    _rightWheel.setCompareValue(speed - _LESS);
+    _rightWheel.setCompareValue(_BASE_SPEED - _OFFSET);
 }
 
 /**
@@ -249,7 +203,7 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET + _LESS, false);
+    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET + _OFFSET, false);
     goLeftWheel(_BASE_SPEED, false);
     _delay_ms(_ADJUST_DELAY);
 }
@@ -265,9 +219,9 @@ void Navigation::adjustLeft()
     _delay_ms(_ADJUST_DELAY);
 }
 
-void Navigation::adjustForward()
+void Navigation::adjustForward(uint16_t amount)
 {
-    for (uint16_t delayCounter = 0; delayCounter < 140; delayCounter++)
+    for (uint16_t delayCounter = 0; delayCounter < amount; delayCounter++)
     {
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
@@ -313,12 +267,12 @@ void Navigation::adjustForward()
             break;
         }
         }
-
-        // go(_BASE_SPEED, false);
-        // _delay_ms(_FORWARD_ADJUST_DELAY);
-        // stop();
-        // _delay_ms(200);
     }
+}
+
+void Navigation::adjustForward()
+{
+    adjustForward(BASE_ADJ_FWD_AMT);
 }
 
 void Navigation::turnLeft()
@@ -359,7 +313,7 @@ Move Navigation::followTrip(Move *trip)
         }
         case NavigationState::FORWARD:
         {
-            _moveForward(_BASE_SPEED);
+            _moveForward();
             break;
         }
         case NavigationState::TURN_RIGHT:
@@ -379,34 +333,14 @@ Move Navigation::followTrip(Move *trip)
         }
         case NavigationState::FORWARD_DELAY:
         {
-            _moveForwardDelay(_BASE_SPEED);
+            _moveForwardDelay();
             break;
         }
         case NavigationState::ERROR:
         {
             stop();
-            //*_currentOrientation = _nextMoveValue.orientation;
             _currentPosition[0] = _nextMoveValue.x;
             _currentPosition[1] = _nextMoveValue.y;
-            _delay_ms(3000);
-            switch (*_currentOrientation)
-            {
-            case Orientation::NORTH:
-                _display = "NORTH";
-                break;
-            case Orientation::EAST:
-                _display = "EAST";
-                break;
-            case Orientation::SOUTH:
-                _display = "SOUTH";
-                break;
-            case Orientation::WEST:
-                _display = "WEST";
-                break;
-            default:
-                _display = "NOT FOUND";
-                break;
-            }
             _delay_ms(3000);
             return _trip[_tripIndex];
             break;
@@ -421,46 +355,20 @@ Move Navigation::followTrip(Move *trip)
     return _trip[_tripIndex];
 }
 
-// void Navigation::_timerOn()
-// {
-//     cli();
-//     _delayTimerModule.reset();
-//     _delayTimerModule.enable();
-//     sei();
-// }
-
-// void Navigation::_timerOff()
-// {
-//     cli();
-//     _delayTimerModule.reset();
-//     _delayTimerModule.disable();
-//     sei();
-// }
-
 void Navigation::_chooseForwardMove()
 {
-    //_tripState = NavigationState::FORWARD;
-    // some place have no crossroad and need to use FORWARD_DELAY
-    // x = 1, y = 0, 1 3, 5 2, 6, 2
-    // so put state to forward delay if we have one of these positions
-
     if ((_nextMoveValue.x == 1 && _nextMoveValue.y == 0) ||
         (_nextMoveValue.x == 1 && _nextMoveValue.y == 3) ||
         (_nextMoveValue.x == 5 && _nextMoveValue.y == 2) ||
         (_nextMoveValue.x == 6 && _nextMoveValue.y == 2))
     {
-        // cli();
-        // _delayTimerModule.reset();
-        // _delayTimerModule.enable();
-        // sei();
-        _display = "FORWARD DELAY";
+        _forwardDelayCount = 0;
         _tripState = NavigationState::FORWARD_DELAY;
     }
     else
     {
         _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
-        //_initForward();
         if (!_preventInitForward)
         {
             _initForward();
@@ -581,7 +489,7 @@ void Navigation::_nextMove()
     }
 }
 
-void Navigation::_moveForward(uint16_t speed)
+void Navigation::_moveForward()
 {
     // so here we need to follow the line until we reach the next crossroad
     // so we need to check if we are at a crossroad
@@ -606,7 +514,7 @@ void Navigation::_moveForward(uint16_t speed)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(speed, false);
+            go(_BASE_SPEED, false);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -635,7 +543,7 @@ void Navigation::_moveForward(uint16_t speed)
     }
 }
 
-void Navigation::_moveForwardDelay(uint16_t speed)
+void Navigation::_moveForwardDelay()
 {
     if (_irModule.isObstacleDetected())
     {
@@ -655,7 +563,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(speed, false);
+            go(_BASE_SPEED, false);
             _delay_ms(_ADJUST_DELAY);
             break;
         }
@@ -684,7 +592,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
         }
     }
 
-    if (_forwardDelayCount >= 200)
+    if (_forwardDelayCount >= FWD_DELAY_AMT)
     {
         _display = "stop";
         stop();
@@ -697,7 +605,7 @@ void Navigation::_moveForwardDelay(uint16_t speed)
 
 void Navigation::_initForward()
 {
-    adjustForward();
+    adjustForward(LESS_ADJ_FWD_AMT);
 }
 
 void Navigation::_initTurnRight()
