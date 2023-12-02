@@ -66,7 +66,7 @@ private:
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
     MakeTrip _maketripModule;
-    IdentifyCorner _identifyCornerModule;
+   IdentifyCorner _identifyCornerModule;
     Dijkstra _dijkstraModule;
     LED _ledModule;
 
@@ -91,8 +91,8 @@ private:
     void _travelPositionSelectionRoutine();
     void _calculatePathRoutine();
     void _followLineRoutine();
-    void _meetCrossroadRoutine();
-    void _turnAtCrossroadRoutine();
+   void _meetCrossroadRoutine();
+   void _turnAtCrossroadRoutine();
     void _navigateTripRoutine();
     void _parkingRoutine();
 };
