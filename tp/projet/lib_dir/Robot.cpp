@@ -1,69 +1,54 @@
 #include "Robot.h"
 
-// custom timer volatile variable
-// volatile bool customDelayElapsed = false;
+volatile bool mbButtonPressed = false;
+volatile bool selButtonPressed = false;
 
-// ISR(TIMER2_COMPA_vect)
-// {
-//     customDelayElapsed = true;
-// }
+// ISR FOR IN0 and INT2
+
+ISR(INT0_vect)
+{
+    mbButtonPressed = true;
+    _delay_ms(120);
+    EIFR |= (1 << INTF0);
+}
+
+ISR(INT2_vect)
+{
+    selButtonPressed = true;
+    _delay_ms(120);
+    EIFR |= (1 << INTF2);
+}
 
 Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1), _identifyCornerModule(&_ledModule)
 {
-   
 
-    _validateButton = Bouton(INT1);
-    _selectButton = Bouton(INT0);
+    // SETUP ROBOT BUTTONS
     cli();
+    _motherBoardButton = Bouton(INT0);
+    _validateButton = Bouton(INT1);
+    _selectButton = Bouton(INT2);
+    _motherBoardButton.setFallingEdge();
+    _motherBoardButton.enableInterrupt();
     _validateButton.setFallingEdge();
     _validateButton.enableInterrupt();
     _selectButton.setFallingEdge();
     _selectButton.enableInterrupt();
     sei();
 
-    //_ledModule.setupBlink();
-
+    // SETUP ROBOT POSITION AND ORIENTATION
     _beginning[0] = 0;
     _beginning[1] = 0;
-
     _currentOrientation = Orientation::SOUTH;
     _currentPosition[0] = 0;
     _currentPosition[1] = 0;
 
-    // // _beginning[0] = 0;
-    // // _beginning[1] = 0;
-    // //_currentState = State::MODE_SELECTION;
-    // //_currentState = State::NAVIGATE_TRIP; // pour l'instant on le met en followline, mais evidemment le initState sera le MODE_SELECTION
-    // //_currentState = State::NAVIGATE_TRIP;
-    // _currentState = State::MAKE_TRIP;
-    //_display = "WSH";
-    _currentState = State::MAKE_TRIP;
+    // SETUP ROBOT STATE
+    _currentState = RobotState::MODE_SELECTION;
 
-    //_currentState = State::IDENTIFY_CORNER;
-
-    // _moveArray init for test
-
-    // _moveArray[0].orientation = Orientation::EAST;
-    // _moveArray[0].x = 1;
-    // _moveArray[0].y = 0;
-
-    // _moveArray[1].orientation = Orientation::EAST;
-    // _moveArray[1].x = 2;
-    // _moveArray[1].y = 0;
-
-    // _moveArray[2].orientation = Orientation::SOUTH;
-    // _moveArray[2].x = 2;
-    // _moveArray[2].y = 1;
-
-    // _moveArray[3].orientation = Orientation::WEST;
-    // _moveArray[3].x = 1;
-    // _moveArray[3].y = 1;
-    // _moveArray[4].orientation = Orientation::SOUTH;
-    // _moveArray[4].x = 1;
-    // _moveArray[4].y = 2;
-    // _moveArray[5].orientation = Orientation::FINISHED;
-    // _moveArray[5].x = 1;
-    // _moveArray[5].y = 2;
+    // DISPLAY INIT MESSAGE
+    _display.clear();
+    _display.write("HELLO");
+    _display.write("I AM TOP G", LCM_FW_HALF_CH);
 }
 
 Robot::~Robot()
@@ -73,150 +58,69 @@ Robot::~Robot()
 void Robot::runRoutine()
 {
 
-    //S_ledModule.turnLedGreen();
-    _display = "okok";
-   // _ledModule.flashGreen();
+    /* to debug te IR SENSOR */
+    // char buffer[28];
+    // uint16_t val = _irSensorModule._getDistance();
+    // sprintf(buffer, "%d", _irSensorModule._getDistance());
+    // _display = buffer;
+    // if (false)
+    // {
+    //     _display = "HHI";
+    // }
+    // else
+    // {
+    //     _display = buffer;
+    // }
+    // _delay_ms(100);
 
-    char buffer[28];
-    uint16_t val = _irSensorModule._getDistance();
-    sprintf(buffer, "%d",_irSensorModule._getDistance());
-    _display = buffer;
-    if(false){
-        _display = "HHI";
-    }else{
-        _display = buffer;
+    switch (_currentState)
+    {
+    case RobotState::MODE_SELECTION:
+    {
+        _modeSelectionRoutine();
+        break;
     }
-    _delay_ms(100);
 
-     switch (_currentState)
-     {
-        case State::MODE_SELECTION:
-     {
-         //_modeSelectionRoutine();
-         break;
-     }
-     /*
-    case State::IDENTIFY_CORNER:
-     {
-      // _identifyCornerRoutine();
+    case RobotState::IDENTIFY_CORNER:
+    {
         _identifyCornerModule.identificationProcess(_beginning);
+        _currentState = RobotState::NONE;
         break;
     }
-    */
-     case State::MAKE_TRIP:
-     {
-         _maketripModule.run(_destination);
-         _currentState = State::CALCULATE_PATH;
+
+    case RobotState::MAKE_TRIP:
+    {
+        _maketripModule.run(_destination);
+        _currentState = RobotState::CALCULATE_PATH;
         break;
-     }
-     case State::TRAVEL_POSITION_SELECTION:
-     {
-       // _travelPositionSelectionRoutine();
+    }
+    case RobotState::CALCULATE_PATH:
+    {
+        _calculatePathRoutine();
         break;
-     }
-    case State::CALCULATE_PATH:
-     {
-         _calculatePathRoutine();
-        break;
-     }
-     case State::NAVIGATE_TRIP:
-     {
+    }
+    case RobotState::NAVIGATE_TRIP:
+    {
         _navigateTripRoutine();
-         break;
-     }
-     case State::PARKING:
-     {
+        break;
+    }
+    case RobotState::PARKING:
+    {
         _parkingRoutine();
-         break;
-     }
-     case State::FOLLOW_LINE:
-    {
-         _followLineRoutine();
-         break;
-    }
-    
-     case State::MEET_CROSSROAD:
-     {
-        _meetCrossroadRoutine();
         break;
-     }
-     case State::TURN_AT_CROSSROAD:
-    {
-        // _turnAtCrossroadRoutine();
-         break;
-     }
+    }
 
-     default:
-     {
-         break;
-     }
-     }
-}
-
-void Robot::_followLineRoutine()
-{
-    LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    switch (flag)
+    default:
     {
-    case LineMakerFlag::LEFT_ADJUSTMENT:
-    {
-        _navModule.adjustRight();
-        break;
-    }
-    case LineMakerFlag::NO_ADJUSTMENT:
-    {
-        _navModule.go(_BASE_SPEED, false);
-        break;
-    }
-    case LineMakerFlag::RIGHT_ADJUSTMENT:
-    {
-        _navModule.adjustLeft();
         break;
     }
     }
-}
-
-void Robot::_meetCrossroadRoutine()
-{
-    // // Go a bit forward during 100 ms
-    // _navModule.go(_BASE_SPEED, false);
-    // _customDelay(1000);
-    // _navModule.stop();
-    // _customDelay(300);
-    // _navModule.goRightWheel(_TURN_SPEED, true);
-    // _navModule.goLeftWheel(_TURN_SPEED, false);
-    // _customDelay(400);
-    // _navModule.stop();
-    // _customDelay(300);
-    // // change state to turn at crossroad
-    // _currentState = State::TURN_AT_CROSSROAD;
-}
-
-void Robot::_turnAtCrossroadRoutine()
-{
-    // // for the moment let's only turn to the right until the linemaker sens the "leftAdjustment" flag
-    // LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    // switch (flag)
-    // {
-    // case LineMakerFlag::LEFT_ADJUSTMENT:
-    // {
-    //     _navModule.stop();
-    //     _currentState = State::FOLLOW_LINE;
-    //     break;
-    // }
-    // default:
-    // {
-    //     _navModule.goRightWheel(_TURN_SPEED, true);
-    //     _navModule.goLeftWheel(_TURN_SPEED, false);
-    //     break;
-    // }
-    // }
 }
 
 void Robot::_calculatePathRoutine()
 {
     _dijkstraModule.run(_beginning, _destination, _moveArray);
-    _currentState = State::NAVIGATE_TRIP;
+    _currentState = RobotState::NAVIGATE_TRIP;
 }
 
 void Robot::_navigateTripRoutine()
@@ -226,56 +130,45 @@ void Robot::_navigateTripRoutine()
     {
         char buffer[28];
 
-        // means we havent reached thend end => recalculate the path !
-        // sprintf
         _beginning[0] = _currentPosition[0];
         _beginning[1] = _currentPosition[1];
-        sprintf(buffer, "b1 %d  b2 %d", _beginning[0], _beginning[1]);
-        _display = buffer;
-        _delay_ms(500);
-        sprintf(buffer, "b1 %d  b2 %d", tripResult.x, tripResult.y);
-        _display = buffer;
-        _delay_ms(500);
+        // sprintf(buffer, "b1 %d  b2 %d", _beginning[0], _beginning[1]);
+        // _display = buffer;
+        // _delay_ms(500);
+        // sprintf(buffer, "b1 %d  b2 %d", tripResult.x, tripResult.y);
+        // _display = buffer;
+        // _delay_ms(500);
         _dijkstraModule.removeNode(tripResult.x, tripResult.y);
-        _currentState = State::CALCULATE_PATH;
+        _currentState = RobotState::CALCULATE_PATH;
     }
     else
     {
-        _display = "OK OK OK";
         _beginning[0] = tripResult.x;
         _beginning[1] = tripResult.y;
-        _delay_ms(1000);
-        _currentState = State::PARKING;
+        _currentState = RobotState::PARKING;
     }
 }
 
 void Robot::_parkingRoutine()
 {
-    _display = "PARKING";
-    _delay_ms(1000);
     _navModule.parking();
-    _currentState = State::MAKE_TRIP;
+    _currentState = RobotState::MAKE_TRIP;
 }
 
-// void Robot::_pause()
-// {
-//     _customDelay(_BASE_PAUSE_DELAY);
-// }
-
-// void Robot::_customDelay(uint16_t delay)
-// {
-//     _delayTimerModule.reset();
-//     cli();
-//     _delayTimerModule.enable();
-//     sei();
-//     // use timer0 to wait for the delay
-//     for (int i = 0; i < delay; ++i)
-//     {
-
-//         while (!customDelayElapsed)
-//             ;
-//         customDelayElapsed = false;
-
-//         _delayTimerModule.reset();
-//     }
-// }
+void Robot::_modeSelectionRoutine()
+{
+    if (selButtonPressed)
+    {
+        selButtonPressed = false;
+        _display = "MAKE TRIP";
+        _delay_ms(1000);
+        _currentState = RobotState::MAKE_TRIP;
+    }
+    else if (mbButtonPressed)
+    {
+        mbButtonPressed = false;
+        _display = "IDENTIFY CORNER";
+        _delay_ms(1000);
+        _currentState = RobotState::IDENTIFY_CORNER;
+    }
+}

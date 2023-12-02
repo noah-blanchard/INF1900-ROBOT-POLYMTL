@@ -14,10 +14,10 @@
 volatile uint8_t selectChoice = false;
 volatile uint8_t validateChoice = false;
 
-ISR(INT0_vect)
+ISR(INT2_vect)
 {
 	// select Choice
-	_delay_ms(20);
+	_delay_ms(120);
 	selectChoice = true;
 	EIFR |= (1 << INTF0);
 	// EIFR &= ~(1 << INTF0);
@@ -26,7 +26,7 @@ ISR(INT0_vect)
 ISR(INT1_vect)
 {
 	// validate Choice
-	_delay_ms(20);
+	_delay_ms(120);
 	validateChoice = true;
 	EIFR |= (1 << INTF1);
 	// EIFR &= ~(1 << INTF1);

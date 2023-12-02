@@ -29,19 +29,15 @@
  */
 
 // states enum class
-enum class State
+enum class RobotState
 {
     MODE_SELECTION,
     IDENTIFY_CORNER,
     MAKE_TRIP,
-    TRAVEL_POSITION_SELECTION,
     CALCULATE_PATH,
     NAVIGATE_TRIP,
     PARKING,
-    FOLLOW_LINE,
-    MEET_CROSSROAD,
-    MEET_OBSTACLE,
-    TURN_AT_CROSSROAD
+    NONE,
 };
 
 class Robot
@@ -53,46 +49,37 @@ public:
     void runRoutine(); // this function will be called in main loop to dispatch to the right routine
 
 private:
-    static const uint8_t _BASE_SPEED = 180;
-    static const uint8_t _TURN_SPEED = 130;
-    static const uint16_t _BASE_PAUSE_DELAY = 80;
-
+    // Boutons
     Bouton _validateButton;
     Bouton _selectButton;
+    Bouton _motherBoardButton;
 
+    // Modules
     Timer _delayTimerModule;
     LCM _display;
     LineMaker _lineMakerModule;
     Navigation _navModule;
     InfraRedSensor _irSensorModule;
     MakeTrip _maketripModule;
-   IdentifyCorner _identifyCornerModule;
+    IdentifyCorner _identifyCornerModule;
     Dijkstra _dijkstraModule;
     LED _ledModule;
 
-    State _currentState;
-    State _previousState;
+    // Robot state
+    RobotState _currentState;
 
+    // Position and Orientation
     uint8_t _currentPosition[2];
     Orientation _currentOrientation;
-
-    // move array
-    Move _moveArray[28];
-
     uint8_t _destination[2] = {0, 0};
     uint8_t _beginning[2] = {0, 0};
 
-    // void _customDelay(uint16_t delay);
-    // void _pause();
+    Move _moveArray[28];
 
     // following functions are the routines for each possible states
     void _modeSelectionRoutine();
-    // void _identifyCornerRoutine();
-    void _travelPositionSelectionRoutine();
+    void _modeSelectionRoutine();
     void _calculatePathRoutine();
-    void _followLineRoutine();
-   void _meetCrossroadRoutine();
-   void _turnAtCrossroadRoutine();
     void _navigateTripRoutine();
     void _parkingRoutine();
 };
