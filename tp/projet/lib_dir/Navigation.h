@@ -21,7 +21,9 @@ enum class NavigationState
     CHOOSE_RIGHT_TURN,
     MEET_POST,
     ERROR,
-    GO_BACK
+    GO_BACK,
+    TURN_RIGHT_180,
+    TURN_LEFT_180
 };
 
 class Navigation
@@ -74,6 +76,8 @@ private:
     void _initTurnLeft();
     void _initForward();
     void _chooseRightTurn();
+    void _turnRight180();
+    void _turnLeft180();
 
     void _chooseForwardMove();
     void _updateCurrentPosition();
@@ -90,6 +94,7 @@ private:
     uint16_t _forwardDelayCount;
     bool _preventInitForward = false;
     LineMakerFlag _lastCrossroad;
+    uint8_t _turn180Count = 0;
 
     // Modules
     LineMaker _lineMakerModule;

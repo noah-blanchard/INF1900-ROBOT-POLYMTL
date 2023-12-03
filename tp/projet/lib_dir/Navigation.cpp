@@ -345,11 +345,22 @@ Move Navigation::followTrip(Move *trip)
             return _trip[_tripIndex];
             break;
         }
+        case NavigationState::TURN_RIGHT_180:
+        {
+            _turnRight180();
+            break;
+        }
+        case NavigationState::TURN_LEFT_180:
+        {
+            _turnLeft180();
+            break;
+        }
         }
     }
 
     stop();
     _display = "FINISHED";
+    _updateCurrentPosition();
     _delay_ms(4000);
 
     return _trip[_tripIndex];
@@ -748,6 +759,7 @@ void Navigation::_meetPost()
 
 void Navigation::_chooseRightTurn()
 {
+    _display = "TA MERE";
     // turn left pour (1,1) et nextOrientation west
     /**
      * 1, 0,
@@ -808,14 +820,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::EAST:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::WEST:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
@@ -850,14 +862,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::EAST:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::WEST:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
@@ -871,14 +883,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::NORTH:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
         }
         case Orientation::SOUTH:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
@@ -886,7 +898,30 @@ void Navigation::_chooseRightTurn()
         }
     }
     // 4 1 // repeated !!!!!!!!
+<<<<<<< HEAD
 
+    == == == =
+                 else if ((col == 4) && (row == 1))
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+>>>>>>> 5f4080c0f1983f78fcc4a14d566c175e9b7c857a
     // 6 1
     else if ((col == 6) && (row == 1))
     {
@@ -957,14 +992,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::NORTH:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
         }
         case Orientation::SOUTH:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
@@ -1076,6 +1111,46 @@ void Navigation::_chooseRightTurn()
         }
         }
     }
+    else if (col == 2 && row == 2)
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT_180;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT_180;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
+    else if (col == 5 && row == 1)
+    {
+        switch (_nextMoveValue.orientation)
+        {
+        case Orientation::EAST:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        }
+    }
 }
 
 void Navigation::parking()
@@ -1131,6 +1206,8 @@ void Navigation::parking()
     else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
     {
         *_currentOrientation = Orientation::WEST;
+        _display = "OK WEST";
+        _delay_ms(5000);
     }
     else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
     {
@@ -1148,6 +1225,116 @@ void Navigation::parking()
     {
         *_currentOrientation = Orientation::SOUTH;
     }
+    else if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+    {
+        *_currentOrientation = Orientation::EAST;
+    }
+    else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+    {
+        *_currentOrientation = Orientation::WEST;
+    }
+    else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+    {
+        *_currentOrientation = Orientation::NORTH;
+    }
+    else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+    {
+        *_currentOrientation = Orientation::SOUTH;
+    }
 
     /// if detect left or right adjustment
+}
+
+void Navigation::_turnLeft180()
+{
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    if (_irModule.isObstacleDetected() && _turn180Count == 2)
+    {
+        _tripState = NavigationState::MEET_POST;
+    }
+
+    else
+    {
+
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_LINE:
+        {
+            // if we don't detect the line, we need to turn right until we detect it
+            turnLeft();
+            if (_turn180Count == 1)
+            {
+                _turn180Count = 2;
+            }
+            break;
+        }
+        case LineMakerFlag::LEFT_ADJUSTMENT:
+        {
+            // if we detect the line on the left, it means we met the line
+            // so stop moving and go to forward state
+            if (_turn180Count == 0)
+            {
+                _turn180Count = 1;
+            }
+            else if (_turn180Count == 2)
+            {
+                stop();
+                _delay_ms(1000);
+                _preventInitForward = true;
+                _turn180Count = 0;
+                _chooseForwardMove();
+            }
+
+            break;
+        }
+        }
+    }
+}
+
+void Navigation::_turnRight180()
+{
+    LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
+
+    if (_irModule.isObstacleDetected() && _turn180Count == 2)
+    {
+        _tripState = NavigationState::MEET_POST;
+    }
+
+    else
+
+    {
+        switch (lineMakerFlag)
+        {
+        case LineMakerFlag::NO_LINE:
+        {
+            // if we don't detect the line, we need to turn right until we detect it
+            turnRight();
+            if (_turn180Count == 1)
+            {
+                _turn180Count = 2;
+            }
+            break;
+        }
+        case LineMakerFlag::RIGHT_ADJUSTMENT:
+        {
+            // if we detect the line on the right, it means we met the line
+            // so stop moving and go to forward state
+            if (_turn180Count == 0)
+            {
+                _turn180Count = 1;
+            }
+            else if (_turn180Count == 2)
+            {
+                stop();
+                _delay_ms(1000);
+                _preventInitForward = true;
+                _turn180Count = 0;
+                _chooseForwardMove();
+            }
+
+            break;
+        }
+        }
+    }
 }
