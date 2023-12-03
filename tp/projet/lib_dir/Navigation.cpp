@@ -355,6 +355,11 @@ Move Navigation::followTrip(Move *trip)
             _turnLeft180();
             break;
         }
+        case NavigationState::CHOOSE_RIGHT_TURN:
+        {
+            _chooseRightTurn();
+            break;
+        }
         }
     }
 
@@ -898,7 +903,7 @@ void Navigation::_chooseRightTurn()
         }
     }
     // 4 1 // repeated !!!!!!!!
-                 else if ((col == 4) && (row == 1))
+    else if ((col == 4) && (row == 1))
     {
         switch (_nextMoveValue.orientation)
         {
