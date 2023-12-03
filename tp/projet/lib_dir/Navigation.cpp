@@ -774,6 +774,9 @@ void Navigation::_chooseRightTurn()
      * 2, 2
      */
 
+    _display = "TATAT";
+    _delay_ms(3000);
+
     uint8_t col = _nextMoveValue.x;
     uint8_t row = _nextMoveValue.y;
 
@@ -1008,47 +1011,47 @@ void Navigation::_chooseRightTurn()
         }
     }
     // 5 2
-    else if ((col == 5) && (row == 2))
-    {
-        switch (_nextMoveValue.orientation)
-        {
-        case Orientation::NORTH:
-        {
-            _initTurnLeft();
-            _tripState = NavigationState::TURN_LEFT;
-            _display = "TURN LEFT";
-            break;
-        }
-        case Orientation::SOUTH:
-        {
-            _initTurnRight();
-            _tripState = NavigationState::TURN_RIGHT;
-            _display = "TURN RIGHT";
-            break;
-        }
-        }
-    }
+    // else if ((col == 5) && (row == 2))
+    // {
+    //     switch (_nextMoveValue.orientation)
+    //     {
+    //     case Orientation::NORTH:
+    //     {
+    //         _initTurnLeft();
+    //         _tripState = NavigationState::TURN_LEFT;
+    //         _display = "TURN LEFT";
+    //         break;
+    //     }
+    //     case Orientation::SOUTH:
+    //     {
+    //         _initTurnRight();
+    //         _tripState = NavigationState::TURN_RIGHT;
+    //         _display = "TURN RIGHT";
+    //         break;
+    //     }
+    //     }
+    // }
     // 6 2 ???????
-    else if ((col == 6) && (row == 2))
-    {
-        switch (_nextMoveValue.orientation)
-        {
-        case Orientation::WEST:
-        {
-            _initTurnRight();
-            _tripState = NavigationState::TURN_RIGHT;
-            _display = "TURN RIGHT";
-            break;
-        }
-        case Orientation::EAST:
-        {
-            _initTurnLeft();
-            _tripState = NavigationState::TURN_LEFT;
-            _display = "TURN LEFT";
-            break;
-        }
-        }
-    }
+    // else if ((col == 6) && (row == 1))
+    // {
+    //     switch (_nextMoveValue.orientation)
+    //     {
+    //     case Orientation::WEST:
+    //     {
+    //         _initTurnRight();
+    //         _tripState = NavigationState::TURN_RIGHT;
+    //         _display = "TURN RIGHT";
+    //         break;
+    //     }
+    //     case Orientation::EAST:
+    //     {
+    //         _initTurnLeft();
+    //         _tripState = NavigationState::TURN_LEFT;
+    //         _display = "TURN LEFT";
+    //         break;
+    //     }
+    //     }
+    // }
     // 1 3
     else if ((col == 1) && (row == 3))
     {
@@ -1114,6 +1117,8 @@ void Navigation::_chooseRightTurn()
     }
     else if (col == 2 && row == 2)
     {
+        _display = "HAHAHAH"
+        _delay_ms(5000);
         switch (_nextMoveValue.orientation)
         {
         case Orientation::EAST:
