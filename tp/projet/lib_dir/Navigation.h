@@ -31,8 +31,8 @@ public:
     Navigation(uint8_t *robotPosition, Orientation *robotOrientation);
 
     void go(bool backward);
-    void goLeftWheel(bool backward);
-    void goRightWheel(bool backward);
+    void goLeftWheel(uint8_t speed, bool backward);
+    void goRightWheel(uint8_t speed, bool backward);
     void stop();
     void stopLeft();
     void stopRight();
@@ -55,6 +55,7 @@ private:
     static const uint8_t _TURN_SPEED = TURN_WHEEL_SPEED;
     static const uint8_t _ADJUST_OFFSET = LINE_ADJUST_OFFSET;
     static const uint8_t _OFFSET = OFFSET;
+    static const uint8_t _ADJUST_DELAY = ADJUST_DELAY;
 
     Wheel _leftWheel;
     Wheel _rightWheel;

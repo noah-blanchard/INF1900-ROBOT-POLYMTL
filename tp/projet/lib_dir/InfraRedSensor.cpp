@@ -1,5 +1,4 @@
 #include "InfraRedSensor.h"
-#include "Communication.h"
 #include <stdio.h>
 
 // //volatile uint16_t distance = 0xffff;

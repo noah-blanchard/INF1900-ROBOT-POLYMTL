@@ -121,8 +121,8 @@ void Navigation::go(bool backward)
         this->_forward();
     }
 
-    goLeftWheel(backward);
-    goRightWheel(backward);
+    goLeftWheel(_BASE_SPEED, backward);
+    goRightWheel(_BASE_SPEED, backward);
 }
 
 /**
@@ -131,7 +131,7 @@ void Navigation::go(bool backward)
  * @param speed The speed value to set the left wheel to move at.
  * @param backward A boolean value indicating whether the left wheel should move backward or forward.
  */
-void Navigation::goLeftWheel(bool backward)
+void Navigation::goLeftWheel(uint8_t speed, bool backward)
 {
     if (backward)
     {
@@ -142,7 +142,7 @@ void Navigation::goLeftWheel(bool backward)
         this->_leftForward();
     }
 
-    _leftWheel.setCompareValue(_BASE_SPEED + _OFFSET);
+    _leftWheel.setCompareValue(speed + _OFFSET);
 }
 
 /**
@@ -151,7 +151,7 @@ void Navigation::goLeftWheel(bool backward)
  * @param speed The speed value to set the right wheel to move at.
  * @param backward A boolean value indicating whether the right wheel should move backward or forward.
  */
-void Navigation::goRightWheel(bool backward)
+void Navigation::goRightWheel(uint8_t speed, bool backward)
 {
     if (backward)
     {
@@ -162,7 +162,7 @@ void Navigation::goRightWheel(bool backward)
         this->_rightForward();
     }
 
-    _rightWheel.setCompareValue(_BASE_SPEED - _OFFSET);
+    _rightWheel.setCompareValue(speed - _OFFSET);
 }
 
 /**
@@ -203,7 +203,7 @@ void Navigation::stopRight()
  */
 void Navigation::adjustRight()
 {
-    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET + _OFFSET, false);
+    goRightWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
     goLeftWheel(_BASE_SPEED, false);
     _delay_ms(_ADJUST_DELAY);
 }
@@ -215,7 +215,7 @@ void Navigation::adjustRight()
 void Navigation::adjustLeft()
 {
     goRightWheel(_BASE_SPEED, false);
-    goLeftWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
+    goLeftWheel(_BASE_SPEED + _ADJUST_OFFSET , false);
     _delay_ms(_ADJUST_DELAY);
 }
 
@@ -229,7 +229,7 @@ void Navigation::adjustForward(uint16_t amount)
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             _delay_ms(_ADJUST_DELAY);
             break;
         }
@@ -240,25 +240,25 @@ void Navigation::adjustForward(uint16_t amount)
         }
         case LineMakerFlag::OUTER_RIGHT_DETECTION:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             _delay_ms(_ADJUST_DELAY);
             break;
         }
         case LineMakerFlag::FULL_CROSSROAD:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             _delay_ms(_ADJUST_DELAY);
             break;
         }
         case LineMakerFlag::NO_LINE:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             _delay_ms(_ADJUST_DELAY);
         }
         break;
         case LineMakerFlag::OUTER_LEFT_DETECTION:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             _delay_ms(_ADJUST_DELAY);
         }
         case LineMakerFlag::LEFT_ADJUSTMENT:
@@ -514,7 +514,7 @@ void Navigation::_moveForward()
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             break;
         }
         case LineMakerFlag::RIGHT_ADJUSTMENT:
@@ -563,7 +563,7 @@ void Navigation::_moveForwardDelay()
         {
         case LineMakerFlag::NO_ADJUSTMENT:
         {
-            go(_BASE_SPEED, false);
+            go(false);
             _delay_ms(_ADJUST_DELAY);
             break;
         }
@@ -592,7 +592,7 @@ void Navigation::_moveForwardDelay()
         }
     }
 
-    if (_forwardDelayCount >= FWD_DELAY_AMT)
+    if (_forwardDelayCount >= BASE_FWD_DELAY_AMT)
     {
         _display = "stop";
         stop();

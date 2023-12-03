@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "lcm_so1602dtr_m_fw.h"
 #include "customprocs.h"
-#include "Communication.h"
 
 void static inline w(void)
 {

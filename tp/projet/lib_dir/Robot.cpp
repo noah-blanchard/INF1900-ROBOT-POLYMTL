@@ -12,12 +12,13 @@ ISR(INT0_vect)
     EIFR |= (1 << INTF0);
 }
 
-ISR(INT2_vect)
+ISR(INT1_vect)
 {
     selButtonPressed = true;
     _delay_ms(120);
     EIFR |= (1 << INTF2);
 }
+
 
 Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1), _identifyCornerModule(&_ledModule)
 {
@@ -25,8 +26,8 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     // SETUP ROBOT BUTTONS
     cli();
     _motherBoardButton = Bouton(INT0);
-    _validateButton = Bouton(INT1);
-    _selectButton = Bouton(INT2);
+    _validateButton = Bouton(INT2);
+    _selectButton = Bouton(INT1);
     _motherBoardButton.setFallingEdge();
     _motherBoardButton.enableInterrupt();
     _validateButton.setFallingEdge();

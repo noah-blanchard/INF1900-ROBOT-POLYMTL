@@ -11,7 +11,6 @@
 #include "Dijkstra.h"
 #include "Navigation.h"
 #include "InfraRedSensor.h"
-#include "Communication.h"
 #include "Bouton.h"
 
 // Define the clock speed
@@ -77,7 +76,6 @@ private:
     Move _moveArray[28];
 
     // following functions are the routines for each possible states
-    void _modeSelectionRoutine();
     void _modeSelectionRoutine();
     void _calculatePathRoutine();
     void _navigateTripRoutine();
