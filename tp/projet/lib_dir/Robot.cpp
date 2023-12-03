@@ -2,6 +2,7 @@
 
 volatile bool mbButtonPressed = false;
 volatile bool selButtonPressed = false;
+volatile bool valButtonPressed = false;
 
 // ISR FOR IN0 and INT2
 
@@ -16,11 +17,17 @@ ISR(INT1_vect)
 {
     selButtonPressed = true;
     _delay_ms(120);
+    EIFR |= (1 << INTF1);
+}
+
+ISR(INT2_vect)
+{
+    valButtonPressed = true;
+    _delay_ms(120);
     EIFR |= (1 << INTF2);
 }
 
-
-Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1), _identifyCornerModule(&_ledModule)
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1), _identifyCornerModule(&_ledModule), _maketripModule(&mbButtonPressed, &selButtonPressed, &valButtonPressed)
 {
 
     // SETUP ROBOT BUTTONS

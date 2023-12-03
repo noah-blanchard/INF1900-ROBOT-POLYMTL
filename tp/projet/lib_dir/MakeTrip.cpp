@@ -8,38 +8,11 @@
 #include "customprocs.h"
 #include "MakeTrip.h"
 
-#define DEMO_DDR DDRC	// `Data Direction Register' AVR occup� par l'aff.
-#define DEMO_PORT PORTC // Port AVR occup� par l'afficheur
-
-volatile uint8_t selectChoice = false;
-volatile uint8_t validateChoice = false;
-
-// ISR(INT2_vect)
-// {
-// 	// select Choice
-// 	_delay_ms(120);
-// 	selectChoice = true;
-// 	EIFR |= (1 << INTF0);
-// 	// EIFR &= ~(1 << INTF0);
-// }
-
-// ISR(INT1_vect)
-// {
-// 	// validate Choice
-// 	_delay_ms(120);
-// 	validateChoice = true;
-// 	EIFR |= (1 << INTF1);
-// 	// EIFR &= ~(1 << INTF1);
-// }
-
-MakeTrip::MakeTrip() : _display(&DDRC, &PORTC) {}
+MakeTrip::MakeTrip(bool *mb, bool *sel, bool *val) : _display(&DDRC, &PORTC), _mbButtonPressed(mb), _selButtonPressed(sel), _valButtonPressed(val) {}
 
 void MakeTrip::run(uint8_t *destination)
 {
 	_state = selection::SELECTLINE;
-	sei();
-	selectChoice = false;
-	validateChoice = false;
 	_columnSeleted = 0;
 	_lineSeleted = 0;
 	_confirmed = false;
@@ -47,7 +20,9 @@ void MakeTrip::run(uint8_t *destination)
 	_display = _buffer;
 	while (_state != selection::FINISH)
 	{
-		validateChoice = false;
+		*_mbButtonPressed = false;
+		*_selButtonPressed = false;
+		*_valButtonPressed = false;
 		switch (_state)
 		{
 		case selection::SELECTLINE:
