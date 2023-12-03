@@ -615,7 +615,7 @@ void Navigation::_initTurnRight()
     {
         // go(_BASE_SPEED, false);
         // _delay_ms(1650);
-        adjustForward();
+        adjustForward(NAV_ADJ_FWD_AMT);
         _preventInitForward = false;
     }
     else
@@ -636,7 +636,7 @@ void Navigation::_initTurnLeft()
     {
         // go(_BASE_SPEED + _ADJUST_OFFSET, false);
         // _delay_ms(1650);
-        adjustForward();
+        adjustForward(NAV_ADJ_FWD_AMT);
         _preventInitForward = false;
     }
     else
