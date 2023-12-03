@@ -764,8 +764,7 @@ void Navigation::_meetPost()
 
 void Navigation::_chooseRightTurn()
 {
-    _display = "TA MERE";
-    _delay_ms(5000);
+
     // turn left pour (1,1) et nextOrientation west
     /**
      * 1, 0,
@@ -1324,6 +1323,8 @@ void Navigation::_turnLeft180()
 
 void Navigation::_turnRight180()
 {
+    _display = "turning right";
+    _delay_ms(5000);
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
     if (_irModule.isObstacleDetected() && _turn180Count == 2)
