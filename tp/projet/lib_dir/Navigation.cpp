@@ -886,26 +886,7 @@ void Navigation::_chooseRightTurn()
         }
     }
     // 4 1 // repeated !!!!!!!!
-    else if ((col == 4) && (row == 1))
-    {
-        switch (_nextMoveValue.orientation)
-        {
-        case Orientation::EAST:
-        {
-            _initTurnLeft();
-            _tripState = NavigationState::TURN_RIGHT;
-            _display = "TURN LEFT";
-            break;
-        }
-        case Orientation::WEST:
-        {
-            _initTurnRight();
-            _tripState = NavigationState::TURN_LEFT;
-            _display = "TURN RIGHT";
-            break;
-        }
-        }
-    }
+
     // 6 1
     else if ((col == 6) && (row == 1))
     {
