@@ -13,7 +13,7 @@ public:
     uint8_t _getDistance();
 
 private:
-    static const uint8_t _distanceReferenceValue = 80;
+    static const uint8_t _distanceReferenceValue = 110;
     static const uint8_t PRECISION_BITSHIFT = 2;
     static const uint8_t AN_PORT = PA0;
 
