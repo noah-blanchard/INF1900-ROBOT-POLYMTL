@@ -14,7 +14,7 @@ const uint8_t OFFSET = 2;
 const uint16_t BASE_ADJ_FWD_AMT = 120;
 const uint16_t NAV_ADJ_FWD_AMT = 155;
 const uint16_t LESS_ADJ_FWD_AMT = 80;
-const uint16_t BASE_FWD_DELAY_AMT = 100;
+const uint16_t BASE_FWD_DELAY_AMT = 200;
 const uint8_t ADJUST_DELAY = 10;
 
 // OTHER

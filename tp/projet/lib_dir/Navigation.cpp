@@ -394,7 +394,6 @@ void Navigation::_nextMove()
     _delay_ms(1000);
     _updateCurrentPosition();
     _nextMoveValue = _trip[_tripIndex];
-    _preventInitForward = false;
     _display = "NEXT MOVE";
 
     if (*_currentOrientation == _nextMoveValue.orientation)
@@ -629,7 +628,7 @@ void Navigation::_initTurnRight()
 void Navigation::_initTurnLeft()
 {
     // if it is not the first move, go forward for a bit, then turn
-    if (!_firstMove || _preventInitForward)
+    if (!_firstMove || !_preventInitForward)
     {
         // go(_BASE_SPEED + _ADJUST_OFFSET, false);
         // _delay_ms(1650);
@@ -1100,7 +1099,7 @@ void Navigation::_chooseRightTurn()
 void Navigation::parking()
 {
 
-    adjustForward();
+    adjustForward(BASE_ADJ_FWD_AMT);
     stop();
     _delay_ms(1000);
 
