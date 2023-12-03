@@ -1099,7 +1099,7 @@ void Navigation::_chooseRightTurn()
 void Navigation::parking()
 {
 
-    adjustForward(BASE_ADJ_FWD_AMT);
+    adjustForward(NAV_ADJ_FWD_AMT);
     stop();
     _delay_ms(1000);
 
