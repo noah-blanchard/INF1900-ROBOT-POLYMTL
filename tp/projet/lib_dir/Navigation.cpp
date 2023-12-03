@@ -1129,6 +1129,20 @@ void Navigation::_chooseRightTurn()
             _display = "TURN RIGHT";
             break;
         }
+        case Orientation::NORTH:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT_180;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::SOUTH:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT_180;
+            _display = "TURN RIGHT";
+            break;
+        }
         }
     }
     else if (col == 5 && row == 1)
@@ -1143,6 +1157,20 @@ void Navigation::_chooseRightTurn()
             break;
         }
         case Orientation::WEST:
+        {
+            _initTurnRight();
+            _tripState = NavigationState::TURN_RIGHT;
+            _display = "TURN RIGHT";
+            break;
+        }
+        case Orientation::NORTH:
+        {
+            _initTurnLeft();
+            _tripState = NavigationState::TURN_LEFT;
+            _display = "TURN LEFT";
+            break;
+        }
+        case Orientation::SOUTH:
         {
             _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
