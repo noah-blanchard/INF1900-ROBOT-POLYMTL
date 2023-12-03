@@ -350,6 +350,7 @@ Move Navigation::followTrip(Move *trip)
 
     stop();
     _display = "FINISHED";
+    _updateCurrentPosition();
     _delay_ms(4000);
 
     return _trip[_tripIndex];
@@ -748,6 +749,7 @@ void Navigation::_meetPost()
 
 void Navigation::_chooseRightTurn()
 {
+    _display= "TA MERE";
     // turn left pour (1,1) et nextOrientation west
     /**
      * 1, 0,
@@ -808,14 +810,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::EAST:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::WEST:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
@@ -850,14 +852,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::EAST:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::WEST:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
@@ -871,14 +873,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::NORTH:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
         }
         case Orientation::SOUTH:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
@@ -892,14 +894,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::EAST:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::WEST:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
@@ -976,14 +978,14 @@ void Navigation::_chooseRightTurn()
         {
         case Orientation::NORTH:
         {
-            _initTurnRight();
+            _initTurnLeft();
             _tripState = NavigationState::TURN_LEFT;
             _display = "TURN RIGHT";
             break;
         }
         case Orientation::SOUTH:
         {
-            _initTurnLeft();
+            _initTurnRight();
             _tripState = NavigationState::TURN_RIGHT;
             _display = "TURN LEFT";
             break;
@@ -1150,6 +1152,8 @@ void Navigation::parking()
     else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
     {
         *_currentOrientation = Orientation::WEST;
+        _display = "OK WEST";
+        _delay_ms(5000);
     }
     else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
     {
