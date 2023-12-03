@@ -486,6 +486,8 @@ void Navigation::_nextMove()
         }
         }
     }
+
+    _preventInitForward = false;
 }
 
 void Navigation::_moveForward()
