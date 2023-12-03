@@ -72,8 +72,9 @@ void MakeTrip::_selectColumn()
 
 	if (*_valButtonPressed)
 	{
-		sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted + 1, _columnSeleted + 1);
+		sprintf(_buffer, "(%d, %d) OK?", _lineSeleted + 1, _columnSeleted + 1);
 		_display = _buffer;
+		_display.write("OUI", LCM_FW_HALF_CH);
 		_state = selection::CONFIRMCHOICES;
 		*_valButtonPressed = false;
 	}
@@ -86,13 +87,15 @@ void MakeTrip::_confirmChoices()
 		_select = !_select;
 		if (_select)
 		{
-			sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted + 1, _columnSeleted + 1);
+			sprintf(_buffer, "(%d, %d) OK?", _lineSeleted + 1, _columnSeleted + 1);
 			_display = _buffer;
+    		_display.write("OUI", LCM_FW_HALF_CH);
 		}
 		else
 		{
-			sprintf(_buffer, "(%d, %d) OK?\nNON", _lineSeleted + 1, _columnSeleted + 1);
+			sprintf(_buffer, "(%d, %d) OK?", _lineSeleted + 1, _columnSeleted + 1);
 			_display = _buffer;
+			_display.write("NON", LCM_FW_HALF_CH);
 		}
 		*_selButtonPressed = false;
 	}

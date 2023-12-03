@@ -56,7 +56,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     // DISPLAY INIT MESSAGE
     _display.clear();
     _display.write("HELLO");
-    _display.write("I AM TOP G", LCM_FW_HALF_CH);
+    _display.write("I AM STUPID", LCM_FW_HALF_CH);
 }
 
 Robot::~Robot()
