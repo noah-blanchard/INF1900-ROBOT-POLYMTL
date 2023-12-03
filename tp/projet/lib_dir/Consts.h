@@ -1,6 +1,8 @@
 #pragma once
 #include <stdint.h>
 
+// GOOD FOR 8.3 ~ 8.5
+
 // WHEEL SPEED CONSTANTS
 const uint8_t BASE_WHEEL_SPEED = 90;
 const uint8_t BACK_WHEEL_SPEED = 80;
