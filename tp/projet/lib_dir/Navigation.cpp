@@ -1214,63 +1214,63 @@ void Navigation::parking()
             }
             }
         }
+
+        // update _currentOrientation
+
+        if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
+        {
+            *_currentOrientation = Orientation::WEST;
+        }
+        else if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
+        {
+            *_currentOrientation = Orientation::EAST;
+        }
+        else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
+        {
+            *_currentOrientation = Orientation::EAST;
+        }
+        else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
+        {
+            *_currentOrientation = Orientation::WEST;
+            _display = "OK WEST";
+            _delay_ms(5000);
+        }
+        else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
+        {
+            *_currentOrientation = Orientation::SOUTH;
+        }
+        else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
+        {
+            *_currentOrientation = Orientation::NORTH;
+        }
+        else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
+        {
+            *_currentOrientation = Orientation::NORTH;
+        }
+        else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
+        {
+            *_currentOrientation = Orientation::SOUTH;
+        }
+        else if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+        {
+            *_currentOrientation = Orientation::EAST;
+        }
+        else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+        {
+            *_currentOrientation = Orientation::WEST;
+        }
+        else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+        {
+            *_currentOrientation = Orientation::NORTH;
+        }
+        else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
+        {
+            *_currentOrientation = Orientation::SOUTH;
+        }
     }
 
     stop();
     _delay_ms(1000);
-
-    // update _currentOrientation
-
-    if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
-    {
-        *_currentOrientation = Orientation::WEST;
-    }
-    else if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
-    {
-        *_currentOrientation = Orientation::EAST;
-    }
-    else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
-    {
-        *_currentOrientation = Orientation::EAST;
-    }
-    else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
-    {
-        *_currentOrientation = Orientation::WEST;
-        _display = "OK WEST";
-        _delay_ms(5000);
-    }
-    else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
-    {
-        *_currentOrientation = Orientation::SOUTH;
-    }
-    else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
-    {
-        *_currentOrientation = Orientation::NORTH;
-    }
-    else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
-    {
-        *_currentOrientation = Orientation::NORTH;
-    }
-    else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
-    {
-        *_currentOrientation = Orientation::SOUTH;
-    }
-    else if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
-    {
-        *_currentOrientation = Orientation::EAST;
-    }
-    else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
-    {
-        *_currentOrientation = Orientation::WEST;
-    }
-    else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
-    {
-        *_currentOrientation = Orientation::NORTH;
-    }
-    else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::FULL_CROSSROAD)
-    {
-        *_currentOrientation = Orientation::SOUTH;
-    }
 
     /// if detect left or right adjustment
 }
