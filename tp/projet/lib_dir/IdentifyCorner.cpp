@@ -136,7 +136,7 @@ void IdentifyCorner::_goForwardFirstLine()
         {
             _navModule.stop();
             makeSound();
-            _delay_ms(1000);
+            _delay_ms(IDC_STOP_DELAY);
             _sound.stopSound();
             _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
         }
@@ -225,7 +225,7 @@ void IdentifyCorner::_turnAround()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(IDC_STOP_DELAY);
         _state = IdentifyCornerState::GO_BACK_FIRST_LINE;
     }
 }
@@ -246,7 +246,7 @@ void IdentifyCorner::_turnAroundSecondLine()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(IDC_STOP_DELAY);
         _state = IdentifyCornerState::GO_INIT_POS;
     }
 }
@@ -325,7 +325,7 @@ void IdentifyCorner::_turnInitPos()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(IDC_STOP_DELAY);
         _found = true;
         _state = IdentifyCornerState::FINISH;
     }
@@ -368,7 +368,7 @@ void IdentifyCorner::_turnSecondLine()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(IDC_STOP_DELAY);
         _state = IdentifyCornerState::GO_FORWARD_SECOND_LINE;
     }
 }
@@ -389,7 +389,7 @@ void IdentifyCorner::_turnBackFirstLine()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(IDC_STOP_DELAY);
         _state = IdentifyCornerState::GO_INIT_POS;
     }
 }
@@ -413,7 +413,7 @@ void IdentifyCorner::_turnBackSecondLine()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(1000);
+        _delay_ms(IDC_STOP_DELAY);
         _state = IdentifyCornerState::GO_INIT_POS;
     }
 }
@@ -431,7 +431,7 @@ void IdentifyCorner::_goForwardSecondLine()
         {
             makeSound();
             _navModule.stop();
-            _delay_ms(1000);
+            _delay_ms(IDC_STOP_DELAY);
             _sound.stopSound();
             _state = IdentifyCornerState::TURN_BACK_SECOND_LINE;
         }

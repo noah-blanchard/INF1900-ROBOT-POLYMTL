@@ -366,7 +366,7 @@ Move Navigation::followTrip(Move *trip)
     stop();
     _display = "FINISHED";
     _updateCurrentPosition();
-    _delay_ms(4000);
+    _delay_ms(NAV_STOP_DELAY);
 
     return _trip[_tripIndex];
 }
@@ -406,7 +406,7 @@ void Navigation::_nextMove()
     // for example, if current is south and next is east, turn left
     // if current is south and next is west, turn right
     stop();
-    _delay_ms(1000);
+    _delay_ms(NAV_STOP_DELAY);
     _updateCurrentPosition();
     _nextMoveValue = _trip[_tripIndex];
 
@@ -515,7 +515,7 @@ void Navigation::_moveForward()
     {
         stop();
         _display = "POTITO";
-        _delay_ms(1000);
+        _delay_ms(NAV_STOP_DELAY);
         _tripState = NavigationState::MEET_POST;
     }
     else
@@ -571,7 +571,7 @@ void Navigation::_moveForwardDelay()
     {
         stop();
         _display = "POTITO";
-        _delay_ms(1000);
+        _delay_ms(NAV_STOP_DELAY);
         _tripState = NavigationState::MEET_POST;
     }
     else
@@ -605,7 +605,7 @@ void Navigation::_moveForwardDelay()
     {
         _display = "stop";
         stop();
-        _delay_ms(2000);
+        _delay_ms(NAV_STOP_DELAY);
         _forwardDelayCount = 0;
         _tripIndex++;
         _tripState = NavigationState::NEXT_MOVE;
@@ -632,9 +632,9 @@ void Navigation::_initTurnRight()
         _firstMove = false;
     }
     stop();
-    _delay_ms(200);
+    _delay_ms(INIT_TURN_STOP_DELAY);
     turnRight();
-    _delay_ms(1100);
+    _delay_ms(INIT_TURN_DELAY);
     stop();
 }
 
@@ -653,10 +653,9 @@ void Navigation::_initTurnLeft()
         _firstMove = false;
     }
     stop();
-    _delay_ms(200);
-    // then turn a bit left for 1 second
+    _delay_ms(INIT_TURN_STOP_DELAY);
     turnLeft();
-    _delay_ms(1100);
+    _delay_ms(INIT_TURN_DELAY);
     stop();
 }
 void Navigation::_turnRight()
@@ -692,7 +691,7 @@ void Navigation::_turnRight()
             // if we detect the line on the left, it means we met the line
             // so stop moving and go to forward state
             stop();
-            _delay_ms(1000);
+            _delay_ms(NAV_STOP_DELAY);
             _preventInitForward = true;
             _chooseForwardMove();
 
@@ -736,7 +735,7 @@ void Navigation::_turnLeft()
             // if we detect the line on the left, it means we met the line
             // so stop moving and go to forward state
             stop();
-            _delay_ms(1000);
+            _delay_ms(NAV_STOP_DELAY);
             _preventInitForward = true;
             _chooseForwardMove();
 
@@ -752,8 +751,7 @@ void Navigation::_meetPost()
     *_currentOrientation = _nextMoveValue.orientation;
     _nextMoveValue = _trip[_tripIndex - 1];
     stop();
-    _display = "OKOKOKOK";
-    _delay_ms(1000);
+    _delay_ms(NAV_STOP_DELAY);
     _tripState = NavigationState::ERROR;
 }
 
@@ -768,9 +766,6 @@ void Navigation::_chooseRightTurn()
      * 1, 2
      * 2, 2
      */
-
-    _display = "TATAT";
-    _delay_ms(3000);
 
     uint8_t col = _currentPosition[0];
     uint8_t row = _currentPosition[1];
@@ -985,49 +980,6 @@ void Navigation::_chooseRightTurn()
         }
         }
     }
-    // 5 2
-    // else if ((col == 5) && (row == 2))
-    // {
-    //     switch (_nextMoveValue.orientation)
-    //     {
-    //     case Orientation::NORTH:
-    //     {
-    //         _initTurnLeft();
-    //         _tripState = NavigationState::TURN_LEFT;
-    //         _display = "TURN LEFT";
-    //         break;
-    //     }
-    //     case Orientation::SOUTH:
-    //     {
-    //         _initTurnRight();
-    //         _tripState = NavigationState::TURN_RIGHT;
-    //         _display = "TURN RIGHT";
-    //         break;
-    //     }
-    //     }
-    // }
-    // 6 2 ???????
-    // else if ((col == 6) && (row == 1))
-    // {
-    //     switch (_nextMoveValue.orientation)
-    //     {
-    //     case Orientation::WEST:
-    //     {
-    //         _initTurnRight();
-    //         _tripState = NavigationState::TURN_RIGHT;
-    //         _display = "TURN RIGHT";
-    //         break;
-    //     }
-    //     case Orientation::EAST:
-    //     {
-    //         _initTurnLeft();
-    //         _tripState = NavigationState::TURN_LEFT;
-    //         _display = "TURN LEFT";
-    //         break;
-    //     }
-    //     }
-    // }
-    // 1 3
     else if ((col == 1) && (row == 3))
     {
         switch (_nextMoveValue.orientation)
@@ -1092,8 +1044,6 @@ void Navigation::_chooseRightTurn()
     }
     else if (col == 2 && row == 2)
     {
-        _display = "HAHAHAH";
-        _delay_ms(5000);
         switch (_nextMoveValue.orientation)
         {
         case Orientation::EAST:
@@ -1167,7 +1117,7 @@ void Navigation::parking()
 
     adjustForward(NAV_ADJ_FWD_AMT);
     stop();
-    _delay_ms(1000);
+    _delay_ms(NAV_STOP_DELAY);
 
     if (_lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_LINE)
     {
@@ -1211,8 +1161,6 @@ void Navigation::parking()
         else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
         {
             *_currentOrientation = Orientation::WEST;
-            _display = "OK WEST";
-            _delay_ms(5000);
         }
         else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
         {
@@ -1249,9 +1197,7 @@ void Navigation::parking()
     }
 
     stop();
-    _delay_ms(1000);
-
-    /// if detect left or right adjustment
+    _delay_ms(NAV_STOP_DELAY);
 }
 
 void Navigation::_turnLeft180()
@@ -1289,7 +1235,7 @@ void Navigation::_turnLeft180()
             else if (_turn180Count == 2)
             {
                 stop();
-                _delay_ms(1000);
+                _delay_ms(NAV_STOP_DELAY);
                 _preventInitForward = true;
                 _turn180Count = 0;
                 _chooseForwardMove();
@@ -1337,7 +1283,7 @@ void Navigation::_turnRight180()
             else if (_turn180Count == 2)
             {
                 stop();
-                _delay_ms(1000);
+                _delay_ms(NAV_STOP_DELAY);
                 _preventInitForward = true;
                 _turn180Count = 0;
                 _chooseForwardMove();

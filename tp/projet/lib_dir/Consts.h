@@ -16,10 +16,14 @@ const uint16_t NAV_ADJ_FWD_AMT = 165;
 const uint16_t LESS_ADJ_FWD_AMT = 80;
 const uint16_t BASE_FWD_DELAY_AMT = 200;
 const uint8_t ADJUST_DELAY = 10;
+const uint16_t NAV_STOP_DELAY = 1000;
+const uint16_t INIT_TURN_STOP_DELAY = 200;
+const uint16_t INIT_TURN_DELAY = 1100;
 
 // IDENTIFY CORNER
 const uint16_t CROSS_CNT_DELAY = 270;
 const uint16_t HIGH_MIDI_NOTE = 81;
+const uint16_t IDC_STOP_DELAY = 1000;
 
 // OTHER
 const uint8_t DEBOUNCE_DELAY = 200;
