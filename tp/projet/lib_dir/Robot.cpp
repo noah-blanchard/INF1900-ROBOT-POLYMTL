@@ -173,7 +173,7 @@ void Robot::_modeSelectionRoutine()
         mbButtonPressed = false;
         _display = "Identify Corner";
         _ledModule.turnOffLed();
-        _delay_ms(2000);
+        _delay_ms(IDC_INIT_DELAY);
         _currentState = RobotState::IDENTIFY_CORNER;
     }
 }

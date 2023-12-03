@@ -24,6 +24,7 @@ const uint16_t INIT_TURN_DELAY = 1100;
 const uint16_t CROSS_CNT_DELAY = 270;
 const uint16_t HIGH_MIDI_NOTE = 81;
 const uint16_t IDC_STOP_DELAY = 1000;
+const uint16_t IDC_INIT_DELAY = 2000;
 
 // OTHER
 const uint8_t DEBOUNCE_DELAY = 200;
