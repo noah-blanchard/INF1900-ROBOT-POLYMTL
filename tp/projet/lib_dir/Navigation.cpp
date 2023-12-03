@@ -662,7 +662,6 @@ void Navigation::_turnRight()
 
     if (_irModule.isObstacleDetected())
     {
-        _updateCurrentPosition();
         _tripState = NavigationState::MEET_POST;
     }
 
