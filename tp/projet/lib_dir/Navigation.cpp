@@ -777,8 +777,8 @@ void Navigation::_chooseRightTurn()
     _display = "TATAT";
     _delay_ms(3000);
 
-    uint8_t col = _nextMoveValue.x;
-    uint8_t row = _nextMoveValue.y;
+    uint8_t col = _currentPosition[0];
+    uint8_t row = _currentPosition[1];
 
     if ((col == 1) && (row == 1))
     {
@@ -864,26 +864,6 @@ void Navigation::_chooseRightTurn()
         }
     }
     // 5 1
-    else if ((col == 5) && (row == 1))
-    {
-        switch (_nextMoveValue.orientation)
-        {
-        case Orientation::EAST:
-        {
-            _initTurnRight();
-            _tripState = NavigationState::TURN_RIGHT;
-            _display = "TURN LEFT";
-            break;
-        }
-        case Orientation::WEST:
-        {
-            _initTurnLeft();
-            _tripState = NavigationState::TURN_LEFT;
-            _display = "TURN RIGHT";
-            break;
-        }
-        }
-    }
     // 2 1
     else if ((col == 2) && (row == 1))
     {
@@ -1117,7 +1097,7 @@ void Navigation::_chooseRightTurn()
     }
     else if (col == 2 && row == 2)
     {
-        _display = "HAHAHAH"
+        _display = "HAHAHAH";
         _delay_ms(5000);
         switch (_nextMoveValue.orientation)
         {
@@ -1158,28 +1138,28 @@ void Navigation::_chooseRightTurn()
         case Orientation::EAST:
         {
             _initTurnLeft();
-            _tripState = NavigationState::TURN_LEFT;
+            _tripState = NavigationState::TURN_LEFT_180;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::WEST:
         {
             _initTurnRight();
-            _tripState = NavigationState::TURN_RIGHT;
+            _tripState = NavigationState::TURN_RIGHT_180;
             _display = "TURN RIGHT";
             break;
         }
         case Orientation::NORTH:
         {
             _initTurnLeft();
-            _tripState = NavigationState::TURN_LEFT;
+            _tripState = NavigationState::TURN_LEFT_180;
             _display = "TURN LEFT";
             break;
         }
         case Orientation::SOUTH:
         {
             _initTurnRight();
-            _tripState = NavigationState::TURN_RIGHT;
+            _tripState = NavigationState::TURN_RIGHT_180;
             _display = "TURN RIGHT";
             break;
         }
@@ -1328,8 +1308,7 @@ void Navigation::_turnLeft180()
 
 void Navigation::_turnRight180()
 {
-    _display = "turning right";
-    _delay_ms(5000);
+
     LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
 
     if (_irModule.isObstacleDetected() && _turn180Count == 2)

@@ -52,8 +52,8 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
 
     // SETUP ROBOT STATE
     _currentState = RobotState::CALCULATE_PATH;
-    _destination[0] = 2;
-    _destination[1] = 2;
+    _destination[0] = 5;
+    _destination[1] = 1;
 
     // DISPLAY INIT MESSAGE
     _display.clear();
