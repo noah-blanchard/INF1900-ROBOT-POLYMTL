@@ -898,9 +898,6 @@ void Navigation::_chooseRightTurn()
         }
     }
     // 4 1 // repeated !!!!!!!!
-<<<<<<< HEAD
-
-    == == == =
                  else if ((col == 4) && (row == 1))
     {
         switch (_nextMoveValue.orientation)
@@ -921,7 +918,6 @@ void Navigation::_chooseRightTurn()
         }
         }
     }
->>>>>>> 5f4080c0f1983f78fcc4a14d566c175e9b7c857a
     // 6 1
     else if ((col == 6) && (row == 1))
     {
