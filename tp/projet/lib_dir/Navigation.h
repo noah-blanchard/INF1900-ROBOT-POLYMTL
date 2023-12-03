@@ -89,6 +89,7 @@ private:
     bool _firstMove = true;
     uint16_t _forwardDelayCount;
     bool _preventInitForward = false;
+    LineMakerFlag _lastCrossroad;
 
     // Modules
     LineMaker _lineMakerModule;

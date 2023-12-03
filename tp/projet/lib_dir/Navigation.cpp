@@ -215,7 +215,7 @@ void Navigation::adjustRight()
 void Navigation::adjustLeft()
 {
     goRightWheel(_BASE_SPEED, false);
-    goLeftWheel(_BASE_SPEED + _ADJUST_OFFSET , false);
+    goLeftWheel(_BASE_SPEED + _ADJUST_OFFSET, false);
     _delay_ms(_ADJUST_DELAY);
 }
 
@@ -527,14 +527,23 @@ void Navigation::_moveForward()
             adjustRight();
             break;
         }
+        case LineMakerFlag::FULL_CROSSROAD:
+        {
+            _lastCrossroad = LineMakerFlag::FULL_CROSSROAD;
+            _tripIndex++;
+            _tripState = NavigationState::NEXT_MOVE;
+            break;
+        }
         case LineMakerFlag::OUTER_LEFT_DETECTION:
         {
+            _lastCrossroad = LineMakerFlag::OUTER_LEFT_DETECTION;
             _tripIndex++;
             _tripState = NavigationState::NEXT_MOVE;
             break;
         }
         case LineMakerFlag::OUTER_RIGHT_DETECTION:
         {
+            _lastCrossroad = LineMakerFlag::OUTER_RIGHT_DETECTION;
             _tripIndex++;
             _tripState = NavigationState::NEXT_MOVE;
             break;
@@ -577,18 +586,6 @@ void Navigation::_moveForwardDelay()
             adjustRight();
             break;
         }
-            // case LineMakerFlag::OUTER_LEFT_DETECTION:
-            // {
-            //     _tripIndex++;
-            //     _tripState = NavigationState::NEXT_MOVE;
-            //     break;
-            // }
-            // case LineMakerFlag::OUTER_RIGHT_DETECTION:
-            // {
-            //     _tripIndex++;
-            //     _tripState = NavigationState::NEXT_MOVE;
-            //     break;
-            // }
         }
     }
 
@@ -1107,14 +1104,12 @@ void Navigation::parking()
     stop();
     _delay_ms(1000);
 
-    LineMakerFlag savedFlag = _lineMakerModule.getDetectionFlag();
-
     if (_lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_LINE)
     {
         while (_lineMakerModule.getDetectionFlag() != LineMakerFlag::LEFT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::RIGHT_ADJUSTMENT || _lineMakerModule.getDetectionFlag() == LineMakerFlag::NO_ADJUSTMENT)
         {
 
-            switch (savedFlag)
+            switch (_lastCrossroad)
             {
             case LineMakerFlag::OUTER_LEFT_DETECTION:
             {
