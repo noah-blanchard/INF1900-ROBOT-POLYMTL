@@ -1135,35 +1135,35 @@ void Navigation::parking()
 
     // update _currentOrientation
 
-    if (*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
     {
         *_currentOrientation = Orientation::WEST;
     }
-    else if (*_currentOrientation == Orientation::NORTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    else if (*_currentOrientation == Orientation::NORTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
     {
         *_currentOrientation = Orientation::EAST;
     }
-    else if (*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
     {
         *_currentOrientation = Orientation::EAST;
     }
-    else if (*_currentOrientation == Orientation::SOUTH && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    else if (*_currentOrientation == Orientation::SOUTH && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
     {
         *_currentOrientation = Orientation::WEST;
     }
-    else if (*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
     {
         *_currentOrientation = Orientation::SOUTH;
     }
-    else if (*_currentOrientation == Orientation::WEST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    else if (*_currentOrientation == Orientation::WEST && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
     {
         *_currentOrientation = Orientation::NORTH;
     }
-    else if (*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_LEFT_DETECTION)
+    else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::OUTER_LEFT_DETECTION)
     {
         *_currentOrientation = Orientation::NORTH;
     }
-    else if (*_currentOrientation == Orientation::EAST && savedFlag == LineMakerFlag::OUTER_RIGHT_DETECTION)
+    else if (*_currentOrientation == Orientation::EAST && _lastCrossroad == LineMakerFlag::OUTER_RIGHT_DETECTION)
     {
         *_currentOrientation = Orientation::SOUTH;
     }
