@@ -27,15 +27,14 @@ enum class selection
 class MakeTrip
 {
 public:
-	MakeTrip(bool* mb, bool* sel, bool* val);
-	void selectDestination(uint8_t *_destination);
+	MakeTrip(volatile bool* mb, volatile bool* sel, volatile bool* val);
 	void run(uint8_t *_destination);
 
 private:
 	// to retrieve the button pressed vars
-	bool *_mbButtonPressed;
-	bool *_selButtonPressed;
-	bool *_valButtonPressed;
+	volatile bool *_mbButtonPressed;
+	volatile bool *_selButtonPressed;
+	volatile bool *_valButtonPressed;
 
 	void _selectLine();
 	void _selectColumn();

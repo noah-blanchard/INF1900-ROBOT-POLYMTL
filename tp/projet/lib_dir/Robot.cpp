@@ -9,32 +9,32 @@ volatile bool valButtonPressed = false;
 ISR(INT0_vect)
 {
     mbButtonPressed = true;
-    _delay_ms(120);
+    _delay_ms(DEBOUNCE_DELAY);
     EIFR |= (1 << INTF0);
-}
-
-ISR(INT1_vect)
-{
-    selButtonPressed = true;
-    _delay_ms(120);
-    EIFR |= (1 << INTF1);
 }
 
 ISR(INT2_vect)
 {
-    valButtonPressed = true;
-    _delay_ms(120);
+    selButtonPressed = true;
+    _delay_ms(DEBOUNCE_DELAY);
     EIFR |= (1 << INTF2);
 }
 
-Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB0, PB1), _identifyCornerModule(&_ledModule), _maketripModule(&mbButtonPressed, &selButtonPressed, &valButtonPressed)
+ISR(INT1_vect)
+{
+    valButtonPressed = true;
+    _delay_ms(DEBOUNCE_DELAY);
+    EIFR |= (1 << INTF1);
+}
+
+Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_currentOrientation), _ledModule(&PORTB, &DDRB, PB6, PB7), _identifyCornerModule(&_ledModule), _maketripModule(&mbButtonPressed, &selButtonPressed, &valButtonPressed)
 {
 
     // SETUP ROBOT BUTTONS
     cli();
     _motherBoardButton = Bouton(INT0);
-    _validateButton = Bouton(INT2);
-    _selectButton = Bouton(INT1);
+    _validateButton = Bouton(INT1);
+    _selectButton = Bouton(INT2);
     _motherBoardButton.setFallingEdge();
     _motherBoardButton.enableInterrupt();
     _validateButton.setFallingEdge();

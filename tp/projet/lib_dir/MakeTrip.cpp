@@ -8,7 +8,7 @@
 #include "customprocs.h"
 #include "MakeTrip.h"
 
-MakeTrip::MakeTrip(bool *mb, bool *sel, bool *val) : _display(&DDRC, &PORTC), _mbButtonPressed(mb), _selButtonPressed(sel), _valButtonPressed(val) {}
+MakeTrip::MakeTrip(volatile bool *mb, volatile bool *sel, volatile bool *val) : _display(&DDRC, &PORTC), _mbButtonPressed(mb), _selButtonPressed(sel), _valButtonPressed(val) {}
 
 void MakeTrip::run(uint8_t *destination)
 {
@@ -43,49 +43,45 @@ void MakeTrip::run(uint8_t *destination)
 
 void MakeTrip::_selectLine()
 {
-	if (selectChoice)
+	if (*_selButtonPressed)
 	{
 		_lineSeleted = (_lineSeleted + 1) % 4;
 		sprintf(_buffer, "Line : %d", _lineSeleted + 1);
 		_display = _buffer;
-		selectChoice = false;
-		_delay_ms(50);
+		*_selButtonPressed = false;
 	}
 
-	if (validateChoice)
+	if (*_valButtonPressed)
 	{
 		sprintf(_buffer, "Col : %d", _columnSeleted + 1);
 		_display = _buffer;
 		_state = selection::SELECTCOLUMN;
-		validateChoice = false;
-		_delay_ms(50);
+		*_valButtonPressed = false;
 	}
 }
 
 void MakeTrip::_selectColumn()
 {
-	if (selectChoice)
+	if (*_selButtonPressed)
 	{
 		_columnSeleted = (_columnSeleted + 1) % 7;
 		sprintf(_buffer, "Col : %d", _columnSeleted + 1);
 		_display = _buffer;
-		selectChoice = false;
-		_delay_ms(50);
+		*_selButtonPressed = false;
 	}
 
-	if (validateChoice)
+	if (*_valButtonPressed)
 	{
 		sprintf(_buffer, "(%d, %d) OK?\nOUI", _lineSeleted + 1, _columnSeleted + 1);
 		_display = _buffer;
 		_state = selection::CONFIRMCHOICES;
-		validateChoice = false;
-		_delay_ms(50);
+		*_valButtonPressed = false;
 	}
 }
 
 void MakeTrip::_confirmChoices()
 {
-	if (selectChoice)
+	if (*_selButtonPressed)
 	{
 		_select = !_select;
 		if (_select)
@@ -98,11 +94,10 @@ void MakeTrip::_confirmChoices()
 			sprintf(_buffer, "(%d, %d) OK?\nNON", _lineSeleted + 1, _columnSeleted + 1);
 			_display = _buffer;
 		}
-		selectChoice = false;
-		_delay_ms(50);
+		*_selButtonPressed = false;
 	}
 
-	if (validateChoice)
+	if (*_valButtonPressed)
 	{
 		if (_select == true)
 		{
@@ -118,114 +113,6 @@ void MakeTrip::_confirmChoices()
 			_display = _buffer;
 			_state = selection::SELECTLINE;
 		}
-		validateChoice = false;
-		_delay_ms(50);
+		*_valButtonPressed = false;
 	}
-}
-
-void MakeTrip::selectDestination(uint8_t *_destination)
-{
-
-	LCM disp(&DDRC, &PORTC);
-	disp.clear();
-	// w();
-	char _buffer[25];
-	selection select = selection::SELECTLINE;
-	while (select != selection::FINISH)
-	{
-		switch (select)
-		{
-		case selection::SELECTLINE:
-			validateChoice = false;
-			while (!validateChoice)
-			{
-				sprintf(_buffer, "Line : %d", _lineSeleted + 1);
-				disp = _buffer;
-				//_delay_ms(3000);
-				if (selectChoice)
-				{
-					_lineSeleted = (_lineSeleted + 1) % 4;
-					sprintf(_buffer, "Line : %d", _lineSeleted + 1);
-					disp = _buffer;
-					selectChoice = false;
-				}
-				// disp = "heyyy";
-				//_delay_ms(2000);
-				// if(validateChoice)
-				//{
-				// validateChoice = false;
-				// selectChoice = false;
-				// select = selection::SELECTCOLUMN;
-				//}
-			}
-
-			disp = "hiii";
-			_delay_ms(2000);
-			validateChoice = false;
-			selectChoice = false;
-			select = selection::SELECTCOLUMN;
-			break;
-
-		case selection::SELECTCOLUMN:
-			// disp.clear();
-			// sprintf(_buffer, "Col : %d", _columnSeleted+1);
-			// disp = _buffer;
-			while (!validateChoice)
-			{
-				if (selectChoice)
-				{
-					_columnSeleted = (_columnSeleted + 1) % 7;
-					sprintf(_buffer, "Col : %d", _columnSeleted + 1);
-					disp = _buffer;
-					// sprintf(_buffer, "val : %d", validateChoice);
-					// disp = _buffer;
-
-					selectChoice = false;
-				}
-
-				// if(validateChoice)
-				//{
-				// disp.clear();
-				// sprintf(_buffer, "L %d - C %d - ok?", _lineSeleted+1,_columnSeleted+1);
-				// disp = _buffer;
-				// validateChoice = false;
-				// selectChoice = false;
-				// select = selection::CONFIRMCHOICES;
-				//}
-			}
-			disp.clear();
-			sprintf(_buffer, "L %d - C %d - ok?", _lineSeleted + 1, _columnSeleted + 1);
-			disp = _buffer;
-			validateChoice = false;
-			selectChoice = false;
-			select = selection::CONFIRMCHOICES;
-			break;
-
-		case selection::CONFIRMCHOICES:
-			while (!validateChoice || !selectChoice)
-			{
-				if (validateChoice)
-				{
-					sprintf(_buffer, "L %d - C %d", _lineSeleted + 1, _columnSeleted + 1);
-					disp = _buffer;
-					select = selection::FINISH;
-					// w();
-					cli();
-				}
-
-				if (selectChoice)
-				{
-					_lineSeleted = 1;
-					_columnSeleted = 1;
-					validateChoice = false;
-					selectChoice = false;
-					select = selection::SELECTLINE;
-				}
-			}
-			break;
-		}
-	}
-	disp = "HQHQ";
-	_destination[0] = _columnSeleted;
-	_destination[1] = _lineSeleted;
 }

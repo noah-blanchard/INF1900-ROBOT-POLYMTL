@@ -136,6 +136,8 @@ void IdentifyCorner::_goForwardFirstLine()
         {
             _navModule.stop();
             makeSound();
+            _delay_ms(1000);
+            _sound.stopSound();
             _state = IdentifyCornerState::TURN_BACK_FIRST_LINE;
         }
         else
