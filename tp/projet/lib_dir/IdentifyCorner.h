@@ -8,6 +8,7 @@
 #include "Sound.h"
 #include "LED.h"
 #include "lcm_so1602dtr_m_fw.h"
+#include "Consts.h"
 
 enum class Corner
 {

@@ -104,7 +104,7 @@ void IdentifyCorner::_goForwardFirstLine()
             _firstLineCount++;
             _sidefirst = true;
             _blockIncrementation = true;
-            _delay_ms(270);
+            _delay_ms(CROSS_CNT_DELAY);
         }
         // _navModule.adjustRight();
         isRight = true;
@@ -116,7 +116,7 @@ void IdentifyCorner::_goForwardFirstLine()
         {
             _firstLineCount++;
             _blockIncrementation = true;
-            _delay_ms(270);
+            _delay_ms(CROSS_CNT_DELAY);
         }
         isRight = false;
         break;
@@ -126,7 +126,7 @@ void IdentifyCorner::_goForwardFirstLine()
         {
             _firstLineCount++;
             _blockIncrementation = true;
-            _delay_ms(270);
+            _delay_ms(CROSS_CNT_DELAY);
         }
         break;
     case LineMakerFlag::NO_LINE:
@@ -152,7 +152,7 @@ void IdentifyCorner::_goForwardFirstLine()
 
 void IdentifyCorner::makeSound()
 {
-    _sound.chooseFrequency(81);
+    _sound.chooseFrequency(HIGH_MIDI_NOTE);
 }
 void IdentifyCorner::_displayCurrentIntersectionCount()
 {
@@ -187,25 +187,21 @@ bool IdentifyCorner::_simpleCompareMAtch()
     }
     else if ((_firstLineCount == 1) && (_secondLineCount == 1) && _sidefirst)
     {
-        // LCBV
         _initCorner = Corner::LCBV;
         return true;
     }
     else if ((_firstLineCount == 1) && (_secondLineCount == 1 && !_sidefirst))
     {
-        // LCBH
         _initCorner = Corner::LCBH;
         return true;
     }
     else if ((_firstLineCount == 2) && (_secondLineCount == 1) && _blockIncrementation)
     {
-        // LCTH
         _initCorner = Corner::LCTH;
         return true;
     }
     else if ((_firstLineCount == 1) && (_secondLineCount == 2) && _blockIncrementation)
     {
-        // LCTV
         _initCorner = Corner::LCTV;
         return true;
     }
@@ -215,9 +211,7 @@ bool IdentifyCorner::_simpleCompareMAtch()
 // turn around should turn around
 void IdentifyCorner::_turnAround()
 {
-    _display.clear();
-    _display << "turn around";
-    if (isRight)
+    s if (isRight)
     {
         _navModule.turnLeft();
     }
@@ -231,7 +225,7 @@ void IdentifyCorner::_turnAround()
     if (sensor == LineMakerFlag::LEFT_ADJUSTMENT || sensor == LineMakerFlag::RIGHT_ADJUSTMENT || sensor == LineMakerFlag::NO_ADJUSTMENT)
     {
         _navModule.stop();
-        _delay_ms(500);
+        _delay_ms(1000);
         _state = IdentifyCornerState::GO_BACK_FIRST_LINE;
     }
 }
@@ -288,22 +282,6 @@ void IdentifyCorner::_goInitPos()
 {
     // do the same but don't increment, just go back until no line is detected (start position)
     LineMakerFlag flag = _lineMakerModule.getDetectionFlag();
-    // switch (flag)
-    // {
-    // case LineMakerFlag::NO_LINE:
-    //     _navModule.adjustForward();
-    //     _state = IdentifyCornerState::TURN_INIT_POS;
-    //     break;
-    // case LineMakerFlag::NO_ADJUSTMENT:
-    //     _navModule.go(Navigation::_BASE_SPEED, false);
-    //     break;
-    // case LineMakerFlag::LEFT_ADJUSTMENT:
-    //     _navModule.adjustRight();
-    //     break;
-    // case LineMakerFlag::RIGHT_ADJUSTMENT:
-    //     _navModule.adjustLeft();
-    //     break;
-    // }
     _navModule.go(false);
     switch (flag)
     {

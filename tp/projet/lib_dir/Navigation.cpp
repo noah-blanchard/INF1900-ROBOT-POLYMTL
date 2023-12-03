@@ -383,7 +383,6 @@ void Navigation::_chooseForwardMove()
     }
     else
     {
-        _display = "FORWARD NORMAL";
         _tripState = NavigationState::FORWARD;
         if (!_preventInitForward)
         {
@@ -410,7 +409,6 @@ void Navigation::_nextMove()
     _delay_ms(1000);
     _updateCurrentPosition();
     _nextMoveValue = _trip[_tripIndex];
-    _display = "NEXT MOVE";
 
     if (*_currentOrientation == _nextMoveValue.orientation)
     {
@@ -418,7 +416,6 @@ void Navigation::_nextMove()
     }
     else
     {
-        _display = "TURN";
         switch (*_currentOrientation)
         {
         case Orientation::NORTH:
@@ -525,7 +522,6 @@ void Navigation::_moveForward()
     {
 
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-        _display = "MOVE FORWARD NOW";
 
         switch (lineMakerFlag)
         {
@@ -583,7 +579,6 @@ void Navigation::_moveForwardDelay()
         _forwardDelayCount++;
 
         LineMakerFlag lineMakerFlag = _lineMakerModule.getDetectionFlag();
-        _display = "MOVE DELAY";
 
         switch (lineMakerFlag)
         {

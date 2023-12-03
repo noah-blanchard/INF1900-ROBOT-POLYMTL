@@ -51,14 +51,15 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _currentPosition[1] = 0;
 
     // SETUP ROBOT STATE
-    _currentState = RobotState::CALCULATE_PATH;
-    _destination[0] = 5;
-    _destination[1] = 1;
+    _currentState = RobotState::MAKE_TRIP;
 
     // DISPLAY INIT MESSAGE
     _display.clear();
     _display.write("HELLO");
     _display.write("I AM STUPID", LCM_FW_HALF_CH);
+
+    // INIT TURN LED RED
+    _ledModule.turnLedRed();
 }
 
 Robot::~Robot()
@@ -142,12 +143,6 @@ void Robot::_navigateTripRoutine()
 
         _beginning[0] = _currentPosition[0];
         _beginning[1] = _currentPosition[1];
-        // sprintf(buffer, "b1 %d  b2 %d", _beginning[0], _beginning[1]);
-        // _display = buffer;
-        // _delay_ms(500);
-        // sprintf(buffer, "b1 %d  b2 %d", tripResult.x, tripResult.y);
-        // _display = buffer;
-        // _delay_ms(500);
         _dijkstraModule.removeNode(tripResult.x, tripResult.y);
         _currentState = RobotState::CALCULATE_PATH;
     }
@@ -170,15 +165,15 @@ void Robot::_modeSelectionRoutine()
     if (selButtonPressed)
     {
         selButtonPressed = false;
-        _display = "MAKE TRIP";
-        _delay_ms(1000);
+        _display = "Make a Trip";
         _currentState = RobotState::MAKE_TRIP;
     }
     else if (mbButtonPressed)
     {
         mbButtonPressed = false;
-        _display = "IDENTIFY CORNER";
-        _delay_ms(1000);
+        _display = "Identify Corner";
+        _ledModule.turnOffLed();
+        _delay_ms(2000);
         _currentState = RobotState::IDENTIFY_CORNER;
     }
 }
