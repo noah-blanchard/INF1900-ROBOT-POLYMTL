@@ -18,11 +18,23 @@ Avant de démarrer le projet il faut s'assurer que les branchements sont correct
 
 1. **Branchement :** (Guide pour réaliser les branchments)
 
-   - Le suiveur de ligne Maker Line de Cytron doit être connecté aux ports spécifiés (SAMIRAAAAAAAA).
-   - Le capteur de distance de Sharp doit être connecté au port (SAMIRAAAAAAAA).
-   - Les moteurs des roues doivent être connectés aux ports PWM pour le contrôle de la vitesse (SAMIRAAAAAAAA).
-   - Le piezo doit être connecté à port (SAMIRAAAAAAAA).
-   - Les boutons sur le breadboard doivent être connectés aux ports (SAMIRAAAAAAAA).
+   - Le suiveur de ligne Maker Line de Cytron doit être connecté aux ports spécifiés
+     - Vert A2
+     - Bleu A4
+     - Violet A5
+     - Gris A6
+     - Blanc A7
+   - Le capteur de distance de Sharp doit être connecté au port **A0**.
+   - Les moteurs des roues doivent être connectés aux ports PWM pour le contrôle de la vitesse.
+     - Roue de gauche D4 et D6
+     - Roue de gauche D5 et D7
+   - Le piezo doit être connecté au port B3 et B5
+   - Les boutons sur le breadboard doivent être connectés aux ports :
+     - Bouton de sélection : orange sur B2 et gris sur B0
+     - Bouton de validation : rouge de D3 et bleu sur D1
+   - La LED doit être branchée sur les ports :
+     - Jaune sur D6
+     - Orange sur D7
 
 2. **Compilation :** Pour compiler le projet, lancez la commande `make` à partir du makefile situé dans votre dossier `app`.
 3. **Chargement :** Chargez le programme sur le microcontrôleur en lançant `make install` dans votre terminale.
@@ -50,9 +62,8 @@ Le robot fonctionne en deux modes principaux :
 
 
 ## Auteurs
-SAMIRAAAAAAAAAAAAAAAAAAAAAAAA
-
-
-## Licence
-
-Euhhhh I don't give a f*ck Jppppppppp Samiraaaaaaaaaaaaaaa.
+Jodel Alcindor
+Noah Blanchard
+Matei Zama
+Saïd N. Saka
+Samira Folefack
