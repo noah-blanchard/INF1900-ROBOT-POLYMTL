@@ -3,7 +3,7 @@
 
 Dijkstra::Dijkstra() : _display(&DDRC, &PORTC)
 {
-    _resetAdjMatrix();
+    resetAdjMatrix();
     // initialisation à MAX de la matrice d'adjacence
 }
 
@@ -11,7 +11,7 @@ Dijkstra::~Dijkstra()
 {
 }
 
-void Dijkstra::_resetAdjMatrix()
+void Dijkstra::resetAdjMatrix()
 {
     for (uint8_t i = 0; i < 28; ++i)
     {

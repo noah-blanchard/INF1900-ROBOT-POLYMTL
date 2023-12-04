@@ -101,6 +101,7 @@ void Robot::runRoutine()
 
     case RobotState::MAKE_TRIP:
     {
+        _dijkstraModule.resetAdjMatrix();
         _maketripModule.run(_destination);
         _currentState = RobotState::CALCULATE_PATH;
         break;
