@@ -19,10 +19,12 @@ const uint8_t ADJUST_DELAY = 10;
 const uint16_t NAV_STOP_DELAY = 1000;
 const uint16_t INIT_TURN_STOP_DELAY = 200;
 const uint16_t INIT_TURN_DELAY = 1100;
+const uint16_t MEET_POST_DELAY = 2000;
+const uint8_t LOW_MIDI_NOTE = 65;
 
 // IDENTIFY CORNER
 const uint16_t CROSS_CNT_DELAY = 270;
-const uint16_t HIGH_MIDI_NOTE = 81;
+const uint8_t HIGH_MIDI_NOTE = 81;
 const uint16_t IDC_STOP_DELAY = 1000;
 const uint16_t IDC_INIT_DELAY = 2000;
 

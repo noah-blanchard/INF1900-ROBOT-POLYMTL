@@ -380,6 +380,10 @@ void Navigation::_chooseForwardMove()
     {
         _forwardDelayCount = 0;
         _tripState = NavigationState::FORWARD_DELAY;
+        if (!_preventInitForward)
+        {
+            _initForward();
+        }
     }
     else
     {
@@ -388,6 +392,7 @@ void Navigation::_chooseForwardMove()
         {
             _initForward();
         }
+        _preventInitForward = false;
     }
 }
 
@@ -515,7 +520,9 @@ void Navigation::_moveForward()
     {
         stop();
         _display = "POTITO";
-        _delay_ms(NAV_STOP_DELAY);
+        _soundModule.chooseFrequency(LOW_MIDI_NOTE);
+        _delay_ms(MEET_POST_DELAY);
+        _soundModule.stopSound();
         _tripState = NavigationState::MEET_POST;
     }
     else
@@ -1238,6 +1245,7 @@ void Navigation::_turnLeft180()
                 stop();
                 _delay_ms(NAV_STOP_DELAY);
                 _preventInitForward = true;
+                _firstMove = false;
                 _turn180Count = 0;
                 _chooseForwardMove();
             }
@@ -1286,6 +1294,7 @@ void Navigation::_turnRight180()
                 stop();
                 _delay_ms(NAV_STOP_DELAY);
                 _preventInitForward = true;
+                _firstMove = false;
                 _turn180Count = 0;
                 _chooseForwardMove();
             }

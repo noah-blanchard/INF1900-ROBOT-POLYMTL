@@ -10,6 +10,7 @@
 #include "Timer.h"
 #include "InfraRedSensor.h"
 #include "Consts.h"
+#include "Sound.h"
 
 enum class NavigationState
 {
@@ -100,6 +101,7 @@ private:
     LineMaker _lineMakerModule;
     InfraRedSensor _irModule;
     LCM _display;
+    Sound _soundModule;
 
     // wheel controls
     void _forward();
