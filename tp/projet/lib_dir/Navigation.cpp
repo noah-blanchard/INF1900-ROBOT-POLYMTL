@@ -1111,6 +1111,7 @@ void Navigation::_chooseRightTurn()
         }
         }
     }
+    _tripIndex--;
 }
 
 void Navigation::parking()
