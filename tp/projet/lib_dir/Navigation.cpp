@@ -769,6 +769,7 @@ void Navigation::_chooseRightTurn()
 
     uint8_t col = _currentPosition[0];
     uint8_t row = _currentPosition[1];
+    _preventInitForward = true;
 
     if ((col == 1) && (row == 1))
     {

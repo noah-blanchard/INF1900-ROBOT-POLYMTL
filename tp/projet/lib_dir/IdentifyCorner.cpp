@@ -211,7 +211,7 @@ bool IdentifyCorner::_simpleCompareMAtch()
 // turn around should turn around
 void IdentifyCorner::_turnAround()
 {
-    s if (isRight)
+    if (isRight)
     {
         _navModule.turnLeft();
     }

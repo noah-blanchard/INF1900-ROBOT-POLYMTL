@@ -51,7 +51,7 @@ Robot::Robot() : _display(&DDRC, &PORTC), _navModule(_currentPosition, &_current
     _currentPosition[1] = 0;
 
     // SETUP ROBOT STATE
-    _currentState = RobotState::MAKE_TRIP;
+    _currentState = RobotState::MODE_SELECTION;
 
     // DISPLAY INIT MESSAGE
     _display.clear();
