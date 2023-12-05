@@ -63,6 +63,7 @@ private:
     IdentifyCorner _identifyCornerModule;
     Dijkstra _dijkstraModule;
     LED _ledModule;
+    Sound _soundModule;
 
     // Robot state
     RobotState _currentState;

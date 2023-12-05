@@ -69,21 +69,6 @@ Robot::~Robot()
 void Robot::runRoutine()
 {
 
-    /* to debug te IR SENSOR */
-    // char buffer[28];
-    // uint16_t val = _irSensorModule._getDistance();
-    // sprintf(buffer, "%d", _irSensorModule._getDistance());
-    // _display = buffer;
-    // if (false)
-    // {
-    //     _display = "HHI";
-    // }
-    // else
-    // {
-    //     _display = buffer;
-    // }
-    // _delay_ms(100);
-
     switch (_currentState)
     {
     case RobotState::MODE_SELECTION:
@@ -158,6 +143,28 @@ void Robot::_navigateTripRoutine()
 void Robot::_parkingRoutine()
 {
     _navModule.parking();
+    _delay_ms(500);
+    _soundModule.chooseFrequency(80);
+    _delay_ms(200);
+    _soundModule.stopSound();
+    _delay_ms(100);
+    _soundModule.chooseFrequency(80);
+    _delay_ms(200);
+    _soundModule.stopSound();
+    _delay_ms(100);
+    _soundModule.chooseFrequency(80);
+    _delay_ms(200);
+    _soundModule.stopSound();
+    _delay_ms(100);
+    _soundModule.chooseFrequency(80);
+    _delay_ms(200);
+    _soundModule.stopSound();
+    _delay_ms(100);
+    _soundModule.chooseFrequency(80);
+    _delay_ms(200);
+    _soundModule.stopSound();
+    _delay_ms(100);
+
     _currentState = RobotState::MAKE_TRIP;
 }
 
