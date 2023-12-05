@@ -144,26 +144,14 @@ void Robot::_parkingRoutine()
 {
     _navModule.parking();
     _delay_ms(500);
-    _soundModule.chooseFrequency(80);
-    _delay_ms(200);
-    _soundModule.stopSound();
-    _delay_ms(100);
-    _soundModule.chooseFrequency(80);
-    _delay_ms(200);
-    _soundModule.stopSound();
-    _delay_ms(100);
-    _soundModule.chooseFrequency(80);
-    _delay_ms(200);
-    _soundModule.stopSound();
-    _delay_ms(100);
-    _soundModule.chooseFrequency(80);
-    _delay_ms(200);
-    _soundModule.stopSound();
-    _delay_ms(100);
-    _soundModule.chooseFrequency(80);
-    _delay_ms(200);
-    _soundModule.stopSound();
-    _delay_ms(100);
+
+    for (uint8_t i = 0; i < 5; i++)
+    {
+        _soundModule.chooseFrequency(80);
+        _delay_ms(200);
+        _soundModule.stopSound();
+        _delay_ms(100);
+    }
 
     _currentState = RobotState::MAKE_TRIP;
 }
