@@ -16,6 +16,7 @@ void MakeTrip::run(uint8_t *destination)
 	_columnSeleted = 0;
 	_lineSeleted = 0;
 	_confirmed = false;
+	_select = true;
 	sprintf(_buffer, "Line : %d", _lineSeleted + 1);
 	_display = _buffer;
 	while (_state != selection::FINISH)
