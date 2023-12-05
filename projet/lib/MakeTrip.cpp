@@ -27,6 +27,7 @@ void MakeTrip::run(uint8_t *destination)
 		switch (_state)
 		{
 		case selection::SELECTLINE:
+			_select = true;
 			_selectLine();
 			break;
 		case selection::SELECTCOLUMN:
