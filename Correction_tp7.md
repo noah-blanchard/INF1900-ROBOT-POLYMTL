@@ -17,8 +17,8 @@ Identification:
 | Points importants                                        | Poids       |
 | -------------------------------------------------------- | ----------- |
 | La qualités et le choix de vos portions de code choisies | (4.4/5.0)      |
-| La qualités de vos modifications aux Makefiles           | (4/5.0)      |
-| __Résultat partiel__                                     | __(8.4/10.0)__ |
+| La qualités de vos modifications aux Makefiles           | (5/5.0)      |
+| __Résultat partiel__                                     | __(9.4/10.0)__ |
 
 # RAPPORT
 
@@ -42,7 +42,7 @@ Identification:
 
 # Résultat
 
-__Total des points: 16.3/20__
+__Total des points: 17.3/20__
 
 # Commentaires du correcteur:
 
